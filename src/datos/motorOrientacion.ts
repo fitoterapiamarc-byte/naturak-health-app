@@ -1,5 +1,6 @@
 import { condiciones, type Condicion } from "./condiciones";
 import { condicionesDigestivasExtra } from "./condicionesDigestivasExtra";
+import { condicionesNeuroMusculo } from "./condicionesNeuroMusculo";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -20,15 +21,13 @@ function normalizarTexto(texto: string): string {
 }
 
 function hayCoincidencia(textoUsuario: string, textoBase: string): boolean {
-  const usuario = normalizarTexto(textoUsuario);
-  const base = normalizarTexto(textoBase);
-
-  return usuario === base || usuario.includes(base);
+  return normalizarTexto(textoUsuario) === normalizarTexto(textoBase);
 }
 
 const todasLasCondiciones: Condicion[] = [
   ...condiciones,
   ...condicionesDigestivasExtra,
+  ...condicionesNeuroMusculo,
 ];
 
 export function orientarPorSintomas(
@@ -84,12 +83,8 @@ export function orientarPorSintomas(
       return {
         condicion,
         coincidencias: sintomasCoincidentes.map((sintoma) => sintoma.nombre),
-        contradicciones: sintomasContradictorios.map(
-          (sintoma) => sintoma.nombre
-        ),
-        senalesAlarmaDetectadas: alarmasDetectadas.map(
-          (alarma) => alarma.nombre
-        ),
+        contradicciones: sintomasContradictorios.map((sintoma) => sintoma.nombre),
+        senalesAlarmaDetectadas: alarmasDetectadas.map((alarma) => alarma.nombre),
         puntuacion,
         confianza,
         requiereValoracionMedica:
