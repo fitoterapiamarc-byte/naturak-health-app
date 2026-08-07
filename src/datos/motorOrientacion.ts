@@ -4,6 +4,7 @@ import { condicionesNeuroMusculo } from "./condicionesNeuroMusculo";
 import { condicionesCardioResp } from "./condicionesCardioResp";
 import { condicionesUrinarias } from "./condicionesUrinarias";
 import { condicionesAbdominalesUrgentes } from "./condicionesAbdominalesUrgentes";
+import { condicionesGenerales } from "./condicionesGenerales";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -34,6 +35,7 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesCardioResp,
   ...condicionesUrinarias,
   ...condicionesAbdominalesUrgentes,
+  ...condicionesGenerales,
 ];
 
 export function orientarPorSintomas(
