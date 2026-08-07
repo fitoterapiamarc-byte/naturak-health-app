@@ -86,13 +86,13 @@ export function orientarPorSintomas(
         ),
         puntuacion,
         confianza,
-        requiereValoracionMedica: alarmasDetectadas.length > 0,
+        requiereValoracionMedica:
+          sintomasCoincidentes.length > 0 && alarmasDetectadas.length > 0,
       };
     })
     .filter(
       (resultado) =>
-        resultado.puntuacion > 0 ||
-        resultado.senalesAlarmaDetectadas.length > 0
+        resultado.coincidencias.length > 0 && resultado.puntuacion > 0
     )
     .sort((a, b) => {
       if (a.requiereValoracionMedica && !b.requiereValoracionMedica) {
