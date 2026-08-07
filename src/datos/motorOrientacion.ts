@@ -23,7 +23,7 @@ function hayCoincidencia(textoUsuario: string, textoBase: string): boolean {
   const usuario = normalizarTexto(textoUsuario);
   const base = normalizarTexto(textoBase);
 
-  return usuario.includes(base) || base.includes(usuario);
+  return usuario === base || usuario.includes(base);
 }
 
 const todasLasCondiciones: Condicion[] = [
