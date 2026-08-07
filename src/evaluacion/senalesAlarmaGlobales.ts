@@ -32,6 +32,18 @@ export const senalesAlarmaGlobales: SenalAlarmaGlobal[] = [
       "La dificultad respiratoria importante o de aparición brusca no debe manejarse únicamente con recomendaciones de autocuidado.",
   },
   {
+    id: "respiratoria-grave",
+    activadores: [
+      "Falta de aire intensa",
+      "No puedo hablar frases completas",
+      "Labios azulados",
+    ],
+    nivel: "urgente",
+    titulo: "Dificultad respiratoria grave",
+    mensaje:
+      "La falta de aire intensa, la dificultad para hablar frases completas o la coloración azulada requieren atención médica urgente.",
+  },
+  {
     id: "neurologica",
     activadores: [
       "Confusión",
