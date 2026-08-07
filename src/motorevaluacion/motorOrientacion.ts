@@ -1,0 +1,108 @@
+import { condiciones, type Condicion } from "../datos/condiciones";
+
+export interface ResultadoOrientacion {
+  condicion: Condicion;
+  coincidencias: string[];
+  contradicciones: string[];
+  senalesAlarmaDetectadas: string[];
+  puntuacion: number;
+  confianza: number;
+  requiereValoracionMedica: boolean;
+}
+
+function normalizarTexto(texto: string): string {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function hayCoincidencia(textoUsuario: string, textoBase: string): boolean {
+  const usuario = normalizarTexto(textoUsuario);
+  const base = normalizarTexto(textoBase);
+
+  return usuario.includes(base) || base.includes(usuario);
+}
+
+export function orientarPorSintomas(
+  sintomasUsuario: string[]
+): ResultadoOrientacion[] {
+  const datosIntroducidos = sintomasUsuario
+    .map((dato) => dato.trim())
+    .filter(Boolean);
+
+  return condiciones
+    .map((condicion) => {
+      const sintomasCoincidentes = condicion.sintomas.filter((sintoma) =>
+        datosIntroducidos.some((datoUsuario) =>
+          hayCoincidencia(datoUsuario, sintoma.nombre)
+        )
+      );
+
+      const sintomasContradictorios =
+        condicion.sintomasQueContradicen.filter((sintoma) =>
+          datosIntroducidos.some((datoUsuario) =>
+            hayCoincidencia(datoUsuario, sintoma.nombre)
+          )
+        );
+
+      const alarmasDetectadas = condicion.sintomasAlarma.filter((alarma) =>
+        datosIntroducidos.some((datoUsuario) =>
+          hayCoincidencia(datoUsuario, alarma.nombre)
+        )
+      );
+
+      const puntosPositivos = sintomasCoincidentes.reduce(
+        (total, sintoma) => total + sintoma.peso,
+        0
+      );
+
+      const puntosNegativos = sintomasContradictorios.reduce(
+        (total, sintoma) => total + sintoma.peso,
+        0
+      );
+
+      const puntuacion = Math.max(0, puntosPositivos - puntosNegativos);
+
+      const puntuacionMaxima = condicion.sintomas.reduce(
+        (total, sintoma) => total + sintoma.peso,
+        0
+      );
+
+      const confianza =
+        puntuacionMaxima > 0
+          ? Math.round((puntuacion / puntuacionMaxima) * 100)
+          : 0;
+
+      return {
+        condicion,
+        coincidencias: sintomasCoincidentes.map((sintoma) => sintoma.nombre),
+        contradicciones: sintomasContradictorios.map(
+          (sintoma) => sintoma.nombre
+        ),
+        senalesAlarmaDetectadas: alarmasDetectadas.map(
+          (alarma) => alarma.nombre
+        ),
+        puntuacion,
+        confianza,
+        requiereValoracionMedica: alarmasDetectadas.length > 0,
+      };
+    })
+    .filter(
+      (resultado) =>
+        resultado.puntuacion > 0 ||
+        resultado.senalesAlarmaDetectadas.length > 0
+    )
+    .sort((a, b) => {
+      if (a.requiereValoracionMedica && !b.requiereValoracionMedica) {
+        return -1;
+      }
+
+      if (!a.requiereValoracionMedica && b.requiereValoracionMedica) {
+        return 1;
+      }
+
+      return b.puntuacion - a.puntuacion;
+    });
+}
