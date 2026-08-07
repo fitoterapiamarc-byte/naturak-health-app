@@ -6,6 +6,10 @@ import {
 } from "../datos/motorOrientacion";
 import { categoriasEvaluacion } from "../evaluacion/opcionesEvaluacion";
 import { preguntasSeguimiento } from "../evaluacion/preguntasSeguimiento";
+import {
+  detectarAlarmasGlobales,
+  type SenalAlarmaGlobal,
+} from "../evaluacion/senalesAlarmaGlobales";
 
 function EvaluacionIntegral() {
   const [categoriaAbierta, setCategoriaAbierta] = useState<string | null>(null);
@@ -13,6 +17,7 @@ function EvaluacionIntegral() {
   const [respuestasSeguimiento, setRespuestasSeguimiento] = useState<string[]>([]);
   const [detalles, setDetalles] = useState("");
   const [resultados, setResultados] = useState<ResultadoOrientacion[]>([]);
+  const [alarmasGlobales, setAlarmasGlobales] = useState<SenalAlarmaGlobal[]>([]);
   const [analizado, setAnalizado] = useState(false);
 
   const alternar = (
@@ -37,13 +42,14 @@ function EvaluacionIntegral() {
       .map((dato) => dato.trim())
       .filter(Boolean);
 
-    setResultados(
-      orientarPorSintomas([
-        ...seleccionados,
-        ...respuestasSeguimiento,
-        ...datosAdicionales,
-      ])
-    );
+    const todosLosDatos = [
+      ...seleccionados,
+      ...respuestasSeguimiento,
+      ...datosAdicionales,
+    ];
+
+    setAlarmasGlobales(detectarAlarmasGlobales(todosLosDatos));
+    setResultados(orientarPorSintomas(todosLosDatos));
     setAnalizado(true);
   };
 
@@ -52,13 +58,17 @@ function EvaluacionIntegral() {
     respuestasSeguimiento.length === 0 &&
     detalles.trim() === "";
 
+  const existeAlarmaPrioritaria = alarmasGlobales.some(
+    (alarma) => alarma.nivel === "urgente" || alarma.nivel === "prioritaria"
+  );
+
   return (
     <section style={estilos.contenedor}>
       <h2>Evaluación integral</h2>
       <p>
-        Marca todo lo que coincida con tu situación. La app cruza los datos y,
-        cuando encuentra compatibilidad suficiente, compara distintos enfoques
-        sin presentarlos como equivalentes.
+        Marca todo lo que coincida con tu situación. La app cruza los datos,
+        busca primero señales de alarma y después muestra cuadros compatibles y
+        compara distintos enfoques sin presentarlos como equivalentes.
       </p>
 
       <div style={estilos.categorias}>
@@ -168,11 +178,30 @@ function EvaluacionIntegral() {
 
       {analizado && (
         <div style={{ marginTop: "30px" }}>
+          {alarmasGlobales.length > 0 && (
+            <section style={estilos.alertaGlobal}>
+              <h3>⚠️ Prioridad de seguridad</h3>
+              {alarmasGlobales.map((alarma) => (
+                <div key={alarma.id} style={estilos.alertaGlobalItem}>
+                  <strong>{alarma.titulo}</strong>
+                  <p>{alarma.mensaje}</p>
+                </div>
+              ))}
+              {existeAlarmaPrioritaria && (
+                <strong>
+                  La orientación de autocuidado queda en segundo plano hasta
+                  valorar estas señales.
+                </strong>
+              )}
+            </section>
+          )}
+
           {resultados.length === 0 ? (
             <div style={estilos.avisoAmarillo}>
               Todavía no hay coincidencias suficientes en la base de
-              conocimiento. La base se irá ampliando con nuevas patologías y
-              cuadros funcionales.
+              conocimiento. Si aparece una alerta de seguridad arriba, esa
+              alerta sigue siendo relevante aunque no haya una patología
+              compatible cargada en la base.
             </div>
           ) : (
             resultados.map((resultado) => (
@@ -181,7 +210,7 @@ function EvaluacionIntegral() {
 
                 {resultado.requiereValoracionMedica && (
                   <div style={estilos.alarma}>
-                    <h4>⚠️ Señales de alarma detectadas</h4>
+                    <h4>⚠️ Señales de alarma asociadas a este cuadro</h4>
                     <Lista elementos={resultado.senalesAlarmaDetectadas} />
                     <strong>
                       Se recomienda valoración médica antes de aplicar
@@ -223,7 +252,7 @@ function EvaluacionIntegral() {
                 <EnfoquesComparados
                   condicion={resultado.condicion}
                   bloquearIntervencionesNaturales={
-                    resultado.requiereValoracionMedica
+                    existeAlarmaPrioritaria || resultado.requiereValoracionMedica
                   }
                 />
 
@@ -378,6 +407,19 @@ const estilos = {
     fontSize: "18px",
     fontWeight: "bold",
     cursor: "pointer",
+  },
+  alertaGlobal: {
+    marginBottom: "24px",
+    padding: "20px",
+    background: "#fff0f0",
+    border: "2px solid #b00020",
+    borderRadius: "12px",
+    color: "#7d0016",
+  },
+  alertaGlobalItem: {
+    margin: "12px 0",
+    paddingBottom: "8px",
+    borderBottom: "1px solid #efc4ca",
   },
   resultado: {
     border: "1px solid #dce5df",
