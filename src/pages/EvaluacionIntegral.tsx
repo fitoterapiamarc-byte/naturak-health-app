@@ -1,4 +1,5 @@
 import { useState } from "react";
+import EnfoquesComparados from "../components/EnfoquesComparados";
 import {
   orientarPorSintomas,
   type ResultadoOrientacion,
@@ -9,37 +10,25 @@ import { preguntasSeguimiento } from "../evaluacion/preguntasSeguimiento";
 function EvaluacionIntegral() {
   const [categoriaAbierta, setCategoriaAbierta] = useState<string | null>(null);
   const [seleccionados, setSeleccionados] = useState<string[]>([]);
-  const [respuestasSeguimiento, setRespuestasSeguimiento] = useState<string[]>(
-    []
-  );
+  const [respuestasSeguimiento, setRespuestasSeguimiento] = useState<string[]>([]);
   const [detalles, setDetalles] = useState("");
   const [resultados, setResultados] = useState<ResultadoOrientacion[]>([]);
   const [analizado, setAnalizado] = useState(false);
 
-  const cambiarSeleccion = (opcion: string) => {
-    setSeleccionados((actuales) =>
+  const alternar = (
+    opcion: string,
+    setter: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+    setter((actuales) =>
       actuales.includes(opcion)
         ? actuales.filter((elemento) => elemento !== opcion)
         : [...actuales, opcion]
     );
-
-    setAnalizado(false);
-  };
-
-  const cambiarRespuestaSeguimiento = (opcion: string) => {
-    setRespuestasSeguimiento((actuales) =>
-      actuales.includes(opcion)
-        ? actuales.filter((elemento) => elemento !== opcion)
-        : [...actuales, opcion]
-    );
-
     setAnalizado(false);
   };
 
   const preguntasActivas = preguntasSeguimiento.filter((pregunta) =>
-    pregunta.activadores.some((activador) =>
-      seleccionados.includes(activador)
-    )
+    pregunta.activadores.some((activador) => seleccionados.includes(activador))
   );
 
   const analizarEvaluacion = () => {
@@ -48,36 +37,38 @@ function EvaluacionIntegral() {
       .map((dato) => dato.trim())
       .filter(Boolean);
 
-    const todosLosDatos = [
-      ...seleccionados,
-      ...respuestasSeguimiento,
-      ...datosAdicionales,
-    ];
-
-    setResultados(orientarPorSintomas(todosLosDatos));
+    setResultados(
+      orientarPorSintomas([
+        ...seleccionados,
+        ...respuestasSeguimiento,
+        ...datosAdicionales,
+      ])
+    );
     setAnalizado(true);
   };
+
+  const sinDatos =
+    seleccionados.length === 0 &&
+    respuestasSeguimiento.length === 0 &&
+    detalles.trim() === "";
 
   return (
     <section style={estilos.contenedor}>
       <h2>Evaluación integral</h2>
-
       <p>
-        Pulsa una categoría y marca todas las opciones que coincidan con lo que
-        estás notando.
+        Marca todo lo que coincida con tu situación. La app cruza los datos y,
+        cuando encuentra compatibilidad suficiente, compara distintos enfoques
+        sin presentarlos como equivalentes.
       </p>
 
       <div style={estilos.categorias}>
         {categoriasEvaluacion.map((categoria) => {
           const abierta = categoriaAbierta === categoria.id;
-
           return (
             <div key={categoria.id} style={estilos.categoriaBloque}>
               <button
                 type="button"
-                onClick={() =>
-                  setCategoriaAbierta(abierta ? null : categoria.id)
-                }
+                onClick={() => setCategoriaAbierta(abierta ? null : categoria.id)}
                 style={{
                   ...estilos.botonCategoria,
                   background: abierta ? "#0b8f52" : "#ffffff",
@@ -91,18 +82,14 @@ function EvaluacionIntegral() {
 
               {abierta && (
                 <div style={estilos.cuadriculaOpciones}>
-                  {categoria.opciones.map((opcion) => {
-                    const seleccionado = seleccionados.includes(opcion);
-
-                    return (
-                      <BotonOpcion
-                        key={opcion}
-                        texto={opcion}
-                        seleccionado={seleccionado}
-                        alPulsar={() => cambiarSeleccion(opcion)}
-                      />
-                    );
-                  })}
+                  {categoria.opciones.map((opcion) => (
+                    <BotonOpcion
+                      key={opcion}
+                      texto={opcion}
+                      seleccionado={seleccionados.includes(opcion)}
+                      alPulsar={() => alternar(opcion, setSeleccionados)}
+                    />
+                  ))}
                 </div>
               )}
             </div>
@@ -113,10 +100,7 @@ function EvaluacionIntegral() {
       {preguntasActivas.length > 0 && (
         <section style={estilos.seguimiento}>
           <h2>Preguntas para afinar la orientación</h2>
-
-          <p>
-            Responde únicamente a las opciones que coincidan con tu situación.
-          </p>
+          <p>Marca únicamente las respuestas que coincidan contigo.</p>
 
           {preguntasActivas.map((pregunta) => (
             <div
@@ -127,21 +111,19 @@ function EvaluacionIntegral() {
               }}
             >
               <h3>{pregunta.texto}</h3>
-
               {pregunta.esAlarma && (
                 <p style={estilos.textoAlarma}>
-                  ⚠️ Esta pregunta sirve para detectar señales que pueden
-                  requerir valoración médica.
+                  ⚠️ Esta pregunta ayuda a detectar señales que pueden requerir
+                  valoración médica.
                 </p>
               )}
-
               <div style={estilos.cuadriculaOpciones}>
                 {pregunta.opciones.map((opcion) => (
                   <BotonOpcion
                     key={`${pregunta.id}-${opcion}`}
                     texto={opcion}
                     seleccionado={respuestasSeguimiento.includes(opcion)}
-                    alPulsar={() => cambiarRespuestaSeguimiento(opcion)}
+                    alPulsar={() => alternar(opcion, setRespuestasSeguimiento)}
                   />
                 ))}
               </div>
@@ -154,7 +136,6 @@ function EvaluacionIntegral() {
         <label>
           <strong>¿Quieres añadir algún detalle?</strong>
         </label>
-
         <textarea
           value={detalles}
           onChange={(event) => {
@@ -169,36 +150,18 @@ function EvaluacionIntegral() {
 
       <div style={estilos.resumen}>
         <strong>Datos seleccionados:</strong>
-
-        {seleccionados.length === 0 &&
-        respuestasSeguimiento.length === 0 ? (
+        {seleccionados.length === 0 && respuestasSeguimiento.length === 0 ? (
           <p>Todavía no has seleccionado ninguna opción.</p>
         ) : (
-          <ul>
-            {[...seleccionados, ...respuestasSeguimiento].map((opcion) => (
-              <li key={opcion}>{opcion}</li>
-            ))}
-          </ul>
+          <Lista elementos={[...seleccionados, ...respuestasSeguimiento]} />
         )}
       </div>
 
       <button
         type="button"
         onClick={analizarEvaluacion}
-        disabled={
-          seleccionados.length === 0 &&
-          respuestasSeguimiento.length === 0 &&
-          detalles.trim() === ""
-        }
-        style={{
-          ...estilos.botonAnalizar,
-          opacity:
-            seleccionados.length === 0 &&
-            respuestasSeguimiento.length === 0 &&
-            detalles.trim() === ""
-              ? 0.5
-              : 1,
-        }}
+        disabled={sinDatos}
+        style={{ ...estilos.botonAnalizar, opacity: sinDatos ? 0.5 : 1 }}
       >
         Analizar cuadro completo
       </button>
@@ -207,8 +170,9 @@ function EvaluacionIntegral() {
         <div style={{ marginTop: "30px" }}>
           {resultados.length === 0 ? (
             <div style={estilos.avisoAmarillo}>
-              No hay coincidencias suficientes en la base de conocimiento.
-              Actualmente estamos empezando con el estreñimiento funcional.
+              Todavía no hay coincidencias suficientes en la base de
+              conocimiento. La base se irá ampliando con nuevas patologías y
+              cuadros funcionales.
             </div>
           ) : (
             resultados.map((resultado) => (
@@ -219,7 +183,6 @@ function EvaluacionIntegral() {
                   <div style={estilos.alarma}>
                     <h4>⚠️ Señales de alarma detectadas</h4>
                     <Lista elementos={resultado.senalesAlarmaDetectadas} />
-
                     <strong>
                       Se recomienda valoración médica antes de aplicar
                       fitoterapia o suplementación.
@@ -228,7 +191,6 @@ function EvaluacionIntegral() {
                 )}
 
                 <p>{resultado.condicion.descripcion}</p>
-
                 <p>
                   <strong>Datos coincidentes:</strong>{" "}
                   {resultado.coincidencias.join(", ")}
@@ -238,7 +200,6 @@ function EvaluacionIntegral() {
                   <strong>
                     Compatibilidad orientativa: {resultado.confianza}%
                   </strong>
-
                   <div style={estilos.barraFondo}>
                     <div
                       style={{
@@ -256,26 +217,26 @@ function EvaluacionIntegral() {
                   </div>
                 )}
 
-                <h4>Posibles causas</h4>
+                <h4>Posibles causas o factores relacionados</h4>
                 <Lista elementos={resultado.condicion.posiblesCausas} />
 
-                <h4>Nutrición</h4>
-                <Lista elementos={resultado.condicion.nutricion} />
-
-                {!resultado.requiereValoracionMedica && (
-                  <>
-                    <h4>Fitoterapia</h4>
-                    <Lista elementos={resultado.condicion.fitoterapia} />
-                  </>
-                )}
-
-                <h4>Pruebas médicas habituales</h4>
-                <Lista
-                  elementos={resultado.condicion.pruebasMedicasHabituales}
+                <EnfoquesComparados
+                  condicion={resultado.condicion}
+                  bloquearIntervencionesNaturales={
+                    resultado.requiereValoracionMedica
+                  }
                 />
 
-                <h4>Cuándo acudir al médico</h4>
-                <Lista elementos={resultado.condicion.cuandoAcudirMedico} />
+                <div style={estilos.bloqueClinico}>
+                  <h4>Pruebas médicas habituales</h4>
+                  <Lista elementos={resultado.condicion.pruebasMedicasHabituales} />
+
+                  <h4>Profesionales de referencia</h4>
+                  <Lista elementos={resultado.condicion.especialistaRecomendado} />
+
+                  <h4>Cuándo acudir al médico</h4>
+                  <Lista elementos={resultado.condicion.cuandoAcudirMedico} />
+                </div>
               </article>
             ))
           )}
@@ -283,8 +244,10 @@ function EvaluacionIntegral() {
       )}
 
       <p style={estilos.avisoLegal}>
-        Esta herramienta ofrece orientación educativa. No confirma diagnósticos
-        ni sustituye una valoración médica.
+        Esta herramienta ofrece orientación educativa y comparación de marcos
+        de abordaje. No confirma diagnósticos ni sustituye una valoración
+        médica. Los enfoques tradicionales se muestran como marcos propios y no
+        como equivalentes a un diagnóstico biomédico.
       </p>
     </section>
   );
@@ -296,11 +259,7 @@ interface BotonOpcionProps {
   alPulsar: () => void;
 }
 
-function BotonOpcion({
-  texto,
-  seleccionado,
-  alPulsar,
-}: BotonOpcionProps) {
+function BotonOpcion({ texto, seleccionado, alPulsar }: BotonOpcionProps) {
   return (
     <button
       type="button"
@@ -330,26 +289,19 @@ function Lista({ elementos }: { elementos: string[] }) {
 
 const estilos = {
   contenedor: {
-    maxWidth: "1000px",
+    maxWidth: "1100px",
     margin: "30px auto",
     padding: "28px",
     background: "white",
     borderRadius: "14px",
     boxShadow: "0 4px 18px rgba(0,0,0,0.08)",
   },
-
-  categorias: {
-    display: "grid",
-    gap: "14px",
-    marginTop: "26px",
-  },
-
+  categorias: { display: "grid", gap: "14px", marginTop: "26px" },
   categoriaBloque: {
     border: "1px solid #dce5df",
     borderRadius: "12px",
     overflow: "hidden",
   },
-
   botonCategoria: {
     width: "100%",
     minHeight: "68px",
@@ -363,11 +315,7 @@ const estilos = {
     fontWeight: "bold",
     cursor: "pointer",
   },
-
-  icono: {
-    fontSize: "26px",
-  },
-
+  icono: { fontSize: "26px" },
   cuadriculaOpciones: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
@@ -375,7 +323,6 @@ const estilos = {
     padding: "16px",
     background: "#f7faf8",
   },
-
   opcion: {
     minHeight: "60px",
     padding: "13px",
@@ -389,7 +336,6 @@ const estilos = {
     gap: "10px",
     alignItems: "center",
   },
-
   seguimiento: {
     marginTop: "30px",
     padding: "20px",
@@ -397,7 +343,6 @@ const estilos = {
     borderRadius: "14px",
     border: "1px solid #cfe5d8",
   },
-
   pregunta: {
     marginTop: "18px",
     padding: "16px",
@@ -405,12 +350,7 @@ const estilos = {
     border: "2px solid",
     borderRadius: "12px",
   },
-
-  textoAlarma: {
-    color: "#9b6200",
-    fontWeight: "bold",
-  },
-
+  textoAlarma: { color: "#9b6200", fontWeight: "bold" },
   textarea: {
     width: "100%",
     marginTop: "10px",
@@ -420,7 +360,6 @@ const estilos = {
     fontSize: "16px",
     resize: "vertical" as const,
   },
-
   resumen: {
     marginTop: "24px",
     padding: "18px",
@@ -428,7 +367,6 @@ const estilos = {
     borderRadius: "10px",
     border: "1px solid #cfe5d8",
   },
-
   botonAnalizar: {
     marginTop: "24px",
     width: "100%",
@@ -441,21 +379,18 @@ const estilos = {
     fontWeight: "bold",
     cursor: "pointer",
   },
-
   resultado: {
     border: "1px solid #dce5df",
     borderRadius: "12px",
     padding: "22px",
     marginBottom: "18px",
   },
-
   confianza: {
     margin: "18px 0",
     padding: "16px",
     background: "#f3faf6",
     borderRadius: "10px",
   },
-
   barraFondo: {
     width: "100%",
     height: "12px",
@@ -464,12 +399,7 @@ const estilos = {
     borderRadius: "10px",
     overflow: "hidden",
   },
-
-  barraProgreso: {
-    height: "100%",
-    background: "#0b8f52",
-  },
-
+  barraProgreso: { height: "100%", background: "#0b8f52" },
   alarma: {
     marginBottom: "20px",
     padding: "16px",
@@ -478,19 +408,25 @@ const estilos = {
     borderRadius: "10px",
     color: "#9b0000",
   },
-
   avisoAmarillo: {
     marginBottom: "18px",
     padding: "16px",
     background: "#fff8e6",
     borderLeft: "4px solid #e0a000",
   },
-
+  bloqueClinico: {
+    marginTop: "24px",
+    padding: "18px",
+    borderRadius: "12px",
+    background: "#f7faf8",
+    border: "1px solid #dce5df",
+  },
   avisoLegal: {
     marginTop: "24px",
     padding: "14px",
     background: "#fff4f4",
     borderLeft: "4px solid #d22",
+    lineHeight: 1.5,
   },
 };
 
