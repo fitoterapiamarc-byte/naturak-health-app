@@ -87,6 +87,9 @@ export const categoriasEvaluacion: CategoriaEvaluacion[] = [
       "Sensación de desmayo",
       "Desmayo",
       "Hinchazón de piernas",
+      "Pesadez de piernas",
+      "Varices",
+      "Mejora al elevar las piernas",
       "Hinchazón de una sola pierna",
       "Pierna roja y caliente",
       "Sudor frío",
@@ -239,6 +242,8 @@ export const categoriasEvaluacion: CategoriaEvaluacion[] = [
       "Calambres",
       "Debilidad muscular",
       "Limitación de movimiento",
+      "Articulación roja y muy caliente",
+      "No puedo apoyar tras traumatismo",
     ],
   },
 ];
