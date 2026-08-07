@@ -33,11 +33,38 @@ export const senalesAlarmaGlobales: SenalAlarmaGlobal[] = [
   },
   {
     id: "neurologica",
-    activadores: ["Confusión", "Pérdida de fuerza", "Desmayo"],
+    activadores: [
+      "Confusión",
+      "Pérdida de fuerza",
+      "Pérdida de fuerza en una pierna",
+      "Pérdida de fuerza en ambas piernas",
+      "Dificultad para hablar",
+      "Visión doble nueva",
+      "Desmayo",
+    ],
     nivel: "urgente",
     titulo: "Síntomas neurológicos de alarma",
     mensaje:
-      "La confusión, pérdida de fuerza de aparición reciente o pérdida de conciencia requieren valoración médica rápida.",
+      "La aparición reciente de confusión, pérdida de fuerza, alteración del habla, visión doble o pérdida de conciencia requiere valoración médica rápida.",
+  },
+  {
+    id: "cefalea-secundaria",
+    activadores: [
+      "Dolor de cabeza súbito e intenso",
+      "Fiebre con rigidez de cuello",
+    ],
+    nivel: "urgente",
+    titulo: "Cefalea con señales de alarma",
+    mensaje:
+      "Una cefalea que alcanza intensidad máxima de forma brusca o que se acompaña de fiebre y rigidez de cuello requiere valoración urgente.",
+  },
+  {
+    id: "audicion-brusca",
+    activadores: ["Pérdida brusca de audición"],
+    nivel: "prioritaria",
+    titulo: "Pérdida brusca de audición",
+    mensaje:
+      "La pérdida brusca de audición, especialmente junto con vértigo u otros síntomas neurológicos, necesita valoración médica rápida.",
   },
   {
     id: "sangrado-digestivo",
@@ -83,6 +110,34 @@ export const senalesAlarmaGlobales: SenalAlarmaGlobal[] = [
     titulo: "Dificultad para tragar",
     mensaje:
       "La dificultad o el dolor al tragar necesitan valoración médica, especialmente si se acompañan de pérdida de peso, sangrado o empeoramiento progresivo.",
+  },
+  {
+    id: "cola-caballo",
+    activadores: [
+      "Pérdida de control de orina o heces",
+      "Adormecimiento en zona genital o perineal",
+      "Pérdida de fuerza en ambas piernas",
+    ],
+    nivel: "urgente",
+    titulo: "Posible compresión neurológica grave",
+    mensaje:
+      "La alteración de esfínteres, el adormecimiento perineal o la debilidad bilateral de piernas con dolor lumbar requieren valoración urgente para descartar compresión de la cola de caballo.",
+  },
+  {
+    id: "debilidad-progresiva-pierna",
+    activadores: ["Debilidad progresiva de una pierna"],
+    nivel: "prioritaria",
+    titulo: "Déficit neurológico progresivo",
+    mensaje:
+      "La debilidad que progresa en una pierna asociada a dolor lumbar o radicular necesita valoración médica prioritaria.",
+  },
+  {
+    id: "trombosis-pierna",
+    activadores: ["Hinchazón de una sola pierna", "Pierna roja y caliente"],
+    nivel: "prioritaria",
+    titulo: "Posible trombosis venosa profunda",
+    mensaje:
+      "Dolor o hinchazón de una sola pierna, especialmente con calor o enrojecimiento, puede ser compatible con trombosis venosa profunda y requiere valoración médica. Si además aparece falta de aire o dolor torácico, la urgencia aumenta.",
   },
   {
     id: "perdida-peso",
