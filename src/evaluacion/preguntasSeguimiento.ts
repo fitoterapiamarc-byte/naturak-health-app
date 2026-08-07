@@ -50,12 +50,7 @@ export const preguntasSeguimiento: PreguntaSeguimiento[] = [
     id: "dolor-abdominal-intensidad",
     activadores: ["Dolor abdominal"],
     texto: "¿Qué intensidad tiene el dolor?",
-    opciones: [
-      "Leve",
-      "Moderado",
-      "Intenso",
-      "Muy intenso",
-    ],
+    opciones: ["Leve", "Moderado", "Intenso", "Muy intenso"],
   },
   {
     id: "estrenimiento-duracion",
@@ -75,11 +70,7 @@ export const preguntasSeguimiento: PreguntaSeguimiento[] = [
   },
   {
     id: "estrenimiento-alarmas",
-    activadores: [
-      "Heces duras",
-      "Esfuerzo al defecar",
-      "Estreñimiento",
-    ],
+    activadores: ["Heces duras", "Esfuerzo al defecar", "Estreñimiento"],
     texto: "¿Aparece alguno de estos signos?",
     opciones: [
       "Sangre en las heces",
@@ -90,6 +81,52 @@ export const preguntasSeguimiento: PreguntaSeguimiento[] = [
       "Ninguno",
     ],
     esAlarma: true,
+  },
+  {
+    id: "diarrea-duracion",
+    activadores: [
+      "Diarrea continua",
+      "Heces líquidas",
+      "Deposiciones muy frecuentes",
+    ],
+    texto: "¿Cuánto tiempo llevas con diarrea?",
+    opciones: [
+      "Menos de 24 horas",
+      "Entre uno y tres días",
+      "Más de tres días",
+      "Varias semanas o episodios repetidos",
+    ],
+  },
+  {
+    id: "diarrea-alarmas",
+    activadores: [
+      "Diarrea continua",
+      "Heces líquidas",
+      "Deposiciones muy frecuentes",
+    ],
+    texto: "¿Aparece alguno de estos signos con la diarrea?",
+    opciones: [
+      "Sangre roja en las heces",
+      "Heces negras",
+      "Fiebre",
+      "Vómitos repetidos",
+      "No puedo retener líquidos",
+      "Orinar muy poca cantidad",
+      "Ninguno",
+    ],
+    esAlarma: true,
+  },
+  {
+    id: "diarrea-contexto",
+    activadores: ["Diarrea continua", "Heces líquidas"],
+    texto: "¿Ha ocurrido algo de esto recientemente?",
+    opciones: [
+      "Viaje reciente",
+      "Antibióticos recientes",
+      "Cambio importante de alimentación",
+      "Otras personas cercanas tienen síntomas similares",
+      "Ninguno",
+    ],
   },
   {
     id: "orina-oscura",
