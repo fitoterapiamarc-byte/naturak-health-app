@@ -77,6 +77,14 @@ export const senalesAlarmaGlobales: SenalAlarmaGlobal[] = [
       "La incapacidad para mantener líquidos, la reducción marcada de la orina o el deterioro general requieren valoración médica.",
   },
   {
+    id: "deglucion",
+    activadores: ["Dificultad para tragar", "Dolor al tragar"],
+    nivel: "prioritaria",
+    titulo: "Dificultad para tragar",
+    mensaje:
+      "La dificultad o el dolor al tragar necesitan valoración médica, especialmente si se acompañan de pérdida de peso, sangrado o empeoramiento progresivo.",
+  },
+  {
     id: "perdida-peso",
     activadores: ["Pérdida de peso"],
     nivel: "precaucion",
@@ -100,9 +108,7 @@ export function detectarAlarmasGlobales(datos: string[]): SenalAlarmaGlobal[] {
   return senalesAlarmaGlobales.filter((senal) =>
     senal.activadores.some((activador) => {
       const base = normalizar(activador);
-      return normalizados.some(
-        (dato) => dato.includes(base) || base.includes(dato)
-      );
+      return normalizados.some((dato) => dato === base || dato.includes(base));
     })
   );
 }
