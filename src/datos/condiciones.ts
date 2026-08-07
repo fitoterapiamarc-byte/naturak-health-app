@@ -4,6 +4,14 @@ export type NivelEvidencia =
   | "limitada"
   | "tradicional";
 
+export interface EnfoqueComparado {
+  titulo: string;
+  marco: string;
+  intervenciones: string[];
+  nivelEvidencia: NivelEvidencia;
+  nota?: string;
+}
+
 export interface Condicion {
   id: string;
   nombre: string;
@@ -46,6 +54,14 @@ export interface Condicion {
 
   cuandoAcudirMedico: string[];
   bibliografia: string[];
+
+  enfoques: {
+    convencional: EnfoqueComparado;
+    nutricion: EnfoqueComparado;
+    natural: EnfoqueComparado;
+    medicinaChina: EnfoqueComparado;
+    estiloVida: EnfoqueComparado;
+  };
 }
 
 export const condiciones: Condicion[] = [
@@ -119,11 +135,7 @@ export const condiciones: Condicion[] = [
       "Beber suficiente agua",
     ],
 
-    fitoterapia: [
-      "Psyllium",
-      "Semillas de lino",
-      "Ciruelas pasas",
-    ],
+    fitoterapia: ["Psyllium", "Semillas de lino", "Ciruelas pasas"],
 
     recomendaciones: [
       "Aumentar progresivamente la fibra",
@@ -142,8 +154,9 @@ export const condiciones: Condicion[] = [
     ],
 
     pruebasMedicasHabituales: [
-      "Exploración clínica",
-      "Analítica si existen signos de alarma",
+      "Historia clínica y exploración física",
+      "Revisión de medicación y hábitos",
+      "Analítica o pruebas adicionales si existen signos de alarma o estreñimiento persistente",
     ],
 
     especialistaRecomendado: [
@@ -156,11 +169,78 @@ export const condiciones: Condicion[] = [
       "Sangre en las heces",
       "Fiebre",
       "Pérdida de peso",
+      "Cambio reciente y persistente del ritmo intestinal sin causa clara",
     ],
 
     bibliografia: [
       "Guías clínicas de estreñimiento",
       "Revisiones científicas sobre fibra y psyllium",
     ],
+
+    enfoques: {
+      convencional: {
+        titulo: "Medicina convencional",
+        marco:
+          "Valora la duración del problema, frecuencia y consistencia de las heces, síntomas de alarma, enfermedades asociadas y medicamentos que puedan favorecer el estreñimiento.",
+        intervenciones: [
+          "Medidas dietéticas y de estilo de vida como primera línea cuando son apropiadas",
+          "Uso de fibra soluble o laxantes según el tipo de estreñimiento y la respuesta clínica",
+          "Evaluación médica si el cuadro es persistente, de nueva aparición o presenta señales de alarma",
+        ],
+        nivelEvidencia: "alta",
+      },
+
+      nutricion: {
+        titulo: "Nutrición",
+        marco:
+          "Busca mejorar el volumen y la consistencia de las heces y favorecer un patrón intestinal regular mediante alimentación e hidratación.",
+        intervenciones: [
+          "Aumentar la fibra de forma progresiva según tolerancia",
+          "Priorizar fruta, verdura, legumbres, cereales integrales y otras fuentes de fibra",
+          "Mantener una hidratación adecuada, especialmente al aumentar la fibra",
+        ],
+        nivelEvidencia: "moderada",
+      },
+
+      natural: {
+        titulo: "Fitoterapia y medicina natural",
+        marco:
+          "Puede utilizar recursos como fibras formadoras de masa y alimentos o preparados vegetales, siempre revisando contraindicaciones e interacciones.",
+        intervenciones: [
+          "Psyllium como fibra soluble formadora de masa",
+          "Semillas de lino como apoyo dietético si existe buena tolerancia",
+          "Ciruelas pasas como recurso alimentario para favorecer el tránsito",
+        ],
+        nivelEvidencia: "moderada",
+        nota:
+          "La evidencia depende del recurso concreto. No debe emplearse fitoterapia si existen signos de obstrucción o síntomas de alarma sin valoración médica.",
+      },
+
+      medicinaChina: {
+        titulo: "Medicina tradicional china",
+        marco:
+          "Interpreta el estreñimiento mediante patrones propios de la medicina tradicional china, que pueden incluir calor, sequedad, estancamiento o deficiencia según el conjunto de signos.",
+        intervenciones: [
+          "La elección de puntos de acupuntura depende del patrón identificado por un profesional formado",
+          "Las recomendaciones dietéticas tradicionales se individualizan según el patrón",
+          "La fitoterapia china requiere valoración profesional por sus posibles interacciones y contraindicaciones",
+        ],
+        nivelEvidencia: "tradicional",
+        nota:
+          "Este marco no equivale a un diagnóstico biomédico. La evidencia clínica es variable y debe mostrarse separada de la medicina convencional.",
+      },
+
+      estiloVida: {
+        titulo: "Estilo de vida",
+        marco:
+          "Valora hábitos que pueden influir sobre el tránsito intestinal y la regularidad de las deposiciones.",
+        intervenciones: [
+          "Mantener actividad física regular",
+          "Intentar un horario intestinal estable y evitar posponer repetidamente la defecación",
+          "Revisar cambios recientes de rutina, estrés, viajes y hábitos sedentarios",
+        ],
+        nivelEvidencia: "moderada",
+      },
+    },
   },
 ];
