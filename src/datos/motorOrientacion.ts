@@ -1,4 +1,5 @@
 import { condiciones, type Condicion } from "./condiciones";
+import { condicionesDigestivasExtra } from "./condicionesDigestivasExtra";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -25,6 +26,11 @@ function hayCoincidencia(textoUsuario: string, textoBase: string): boolean {
   return usuario.includes(base) || base.includes(usuario);
 }
 
+const todasLasCondiciones: Condicion[] = [
+  ...condiciones,
+  ...condicionesDigestivasExtra,
+];
+
 export function orientarPorSintomas(
   sintomasUsuario: string[]
 ): ResultadoOrientacion[] {
@@ -32,7 +38,7 @@ export function orientarPorSintomas(
     .map((dato) => dato.trim())
     .filter(Boolean);
 
-  return condiciones
+  return todasLasCondiciones
     .map((condicion) => {
       const sintomasCoincidentes = condicion.sintomas.filter((sintoma) =>
         datosIntroducidos.some((datoUsuario) =>
