@@ -6,110 +6,45 @@ export interface ApoyoNutricionFitoterapia {
 
 /** Guías prácticas de apoyo. No sustituyen diagnóstico ni tratamiento. */
 export const apoyoNutricionFitoterapia: Record<string, ApoyoNutricionFitoterapia> = {
+  "anemia-compatible": {
+    nutricion: ["Primero hay que conocer el tipo de anemia. Como alimentos guía para hierro: almejas y otros mariscos, carnes, lentejas, garbanzos, judías, tofu, semillas y cereales enriquecidos.","Combinar fuentes vegetales de hierro con vitamina C —por ejemplo lentejas con pimiento, tomate, kiwi, naranja o fresas— puede mejorar la absorción del hierro no hemo.","Huevos, pescado, carne y lácteos aportan vitamina B12; en dietas veganas se necesita una fuente fiable fortificada o suplementada.","Verduras de hoja verde, legumbres, espárragos y aguacate aportan folato, pero la alimentación no sustituye el tratamiento de una deficiencia importante."],
+    fitoterapia: ["No existe una planta que corrija todos los tipos de anemia.","No tomar hierro de forma prolongada sin confirmar ferropenia: puede ser innecesario y causar efectos adversos.","Revisar suplementos y plantas si existe anticoagulación, sangrado o enfermedad digestiva."],
+    precauciones: ["Heces negras, sangrado visible, desmayo, dolor torácico o falta de aire importante requieren valoración médica."]
+  },
+  "deficit-hierro-compatible": {
+    nutricion: ["Fuentes de hierro hemo de buena absorción: almejas y otros mariscos, carne roja en cantidades moderadas, carnes magras y algunas vísceras; estas últimas no son una recomendación rutinaria para todo el mundo.","Fuentes vegetales: lentejas, garbanzos, judías, tofu, semillas de calabaza, frutos secos y cereales enriquecidos.","Añadir vitamina C en la misma comida —pimiento, kiwi, cítricos, fresas, tomate— ayuda a absorber el hierro vegetal.","Si existe ferropenia, evitar tomar té o café justo con las comidas principales ricas en hierro porque sus polifenoles pueden reducir la absorción."],
+    fitoterapia: ["La fitoterapia no sustituye la reposición de hierro cuando existe una deficiencia confirmada.","Ortiga y otros productos promocionados como 'reconstituyentes' no deben presentarse como tratamiento equivalente al hierro.","El hierro suplementario debe ajustarse a analítica, tolerancia y causa del déficit."],
+    precauciones: ["Una ferropenia recurrente obliga a buscar pérdidas de sangre o problemas de absorción, no solo a repetir suplementos."]
+  },
+  "deficit-b12-folato-compatible": {
+    nutricion: ["Fuentes habituales de B12: pescado, marisco, huevos, carnes y lácteos. En una dieta vegana, usar alimentos fortificados y/o un suplemento fiable de B12.","Fuentes de folato: lentejas, garbanzos, espinaca y otras hojas verdes, espárragos, brócoli, aguacate y cítricos.","No confiar en algas, espirulina o alimentos fermentados como fuente segura de vitamina B12 activa.","Si existe malabsorción, la cantidad presente en los alimentos puede no ser suficiente y puede requerirse reposición específica."],
+    fitoterapia: ["Las plantas no sustituyen la vitamina B12 cuando existe déficit.","No usar únicamente ácido fólico para tratar a ciegas síntomas compatibles con déficit de B12.","La suplementación de B12 debe adaptarse a la causa: aporte insuficiente y malabsorción no siempre se manejan igual."],
+    precauciones: ["Hormigueos progresivos, pérdida de sensibilidad, alteración de la marcha o confusión requieren valoración sin demora."]
+  },
   "reflujo-erge": {
-    nutricion: [
-      "Como base, priorizar verduras cocinadas, avena, arroz, patata, legumbres según tolerancia, pescado, carnes magras y fruta no ácida si resulta mejor tolerada.",
-      "Hacer comidas moderadas y evitar acostarse durante unas 2-3 horas después de cenar cuando el reflujo es nocturno.",
-      "Limitar solo si desencadenan síntomas de forma repetida: fritos y comidas muy grasas, alcohol, chocolate, café, menta, picantes, tomate o cítricos.",
-      "El agua suele ser la bebida de referencia; las bebidas gaseosas pueden aumentar eructos y distensión en algunas personas."
-    ],
-    fitoterapia: [
-      "La menta puede empeorar el reflujo en algunas personas y no es una elección automática aunque se considere digestiva.",
-      "Evitar preparados herbales complejos si hay dificultad para tragar, sangrado, pérdida de peso o dolor torácico.",
-      "La fitoterapia es complementaria y no sustituye el tratamiento antisecretor cuando está indicado."
-    ],
-    precauciones: ["Dolor de pecho, heces negras, pérdida de peso o dificultad para tragar requieren valoración médica."]
+    nutricion: ["Como base, priorizar verduras cocinadas, avena, arroz, patata, legumbres según tolerancia, pescado, carnes magras y fruta no ácida si resulta mejor tolerada.","Hacer comidas moderadas y evitar acostarse durante unas 2-3 horas después de cenar cuando el reflujo es nocturno.","Limitar solo si desencadenan síntomas de forma repetida: fritos y comidas muy grasas, alcohol, chocolate, café, menta, picantes, tomate o cítricos.","El agua suele ser la bebida de referencia; las bebidas gaseosas pueden aumentar eructos y distensión en algunas personas."],
+    fitoterapia: ["La menta puede empeorar el reflujo en algunas personas y no es una elección automática aunque se considere digestiva.","Evitar preparados herbales complejos si hay dificultad para tragar, sangrado, pérdida de peso o dolor torácico.","La fitoterapia es complementaria y no sustituye el tratamiento antisecretor cuando está indicado."], precauciones: ["Dolor de pecho, heces negras, pérdida de peso o dificultad para tragar requieren valoración médica."]
   },
   "dispepsia-funcional": {
-    nutricion: [
-      "Probar comidas más pequeñas con alimentos sencillos como arroz, patata, avena, verduras cocinadas, pescado, huevo o carnes magras según tolerancia.",
-      "Si las comidas grasas empeoran la plenitud, reducir temporalmente fritos, salsas grasas, embutidos y grandes cantidades de queso curado.",
-      "Comer despacio y registrar durante unos días qué alimentos reproducen claramente el ardor, plenitud o náuseas.",
-      "No retirar gluten, lactosa u otros grupos completos sin una sospecha razonable o valoración específica."
-    ],
-    fitoterapia: [
-      "Jengibre puede ser útil para náuseas en determinados contextos, pero debe revisarse si se toman anticoagulantes o existe riesgo de sangrado.",
-      "Algunas combinaciones de plantas digestivas tienen evidencia limitada o moderada; conviene utilizar preparados identificables y evitar mezclas innecesarias.",
-      "No utilizar plantas para ocultar vómitos persistentes, heces negras o pérdida de peso."
-    ],
-    precauciones: ["Los síntomas persistentes pueden requerir estudio de Helicobacter pylori u otras causas."]
+    nutricion: ["Probar comidas más pequeñas con alimentos sencillos como arroz, patata, avena, verduras cocinadas, pescado, huevo o carnes magras según tolerancia.","Si las comidas grasas empeoran la plenitud, reducir temporalmente fritos, salsas grasas, embutidos y grandes cantidades de queso curado.","Comer despacio y registrar durante unos días qué alimentos reproducen claramente el ardor, plenitud o náuseas.","No retirar gluten, lactosa u otros grupos completos sin una sospecha razonable o valoración específica."],
+    fitoterapia: ["Jengibre puede ser útil para náuseas en determinados contextos, pero debe revisarse si se toman anticoagulantes o existe riesgo de sangrado.","Algunas combinaciones de plantas digestivas tienen evidencia limitada o moderada; conviene utilizar preparados identificables y evitar mezclas innecesarias.","No utilizar plantas para ocultar vómitos persistentes, heces negras o pérdida de peso."], precauciones: ["Los síntomas persistentes pueden requerir estudio de Helicobacter pylori u otras causas."]
   },
   "hinchazon-gases": {
-    nutricion: [
-      "Comer despacio y reducir bebidas gaseosas, chicle y hábitos que favorecen tragar aire.",
-      "Legumbres, cebolla, ajo, coles, algunas frutas y grandes cantidades de trigo pueden aumentar gases en personas sensibles, pero no deben eliminarse todos de forma permanente sin necesidad.",
-      "Si las legumbres producen gases, probar raciones pequeñas, buen remojo y cocción, empezando por lenteja pelada o preparaciones trituradas.",
-      "Avena, kiwi y otras fuentes de fibra soluble pueden ser mejor toleradas que aumentos bruscos de salvado en algunas personas."
-    ],
-    fitoterapia: [
-      "Menta, hinojo u otros carminativos pueden aliviar síntomas en algunas personas, pero la evidencia depende del preparado y del problema de base.",
-      "La menta no es apropiada si empeora el reflujo.",
-      "Evitar aceites esenciales ingeridos sin formulación y dosificación adecuadas."
-    ],
-    precauciones: ["Distensión persistente con sangrado, pérdida de peso o dolor intenso no debe atribuirse simplemente a gases."]
+    nutricion: ["Comer despacio y reducir bebidas gaseosas, chicle y hábitos que favorecen tragar aire.","Legumbres, cebolla, ajo, coles, algunas frutas y grandes cantidades de trigo pueden aumentar gases en personas sensibles, pero no deben eliminarse todos de forma permanente sin necesidad.","Si las legumbres producen gases, probar raciones pequeñas, buen remojo y cocción, empezando por lenteja pelada o preparaciones trituradas.","Avena, kiwi y otras fuentes de fibra soluble pueden ser mejor toleradas que aumentos bruscos de salvado en algunas personas."],
+    fitoterapia: ["Menta, hinojo u otros carminativos pueden aliviar síntomas en algunas personas, pero la evidencia depende del preparado y del problema de base.","La menta no es apropiada si empeora el reflujo.","Evitar aceites esenciales ingeridos sin formulación y dosificación adecuadas."], precauciones: ["Distensión persistente con sangrado, pérdida de peso o dolor intenso no debe atribuirse simplemente a gases."]
   },
   "hiperglucemia-diabetes-compatible": {
-    nutricion: [
-      "Usar agua como bebida habitual y reducir refrescos, zumos y otras bebidas azucaradas.",
-      "Como alimentos guía: verduras, lentejas, garbanzos, judías, avena, pan integral, frutos secos naturales, aceite de oliva, pescado y fruta entera.",
-      "Combinar arroz, pasta, pan o patata con verduras y una fuente de proteína ayuda a construir comidas más completas; ajustar la cantidad de hidratos al tratamiento y necesidades personales.",
-      "Priorizar fruta entera frente a zumos y limitar bollería, dulces y productos muy refinados de consumo frecuente."
-    ],
-    fitoterapia: [
-      "La fitoterapia no sustituye el diagnóstico ni la medicación antidiabética cuando está indicada.",
-      "Canela, berberina y otros productos comercializados para la glucosa tienen evidencia y seguridad variables; deben revisarse especialmente si ya se toman antidiabéticos.",
-      "Evitar combinar varios suplementos con efecto hipoglucemiante sin seguimiento de glucosa."
-    ],
-    precauciones: ["Si existe medicación antidiabética, cualquier producto que reduzca glucosa puede aumentar el riesgo de hipoglucemia."]
+    nutricion: ["Usar agua como bebida habitual y reducir refrescos, zumos y otras bebidas azucaradas.","Como alimentos guía: verduras, lentejas, garbanzos, judías, avena, pan integral, frutos secos naturales, aceite de oliva, pescado y fruta entera.","Combinar arroz, pasta, pan o patata con verduras y una fuente de proteína ayuda a construir comidas más completas; ajustar la cantidad de hidratos al tratamiento y necesidades personales.","Priorizar fruta entera frente a zumos y limitar bollería, dulces y productos muy refinados de consumo frecuente."],
+    fitoterapia: ["La fitoterapia no sustituye el diagnóstico ni la medicación antidiabética cuando está indicada.","Canela, berberina y otros productos comercializados para la glucosa tienen evidencia y seguridad variables; deben revisarse especialmente si ya se toman antidiabéticos.","Evitar combinar varios suplementos con efecto hipoglucemiante sin seguimiento de glucosa."], precauciones: ["Si existe medicación antidiabética, cualquier producto que reduzca glucosa puede aumentar el riesgo de hipoglucemia."]
   },
-  "hipoglucemia-compatible": {
-    nutricion: ["En una persona consciente con hipoglucemia confirmada, seguir el plan de corrección rápida indicado por su equipo sanitario.","Después, revisar si hubo ayuno, retraso de comida, ejercicio o alcohol para prevenir recurrencias.","No dar alimentos ni bebidas por boca a una persona inconsciente o con dificultad para tragar."],
-    fitoterapia: ["No hay un remedio fitoterápico apropiado para corregir una hipoglucemia aguda.","Revisar productos con posible efecto hipoglucemiante si los episodios se repiten."],
-    precauciones: ["Confusión, convulsiones o pérdida de conciencia requieren atención urgente."]
-  },
-  "hipotiroidismo-compatible": {
-    nutricion: ["Como base: pescado, huevos, lácteos si se toleran, legumbres, frutos secos, verduras y cereales integrales dentro de una dieta variada.","Mantener un aporte normal de yodo; más yodo no significa mejor función tiroidea.","Asegurar proteínas, hierro, B12, selenio y zinc, corrigiendo déficits demostrados.","Si se toma levotiroxina, respetar su pauta y separar hierro o calcio cuando así se haya indicado."],
-    fitoterapia: ["No existe una planta que sustituya a la hormona tiroidea cuando esta es necesaria.","Evitar algas y preparados con cantidades altas o poco claras de yodo.","Revisar suplementos denominados 'thyroid support'."],
-    precauciones: ["No iniciar yodo a dosis altas basándose únicamente en cansancio, aumento de peso o caída del cabello."]
-  },
-  "hipertiroidismo-compatible": {
-    nutricion: ["Si existe pérdida de peso, asegurar energía y proteína con alimentos como huevos, pescado, legumbres, yogur y frutos secos según tolerancia.","Evitar suplementos con dosis altas de yodo y revisar algas o multiminerales.","Limitar café, té muy cargado y bebidas energéticas si aumentan temblor o palpitaciones."],
-    fitoterapia: ["No utilizar estimulantes vegetales para combatir el cansancio cuando hay taquicardia o palpitaciones.","La fitoterapia no sustituye el tratamiento de un hipertiroidismo confirmado.","Revisar cualquier producto con yodo o ingredientes estimulantes."],
-    precauciones: ["Palpitaciones intensas, dolor torácico, desmayo o confusión requieren valoración rápida."]
-  },
-  "deshidratacion-compatible": {
-    nutricion: ["Reponer líquidos de forma progresiva y frecuente cuando se puede beber con seguridad.","Con vómitos o diarrea relevantes, una solución de rehidratación oral formulada adecuadamente es preferible a refrescos o zumos muy azucarados.","Alimentos guía según tolerancia: arroz, patata, pan, plátano, yogur si se tolera, sopas y preparaciones sencillas; volver progresivamente a la dieta habitual."],
-    fitoterapia: ["Evitar plantas diuréticas mientras exista posible deshidratación.","No utilizar preparados laxantes si hay diarrea.","La prioridad es reponer líquidos y tratar la causa."],
-    precauciones: ["En insuficiencia cardiaca o renal con restricción de líquidos, la reposición debe individualizarse."]
-  },
-  "alteracion-electrolitos-compatible": {
-    nutricion: ["No intentar corregir potasio, sodio o magnesio solo por síntomas: primero hay que identificar qué electrolito está alterado.","Tras pérdidas digestivas leves, recuperar alimentación e hidratación normales suele aportar electrolitos de forma segura.","En alteraciones confirmadas, los alimentos recomendables cambian según el electrolito y la función renal."],
-    fitoterapia: ["Revisar plantas diuréticas, laxantes y suplementos minerales.","No tomar suplementos de potasio sin conocer función renal y medicación.","Los calambres por sí solos no demuestran déficit de magnesio."],
-    precauciones: ["IECA, ARA-II y diuréticos ahorradores de potasio pueden aumentar el riesgo de hiperpotasemia si se añade potasio."]
-  },
-  "enfermedad-renal-compatible": {
-    nutricion: ["Reducir exceso de sal y ultraprocesados salados puede ser útil, especialmente con hipertensión o edema.","Usar alimentos frescos como base, pero no restringir frutas, verduras, legumbres, proteína, potasio o fósforo por cuenta propia: depende del estadio renal y analíticas.","El control nutricional de diabetes e hipertensión también protege el riñón."],
-    fitoterapia: ["Evitar preparados de composición desconocida y productos potencialmente nefrotóxicos.","Revisar todos los suplementos porque una función renal reducida puede alterar su eliminación.","No usar plantas diuréticas como tratamiento del edema sin conocer la causa."],
-    precauciones: ["La enfermedad renal aumenta el riesgo de acumulación de minerales y de interacciones con medicamentos."]
-  },
-  "insomnio-compatible": {
-    nutricion: ["Limitar café, té, cola, chocolate y bebidas energéticas varias horas antes de dormir si afectan al sueño.","Evitar alcohol como ayuda para dormir.","Si hay hambre nocturna, una cena normal con verduras, una fuente de proteína y una ración moderada de cereal integral o patata suele ser más razonable que picoteo azucarado; evitar cenas enormes si empeoran el descanso."],
-    fitoterapia: ["Melatonina puede ser útil en situaciones concretas relacionadas con el ritmo circadiano; no es universal para todo insomnio.","Valeriana y otros sedantes vegetales tienen evidencia variable y pueden producir somnolencia.","No mezclar varios productos sedantes ni combinarlos con alcohol o hipnóticos sin revisar seguridad."],
-    precauciones: ["El insomnio crónico responde mejor a un abordaje conductual estructurado que a acumular suplementos sedantes."]
-  },
-  "apnea-sueno-compatible": {
-    nutricion: ["Cuando existe exceso de peso, una reducción gradual y sostenible puede disminuir la gravedad de la apnea.","Priorizar verduras, legumbres, fruta entera, cereales integrales, pescado y alimentos poco procesados facilita un patrón de alimentación útil para el control del peso.","Evitar alcohol cerca de la hora de dormir."],
-    fitoterapia: ["No existe una planta o suplemento que sustituya CPAP u otros tratamientos indicados.","Evitar sedantes naturales para 'dormir más profundamente' si hay pausas respiratorias o ahogos nocturnos.","Revisar cualquier producto que aumente la sedación."],
-    precauciones: ["La somnolencia al conducir requiere dejar de conducir hasta estar adecuadamente valorado y controlado."]
-  },
-  "rinitis-alergica-compatible": {
-    nutricion: ["Mantener como base verduras, fruta, legumbres, cereales integrales, pescado, aceite de oliva y frutos secos si no existe alergia a ellos.","No eliminar lácteos, gluten u otros grupos sin una relación demostrada con los síntomas."],
-    fitoterapia: ["Los lavados nasales con solución salina son una medida complementaria con perfil de seguridad razonable.","Los extractos vegetales para alergia tienen evidencia desigual y también pueden provocar reacciones.","Comprobar la composición si existe alergia conocida a plantas."],
-    precauciones: ["Dificultad respiratoria o hinchazón de lengua/garganta no deben tratarse como una rinitis simple."]
-  },
-  "gastroenteritis-aguda-compatible": {
-    nutricion: ["Priorizar líquidos y solución de rehidratación oral cuando proceda, en tomas pequeñas y frecuentes.","Alimentos guía al recuperar tolerancia: arroz, patata, pan, avena, plátano, verduras cocidas, yogur si se tolera, huevo, pescado o pollo; ampliar progresivamente.","No es necesario mantener una dieta extremadamente restrictiva ni ayunos prolongados.","Evitar temporalmente alcohol y comidas muy grasas si empeoran náuseas o diarrea."],
-    fitoterapia: ["Evitar plantas laxantes y preparados irritantes.","No retrasar atención con fitoterapia si hay sangre en heces, deshidratación importante, fiebre alta o deterioro.","Valorar cualquier complemento según causa y medicación habitual."],
-    precauciones: ["Niños, personas mayores y personas frágiles pueden deshidratarse con mayor rapidez."]
-  }
+  "hipoglucemia-compatible": { nutricion: ["En una persona consciente con hipoglucemia confirmada, seguir el plan de corrección rápida indicado por su equipo sanitario.","Después, revisar si hubo ayuno, retraso de comida, ejercicio o alcohol para prevenir recurrencias.","No dar alimentos ni bebidas por boca a una persona inconsciente o con dificultad para tragar."], fitoterapia: ["No hay un remedio fitoterápico apropiado para corregir una hipoglucemia aguda.","Revisar productos con posible efecto hipoglucemiante si los episodios se repiten."], precauciones: ["Confusión, convulsiones o pérdida de conciencia requieren atención urgente."] },
+  "hipotiroidismo-compatible": { nutricion: ["Como base: pescado, huevos, lácteos si se toleran, legumbres, frutos secos, verduras y cereales integrales dentro de una dieta variada.","Mantener un aporte normal de yodo; más yodo no significa mejor función tiroidea.","Asegurar proteínas, hierro, B12, selenio y zinc, corrigiendo déficits demostrados.","Si se toma levotiroxina, respetar su pauta y separar hierro o calcio cuando así se haya indicado."], fitoterapia: ["No existe una planta que sustituya a la hormona tiroidea cuando esta es necesaria.","Evitar algas y preparados con cantidades altas o poco claras de yodo.","Revisar suplementos denominados 'thyroid support'."], precauciones: ["No iniciar yodo a dosis altas basándose únicamente en cansancio, aumento de peso o caída del cabello."] },
+  "hipertiroidismo-compatible": { nutricion: ["Si existe pérdida de peso, asegurar energía y proteína con alimentos como huevos, pescado, legumbres, yogur y frutos secos según tolerancia.","Evitar suplementos con dosis altas de yodo y revisar algas o multiminerales.","Limitar café, té muy cargado y bebidas energéticas si aumentan temblor o palpitaciones."], fitoterapia: ["No utilizar estimulantes vegetales para combatir el cansancio cuando hay taquicardia o palpitaciones.","La fitoterapia no sustituye el tratamiento de un hipertiroidismo confirmado.","Revisar cualquier producto con yodo o ingredientes estimulantes."], precauciones: ["Palpitaciones intensas, dolor torácico, desmayo o confusión requieren valoración rápida."] },
+  "deshidratacion-compatible": { nutricion: ["Reponer líquidos de forma progresiva y frecuente cuando se puede beber con seguridad.","Con vómitos o diarrea relevantes, una solución de rehidratación oral formulada adecuadamente es preferible a refrescos o zumos muy azucarados.","Alimentos guía según tolerancia: arroz, patata, pan, plátano, yogur si se tolera, sopas y preparaciones sencillas; volver progresivamente a la dieta habitual."], fitoterapia: ["Evitar plantas diuréticas mientras exista posible deshidratación.","No utilizar preparados laxantes si hay diarrea.","La prioridad es reponer líquidos y tratar la causa."], precauciones: ["En insuficiencia cardiaca o renal con restricción de líquidos, la reposición debe individualizarse."] },
+  "alteracion-electrolitos-compatible": { nutricion: ["No intentar corregir potasio, sodio o magnesio solo por síntomas: primero hay que identificar qué electrolito está alterado.","Tras pérdidas digestivas leves, recuperar alimentación e hidratación normales suele aportar electrolitos de forma segura.","En alteraciones confirmadas, los alimentos recomendables cambian según el electrolito y la función renal."], fitoterapia: ["Revisar plantas diuréticas, laxantes y suplementos minerales.","No tomar suplementos de potasio sin conocer función renal y medicación.","Los calambres por sí solos no demuestran déficit de magnesio."], precauciones: ["IECA, ARA-II y diuréticos ahorradores de potasio pueden aumentar el riesgo de hiperpotasemia si se añade potasio."] },
+  "enfermedad-renal-compatible": { nutricion: ["Reducir exceso de sal y ultraprocesados salados puede ser útil, especialmente con hipertensión o edema.","Usar alimentos frescos como base, pero no restringir frutas, verduras, legumbres, proteína, potasio o fósforo por cuenta propia: depende del estadio renal y analíticas.","El control nutricional de diabetes e hipertensión también protege el riñón."], fitoterapia: ["Evitar preparados de composición desconocida y productos potencialmente nefrotóxicos.","Revisar todos los suplementos porque una función renal reducida puede alterar su eliminación.","No usar plantas diuréticas como tratamiento del edema sin conocer la causa."], precauciones: ["La enfermedad renal aumenta el riesgo de acumulación de minerales y de interacciones con medicamentos."] },
+  "insomnio-compatible": { nutricion: ["Limitar café, té, cola, chocolate y bebidas energéticas varias horas antes de dormir si afectan al sueño.","Evitar alcohol como ayuda para dormir.","Si hay hambre nocturna, una cena normal con verduras, una fuente de proteína y una ración moderada de cereal integral o patata suele ser más razonable que picoteo azucarado; evitar cenas enormes si empeoran el descanso."], fitoterapia: ["Melatonina puede ser útil en situaciones concretas relacionadas con el ritmo circadiano; no es universal para todo insomnio.","Valeriana y otros sedantes vegetales tienen evidencia variable y pueden producir somnolencia.","No mezclar varios productos sedantes ni combinarlos con alcohol o hipnóticos sin revisar seguridad."], precauciones: ["El insomnio crónico responde mejor a un abordaje conductual estructurado que a acumular suplementos sedantes."] },
+  "apnea-sueno-compatible": { nutricion: ["Cuando existe exceso de peso, una reducción gradual y sostenible puede disminuir la gravedad de la apnea.","Priorizar verduras, legumbres, fruta entera, cereales integrales, pescado y alimentos poco procesados facilita un patrón de alimentación útil para el control del peso.","Evitar alcohol cerca de la hora de dormir."], fitoterapia: ["No existe una planta o suplemento que sustituya CPAP u otros tratamientos indicados.","Evitar sedantes naturales para 'dormir más profundamente' si hay pausas respiratorias o ahogos nocturnos.","Revisar cualquier producto que aumente la sedación."], precauciones: ["La somnolencia al conducir requiere dejar de conducir hasta estar adecuadamente valorado y controlado."] },
+  "rinitis-alergica-compatible": { nutricion: ["Mantener como base verduras, fruta, legumbres, cereales integrales, pescado, aceite de oliva y frutos secos si no existe alergia a ellos.","No eliminar lácteos, gluten u otros grupos sin una relación demostrada con los síntomas."], fitoterapia: ["Los lavados nasales con solución salina son una medida complementaria con perfil de seguridad razonable.","Los extractos vegetales para alergia tienen evidencia desigual y también pueden provocar reacciones.","Comprobar la composición si existe alergia conocida a plantas."], precauciones: ["Dificultad respiratoria o hinchazón de lengua/garganta no deben tratarse como una rinitis simple."] },
+  "gastroenteritis-aguda-compatible": { nutricion: ["Priorizar líquidos y solución de rehidratación oral cuando proceda, en tomas pequeñas y frecuentes.","Alimentos guía al recuperar tolerancia: arroz, patata, pan, avena, plátano, verduras cocidas, yogur si se tolera, huevo, pescado o pollo; ampliar progresivamente.","No es necesario mantener una dieta extremadamente restrictiva ni ayunos prolongados.","Evitar temporalmente alcohol y comidas muy grasas si empeoran náuseas o diarrea."], fitoterapia: ["Evitar plantas laxantes y preparados irritantes.","No retrasar atención con fitoterapia si hay sangre en heces, deshidratación importante, fiebre alta o deterioro.","Valorar cualquier complemento según causa y medicación habitual."], precauciones: ["Niños, personas mayores y personas frágiles pueden deshidratarse con mayor rapidez."] }
 };
