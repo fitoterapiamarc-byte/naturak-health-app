@@ -17,6 +17,7 @@ import { condicionesBucodentales } from "./condicionesBucodentales";
 import { condicionesSueno } from "./condicionesSueno";
 import { condicionesAlergiaInmunidad } from "./condicionesAlergiaInmunidad";
 import { condicionesInfecciosas } from "./condicionesInfecciosas";
+import { condicionesEmocionales } from "./condicionesEmocionales";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -56,6 +57,7 @@ export const todasLasCondiciones: Condicion[] = [
   ...condicionesSueno,
   ...condicionesAlergiaInmunidad,
   ...condicionesInfecciosas,
+  ...condicionesEmocionales,
 ];
 
 export const totalCondiciones = todasLasCondiciones.length;
