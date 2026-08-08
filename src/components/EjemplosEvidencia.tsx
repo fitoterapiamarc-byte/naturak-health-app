@@ -9,7 +9,13 @@ const etiquetas = {
 };
 
 export default function EjemplosEvidencia({ ejemplos }: { ejemplos?: EjemploConEvidencia[] }) {
-  if (!ejemplos || ejemplos.length === 0) return null;
+  if (!ejemplos || ejemplos.length === 0) {
+    return (
+      <div style={{ margin: "14px 0 18px", padding: "12px", borderRadius: "10px", background: "#f7f8f7", border: "1px solid #e1e5e2", fontSize: "14px", lineHeight: 1.5 }}>
+        No hay un ejemplo concreto con evidencia suficiente para destacar en este apartado. Se mantiene únicamente la guía general segura.
+      </div>
+    );
+  }
 
   return (
     <div style={{ margin: "14px 0 18px", padding: "14px", borderRadius: "10px", background: "#f7faf8", border: "1px solid #dce8e1" }}>
