@@ -12,6 +12,44 @@ const etiquetasEvidencia = {
   tradicional: "Uso / marco tradicional",
 };
 
+function TarjetaApoyo({
+  titulo,
+  descripcion,
+  elementos,
+  bloqueado = false,
+  aviso,
+}: {
+  titulo: string;
+  descripcion: string;
+  elementos: string[];
+  bloqueado?: boolean;
+  aviso?: string;
+}) {
+  return (
+    <article style={estilos.tarjetaApoyo}>
+      <h3 style={estilos.tituloApoyo}>{titulo}</h3>
+      <p style={estilos.marco}>{descripcion}</p>
+
+      {bloqueado ? (
+        <div style={estilos.bloqueo}>
+          Estas medidas quedan en segundo plano porque se han detectado señales
+          que requieren valoración médica previa.
+        </div>
+      ) : elementos.length > 0 ? (
+        <ul style={estilos.listaPrincipal}>
+          {elementos.map((elemento) => (
+            <li key={elemento}>{elemento}</li>
+          ))}
+        </ul>
+      ) : (
+        <p style={estilos.sinDatos}>No hay una recomendación específica para este cuadro.</p>
+      )}
+
+      {aviso && !bloqueado && <p style={estilos.nota}>{aviso}</p>}
+    </article>
+  );
+}
+
 function TarjetaEnfoque({
   enfoque,
   bloquearIntervenciones = false,
@@ -53,15 +91,42 @@ function EnfoquesComparados({
   bloquearIntervencionesNaturales = false,
 }: EnfoquesComparadosProps) {
   const { enfoques } = condicion;
+  const avisoFitoterapia = [...condicion.contraindicaciones, ...condicion.interacciones]
+    .filter(Boolean)
+    .slice(0, 4)
+    .join(" · ");
 
   return (
     <section style={estilos.contenedor}>
       <div style={estilos.introduccion}>
+        <h3 style={{ marginTop: 0 }}>Posibles medidas de apoyo</h3>
+        <p style={{ marginBottom: 0 }}>
+          Nutrición y fitoterapia se muestran como apoyo orientativo, no como
+          sustitutos del diagnóstico ni del tratamiento médico cuando sea necesario.
+        </p>
+      </div>
+
+      <div style={estilos.rejillaApoyo}>
+        <TarjetaApoyo
+          titulo="🥗 Nutrición"
+          descripcion="Alimentos, hidratación y hábitos nutricionales que pueden apoyar este cuadro cuando son apropiados."
+          elementos={condicion.nutricion}
+          bloqueado={bloquearIntervencionesNaturales}
+        />
+        <TarjetaApoyo
+          titulo="🌿 Fitoterapia y suplementación"
+          descripcion="Plantas, fibras, extractos o suplementos que pueden considerarse como apoyo según la evidencia y el contexto personal."
+          elementos={condicion.fitoterapia}
+          bloqueado={bloquearIntervencionesNaturales}
+          aviso={avisoFitoterapia ? `Precauciones: ${avisoFitoterapia}` : undefined}
+        />
+      </div>
+
+      <div style={estilos.introduccionSecundaria}>
         <h3 style={{ marginTop: 0 }}>Comparación de enfoques</h3>
         <p style={{ marginBottom: 0 }}>
-          Cada enfoque se presenta por separado. El nivel de evidencia indica
-          el respaldo disponible y ayuda a distinguir la orientación clínica,
-          nutricional y complementaria.
+          El nivel de evidencia indica el respaldo disponible y ayuda a distinguir
+          la orientación clínica, nutricional, complementaria y de estilo de vida.
         </p>
       </div>
 
@@ -87,6 +152,30 @@ const estilos = {
     borderRadius: "12px",
     background: "#f3f7f5",
     border: "1px solid #d7e2dc",
+  },
+  introduccionSecundaria: {
+    marginTop: "24px",
+    padding: "18px",
+    borderRadius: "12px",
+    background: "#f7f8f7",
+    border: "1px solid #e0e4e2",
+  },
+  rejillaApoyo: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+    gap: "16px",
+    marginTop: "16px",
+  },
+  tarjetaApoyo: {
+    padding: "20px",
+    borderRadius: "14px",
+    border: "2px solid #d7e2dc",
+    background: "#ffffff",
+  },
+  tituloApoyo: {
+    marginTop: 0,
+    marginBottom: "10px",
+    fontSize: "20px",
   },
   rejilla: {
     display: "grid",
@@ -125,6 +214,15 @@ const estilos = {
   lista: {
     paddingLeft: "20px",
     lineHeight: 1.55,
+  },
+  listaPrincipal: {
+    paddingLeft: "22px",
+    lineHeight: 1.65,
+    fontSize: "16px",
+  },
+  sinDatos: {
+    fontSize: "14px",
+    opacity: 0.72,
   },
   nota: {
     marginBottom: 0,
