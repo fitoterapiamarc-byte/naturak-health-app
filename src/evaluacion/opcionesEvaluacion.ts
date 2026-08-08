@@ -6,64 +6,18 @@ export interface CategoriaEvaluacion {
 }
 
 export const categoriasEvaluacion: CategoriaEvaluacion[] = [
-  {
-    id: "dolor", titulo: "Dolor", icono: "⚡", opciones: ["Dolor de cabeza","Dolor opresivo en la cabeza","Dolor pulsátil","Dolor en un lado de la cabeza","Dolor en ambos lados de la cabeza","Dolor de cabeza súbito e intenso","Dolor de cuello","Dolor de garganta","Dolor de pecho","Dolor de pecho al moverme","Dolor de pecho al tocar","Dolor abdominal","Dolor abdomen superior","Dolor de espalda","Dolor lumbar","Dolor lumbar intenso","Dolor en el costado","Dolor hacia la ingle","Dolor en glúteo","Dolor que baja por la pierna","Dolor muscular","Dolor articular","Dolor pélvico","Dolor al respirar","Dolor al orinar"]
-  },
-  {
-    id: "estado-general", titulo: "Estado general", icono: "🌡️", opciones: ["Cansancio","Debilidad","Fiebre","Escalofríos","Sudoración nocturna","Pérdida de peso","Aumento de peso","Poca energía","Poco apetito","Poca hidratación"]
-  },
-  {
-    id: "respiratorio", titulo: "Respiración", icono: "🫁", opciones: ["Tos seca","Tos con mucosidad","Falta de aire","Falta de aire intensa","Congestión nasal","Dolor al respirar","Silbidos al respirar","Mucosidad","Ronquera","Opresión en el pecho","No puedo hablar frases completas","Labios azulados"]
-  },
-  {
-    id: "cardiovascular", titulo: "Corazón y circulación", icono: "❤️", opciones: ["Dolor de pecho","Palpitaciones","Latidos rápidos","Latidos irregulares","Mareo","Sensación de desmayo","Desmayo","Hinchazón de piernas","Pesadez de piernas","Varices","Mejora al elevar las piernas","Hinchazón de una sola pierna","Pierna roja y caliente","Sudor frío","Presión en el pecho","Dolor hacia brazo, espalda o mandíbula"]
-  },
-  {
-    id: "digestivo", titulo: "Digestión", icono: "🍽️", opciones: ["Náuseas","Vómitos","Acidez","Reflujo","Regurgitación","Quemazón retroesternal","Ardor epigástrico","Saciedad precoz","Plenitud después de comer","Eructos","Gases","Hinchazón abdominal","Distensión abdominal","Estreñimiento","Diarrea continua","Pérdida de apetito","Sensación de evacuación incompleta","Esfuerzo al defecar","Dificultad para tragar","Dolor al tragar"]
-  },
-  {
-    id: "heces", titulo: "Heces", icono: "💩", opciones: ["Heces duras","Heces blandas","Heces líquidas","Heces claras","Heces oscuras","Heces negras","Sangre roja en las heces","Moco en las heces","Heces flotantes","Mal olor intenso","Deposiciones muy frecuentes","Menos de tres deposiciones por semana","Pérdida de control de orina o heces"]
-  },
-  {
-    id: "orina", titulo: "Orina", icono: "🚽", opciones: ["Orina clara","Orina oscura","Orina turbia","Olor fuerte","Espuma en la orina","Dolor al orinar","Sangre en la orina","Orinar con mucha frecuencia","Orinar muy poca cantidad","Orinar mucha cantidad","Levantarse por la noche a orinar","Urgencia para orinar","Chorro urinario débil","Dificultad para empezar a orinar","Sensación de vaciado incompleto","No puedo orinar"]
-  },
-  {
-    id: "neurologico", titulo: "Sistema nervioso", icono: "🧠", opciones: ["Dolor de cabeza","Migraña","Mareo","Vértigo","Vértigo al mover la cabeza","Todo gira","Sensación de desmayo","Inestabilidad al caminar","Aparece al levantarme","Hormigueo","Hormigueo en una pierna","Pérdida de fuerza","Pérdida de fuerza en una pierna","Pérdida de fuerza en ambas piernas","Debilidad progresiva de una pierna","Temblor","Confusión","Dificultad para hablar","Visión doble nueva","Pérdida brusca de audición","Aura visual","Sensibilidad intensa a la luz","Sensibilidad intensa al sonido","Adormecimiento en zona genital o perineal","Problemas de memoria","Falta de concentración"]
-  },
-  {
-    id: "emocional", titulo: "Estado emocional", icono: "😊", opciones: ["Ansiedad","Estrés","Estado de ánimo bajo","Tristeza","Irritabilidad","Mal sueño","Insomnio","Falta de motivación"]
-  },
-  {
-    id: "piel", titulo: "Piel", icono: "🧴", opciones: ["Picor","Erupción","Ronchas","Palidez","Color amarillo en la piel","Moratones","Sequedad de piel","Enrojecimiento"]
-  },
-  {
-    id: "musculos-articulaciones", titulo: "Músculos y articulaciones", icono: "🦴", opciones: ["Dolor muscular","Dolor articular","Rigidez","Inflamación","Calambres","Debilidad muscular","Limitación de movimiento","Articulación roja y muy caliente","No puedo apoyar tras traumatismo"]
-  },
-  {
-    id: "endocrino-metabolico",
-    titulo: "Hormonas y metabolismo",
-    icono: "⚙️",
-    opciones: [
-      "Mucha sed",
-      "Mucha hambre",
-      "Orinar mucha cantidad",
-      "Orinar con mucha frecuencia",
-      "Pérdida de peso sin explicación",
-      "Aumento de peso",
-      "Intolerancia al frío",
-      "Intolerancia al calor",
-      "Sequedad de piel",
-      "Caída de cabello",
-      "Estreñimiento",
-      "Palpitaciones",
-      "Temblor",
-      "Sudoración excesiva",
-      "Cansancio",
-      "Somnolencia",
-      "Irritabilidad",
-      "Visión borrosa",
-      "Hambre con temblor y sudor",
-      "Confusión"
-    ]
-  },
+  { id: "dolor", titulo: "Dolor", icono: "⚡", opciones: ["Dolor de cabeza","Dolor opresivo en la cabeza","Dolor pulsátil","Dolor en un lado de la cabeza","Dolor en ambos lados de la cabeza","Dolor de cabeza súbito e intenso","Dolor de cuello","Dolor de garganta","Dolor de pecho","Dolor de pecho al moverme","Dolor de pecho al tocar","Dolor abdominal","Dolor abdomen superior","Dolor de espalda","Dolor lumbar","Dolor lumbar intenso","Dolor en el costado","Dolor hacia la ingle","Dolor en glúteo","Dolor que baja por la pierna","Dolor muscular","Dolor articular","Dolor pélvico","Dolor al respirar","Dolor al orinar"] },
+  { id: "estado-general", titulo: "Estado general", icono: "🌡️", opciones: ["Cansancio","Debilidad","Fiebre","Escalofríos","Sudoración nocturna","Pérdida de peso","Aumento de peso","Poca energía","Poco apetito","Poca hidratación"] },
+  { id: "respiratorio", titulo: "Respiración", icono: "🫁", opciones: ["Tos seca","Tos con mucosidad","Falta de aire","Falta de aire intensa","Congestión nasal","Dolor al respirar","Silbidos al respirar","Mucosidad","Ronquera","Opresión en el pecho","No puedo hablar frases completas","Labios azulados"] },
+  { id: "cardiovascular", titulo: "Corazón y circulación", icono: "❤️", opciones: ["Dolor de pecho","Palpitaciones","Latidos rápidos","Latidos irregulares","Mareo","Sensación de desmayo","Desmayo","Hinchazón de piernas","Pesadez de piernas","Varices","Mejora al elevar las piernas","Hinchazón de una sola pierna","Pierna roja y caliente","Sudor frío","Presión en el pecho","Dolor hacia brazo, espalda o mandíbula"] },
+  { id: "digestivo", titulo: "Digestión", icono: "🍽️", opciones: ["Náuseas","Vómitos","Acidez","Reflujo","Regurgitación","Quemazón retroesternal","Ardor epigástrico","Saciedad precoz","Plenitud después de comer","Eructos","Gases","Hinchazón abdominal","Distensión abdominal","Estreñimiento","Diarrea continua","Pérdida de apetito","Sensación de evacuación incompleta","Esfuerzo al defecar","Dificultad para tragar","Dolor al tragar"] },
+  { id: "heces", titulo: "Heces", icono: "💩", opciones: ["Heces duras","Heces blandas","Heces líquidas","Heces claras","Heces oscuras","Heces negras","Sangre roja en las heces","Moco en las heces","Heces flotantes","Mal olor intenso","Deposiciones muy frecuentes","Menos de tres deposiciones por semana","Pérdida de control de orina o heces"] },
+  { id: "orina", titulo: "Orina", icono: "🚽", opciones: ["Orina clara","Orina oscura","Orina turbia","Olor fuerte","Espuma en la orina","Dolor al orinar","Sangre en la orina","Orinar con mucha frecuencia","Orinar muy poca cantidad","Orinar mucha cantidad","Levantarse por la noche a orinar","Urgencia para orinar","Chorro urinario débil","Dificultad para empezar a orinar","Sensación de vaciado incompleto","No puedo orinar"] },
+  { id: "neurologico", titulo: "Sistema nervioso", icono: "🧠", opciones: ["Dolor de cabeza","Migraña","Mareo","Vértigo","Vértigo al mover la cabeza","Todo gira","Sensación de desmayo","Inestabilidad al caminar","Aparece al levantarme","Hormigueo","Hormigueo en una pierna","Pérdida de fuerza","Pérdida de fuerza en una pierna","Pérdida de fuerza en ambas piernas","Debilidad progresiva de una pierna","Temblor","Confusión","Dificultad para hablar","Visión doble nueva","Pérdida brusca de audición","Aura visual","Sensibilidad intensa a la luz","Sensibilidad intensa al sonido","Adormecimiento en zona genital o perineal","Problemas de memoria","Falta de concentración"] },
+  { id: "emocional", titulo: "Estado emocional", icono: "😊", opciones: ["Ansiedad","Estrés","Estado de ánimo bajo","Tristeza","Irritabilidad","Mal sueño","Insomnio","Falta de motivación"] },
+  { id: "piel", titulo: "Piel", icono: "🧴", opciones: ["Picor","Erupción","Ronchas","Palidez","Color amarillo en la piel","Moratones","Sequedad de piel","Enrojecimiento"] },
+  { id: "musculos-articulaciones", titulo: "Músculos y articulaciones", icono: "🦴", opciones: ["Dolor muscular","Dolor articular","Rigidez","Inflamación","Calambres","Debilidad muscular","Limitación de movimiento","Articulación roja y muy caliente","No puedo apoyar tras traumatismo"] },
+  { id: "endocrino-metabolico", titulo: "Hormonas y metabolismo", icono: "⚙️", opciones: ["Mucha sed","Mucha hambre","Orinar mucha cantidad","Orinar con mucha frecuencia","Pérdida de peso sin explicación","Aumento de peso","Intolerancia al frío","Intolerancia al calor","Sequedad de piel","Caída de cabello","Estreñimiento","Palpitaciones","Temblor","Sudoración excesiva","Cansancio","Somnolencia","Irritabilidad","Visión borrosa","Hambre con temblor y sudor","Confusión"] },
+  { id: "ojos", titulo: "Ojos y visión", icono: "👁️", opciones: ["Ojo rojo","Picor de ojos","Lagrimeo","Secreción ocular","Dolor ocular","Visión borrosa","Pérdida brusca de visión","Destellos de luz","Moscas volantes nuevas","Sensibilidad intensa a la luz"] },
+  { id: "oido-nariz", titulo: "Oído y nariz", icono: "👂", opciones: ["Dolor de oído","Oído taponado","Pérdida de audición","Pérdida brusca de audición","Zumbidos en los oídos","Secreción por el oído","Congestión nasal","Mucosidad","Estornudos","Picor nasal","Dolor facial","Pérdida de olfato"] },
 ];
