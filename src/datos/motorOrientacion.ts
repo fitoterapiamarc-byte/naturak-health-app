@@ -12,6 +12,7 @@ import { condicionesORLVisual } from "./condicionesORLVisual";
 import { condicionesSaludFemenina } from "./condicionesSaludFemenina";
 import { condicionesSaludMasculina } from "./condicionesSaludMasculina";
 import { condicionesSangreDeficits } from "./condicionesSangreDeficits";
+import { condicionesRenalesElectrolitos } from "./condicionesRenalesElectrolitos";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -46,6 +47,7 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesSaludFemenina,
   ...condicionesSaludMasculina,
   ...condicionesSangreDeficits,
+  ...condicionesRenalesElectrolitos,
 ];
 
 export function orientarPorSintomas(sintomasUsuario: string[]): ResultadoOrientacion[] {
