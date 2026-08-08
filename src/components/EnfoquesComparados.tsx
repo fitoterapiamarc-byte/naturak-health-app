@@ -3,6 +3,7 @@ import { apoyoNutricionFitoterapia } from "../datos/apoyoNutricionFitoterapia";
 import { apoyoDermatologia } from "../datos/apoyoDermatologia";
 import { apoyoBucodental } from "../datos/apoyoBucodental";
 import { ejemplosConEvidencia } from "../datos/ejemplosConEvidencia";
+import { ejemplosConEvidenciaExtra } from "../datos/ejemplosConEvidenciaExtra";
 import EjemplosEvidencia from "./EjemplosEvidencia";
 
 interface EnfoquesComparadosProps {
@@ -53,7 +54,7 @@ function TarjetaEnfoque({ enfoque }: { enfoque: EnfoqueComparado }) {
 function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false }: EnfoquesComparadosProps) {
   const { enfoques } = condicion;
   const apoyoDetallado = apoyoNutricionFitoterapia[condicion.id] ?? apoyoDermatologia[condicion.id] ?? apoyoBucodental[condicion.id];
-  const ejemplos = ejemplosConEvidencia[condicion.id];
+  const ejemplos = ejemplosConEvidencia[condicion.id] ?? ejemplosConEvidenciaExtra[condicion.id];
   const nutricion = apoyoDetallado?.nutricion ?? condicion.nutricion;
   const fitoterapia = apoyoDetallado?.fitoterapia ?? condicion.fitoterapia;
   const precauciones = [...(apoyoDetallado?.precauciones ?? []), ...condicion.contraindicaciones, ...condicion.interacciones].filter(Boolean).slice(0, 5).join(" · ");
