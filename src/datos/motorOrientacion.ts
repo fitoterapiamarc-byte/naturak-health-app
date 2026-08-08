@@ -9,6 +9,7 @@ import { condicionesMusculoExtra } from "./condicionesMusculoExtra";
 import { condicionesDermatologicas } from "./condicionesDermatologicas";
 import { condicionesEndocrinas } from "./condicionesEndocrinas";
 import { condicionesORLVisual } from "./condicionesORLVisual";
+import { condicionesSaludFemenina } from "./condicionesSaludFemenina";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -40,37 +41,22 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesDermatologicas,
   ...condicionesEndocrinas,
   ...condicionesORLVisual,
+  ...condicionesSaludFemenina,
 ];
 
 export function orientarPorSintomas(sintomasUsuario: string[]): ResultadoOrientacion[] {
   const datosIntroducidos = sintomasUsuario.map((dato) => dato.trim()).filter(Boolean);
-
   return todasLasCondiciones
     .map((condicion) => {
-      const sintomasCoincidentes = condicion.sintomas.filter((sintoma) =>
-        datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, sintoma.nombre))
-      );
-      const sintomasContradictorios = condicion.sintomasQueContradicen.filter((sintoma) =>
-        datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, sintoma.nombre))
-      );
-      const alarmasDetectadas = condicion.sintomasAlarma.filter((alarma) =>
-        datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, alarma.nombre))
-      );
+      const sintomasCoincidentes = condicion.sintomas.filter((sintoma) => datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, sintoma.nombre)));
+      const sintomasContradictorios = condicion.sintomasQueContradicen.filter((sintoma) => datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, sintoma.nombre)));
+      const alarmasDetectadas = condicion.sintomasAlarma.filter((alarma) => datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, alarma.nombre)));
       const puntosPositivos = sintomasCoincidentes.reduce((total, sintoma) => total + sintoma.peso, 0);
       const puntosNegativos = sintomasContradictorios.reduce((total, sintoma) => total + sintoma.peso, 0);
       const puntuacion = Math.max(0, puntosPositivos - puntosNegativos);
       const puntuacionMaxima = condicion.sintomas.reduce((total, sintoma) => total + sintoma.peso, 0);
       const confianza = puntuacionMaxima > 0 ? Math.round((puntuacion / puntuacionMaxima) * 100) : 0;
-
-      return {
-        condicion,
-        coincidencias: sintomasCoincidentes.map((sintoma) => sintoma.nombre),
-        contradicciones: sintomasContradictorios.map((sintoma) => sintoma.nombre),
-        senalesAlarmaDetectadas: alarmasDetectadas.map((alarma) => alarma.nombre),
-        puntuacion,
-        confianza,
-        requiereValoracionMedica: sintomasCoincidentes.length > 0 && alarmasDetectadas.length > 0,
-      };
+      return { condicion, coincidencias: sintomasCoincidentes.map((sintoma) => sintoma.nombre), contradicciones: sintomasContradictorios.map((sintoma) => sintoma.nombre), senalesAlarmaDetectadas: alarmasDetectadas.map((alarma) => alarma.nombre), puntuacion, confianza, requiereValoracionMedica: sintomasCoincidentes.length > 0 && alarmasDetectadas.length > 0 };
     })
     .filter((resultado) => resultado.coincidencias.length > 0 && resultado.puntuacion > 0)
     .sort((a, b) => {
