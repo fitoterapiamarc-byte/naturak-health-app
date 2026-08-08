@@ -1,5 +1,6 @@
 import type { Condicion, EnfoqueComparado } from "../datos/condiciones";
 import { apoyoNutricionFitoterapia } from "../datos/apoyoNutricionFitoterapia";
+import { apoyoDermatologia } from "../datos/apoyoDermatologia";
 
 interface EnfoquesComparadosProps {
   condicion: Condicion;
@@ -46,7 +47,7 @@ function TarjetaEnfoque({ enfoque, bloquearIntervenciones = false }: { enfoque: 
 
 function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false }: EnfoquesComparadosProps) {
   const { enfoques } = condicion;
-  const apoyoDetallado = apoyoNutricionFitoterapia[condicion.id];
+  const apoyoDetallado = apoyoNutricionFitoterapia[condicion.id] ?? apoyoDermatologia[condicion.id];
   const nutricion = apoyoDetallado?.nutricion ?? condicion.nutricion;
   const fitoterapia = apoyoDetallado?.fitoterapia ?? condicion.fitoterapia;
   const precauciones = [
