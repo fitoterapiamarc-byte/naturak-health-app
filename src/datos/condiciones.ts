@@ -2,7 +2,8 @@ export type NivelEvidencia =
   | "alta"
   | "moderada"
   | "limitada"
-  | "tradicional";
+  | "tradicional"
+  | "no-establecida";
 
 export interface EnfoqueComparado {
   titulo: string;
@@ -310,28 +311,21 @@ export const condiciones: Condicion[] = [
       },
       medicinaChina: {
         titulo: "Medicina tradicional china",
-        marco:
-          "Describe distintos patrones tradicionales de diarrea según características acompañantes como frío, calor, humedad o debilidad digestiva.",
-        intervenciones: [
-          "La selección de acupuntura se realiza según el patrón tradicional",
-          "Las fórmulas herbales chinas requieren supervisión profesional",
-          "En presencia de signos de deshidratación, sangre o fiebre importante debe priorizarse la valoración biomédica",
-        ],
+        marco: "Módulo no mostrado en la interfaz actual.",
+        intervenciones: [],
         nivelEvidencia: "tradicional",
-        nota:
-          "Los patrones de medicina china no equivalen a una causa médica de diarrea y no deben retrasar el diagnóstico de cuadros infecciosos o graves.",
       },
       estiloVida: {
         titulo: "Estilo de vida",
         marco:
-          "Incluye medidas para limitar la transmisión, favorecer la recuperación y detectar empeoramiento.",
+          "La higiene, el descanso y la vigilancia de la hidratación son las medidas prácticas más importantes durante un episodio agudo.",
         intervenciones: [
-          "Descansar y vigilar la tolerancia a líquidos",
-          "Extremar el lavado de manos si existe sospecha infecciosa",
-          "Evitar preparar alimentos para otras personas mientras exista diarrea infecciosa activa",
+          "Lavado de manos frecuente",
+          "Descanso suficiente",
+          "Evitar preparar alimentos para otras personas si hay sospecha de infección contagiosa",
         ],
-        nivelEvidencia: "moderada",
+        nivelEvidencia: "alta",
       },
     },
-  },
+  }
 ];
