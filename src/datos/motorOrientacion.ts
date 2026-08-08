@@ -8,6 +8,7 @@ import { condicionesGenerales } from "./condicionesGenerales";
 import { condicionesMusculoExtra } from "./condicionesMusculoExtra";
 import { condicionesDermatologicas } from "./condicionesDermatologicas";
 import { condicionesEndocrinas } from "./condicionesEndocrinas";
+import { condicionesORLVisual } from "./condicionesORLVisual";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -38,6 +39,7 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesMusculoExtra,
   ...condicionesDermatologicas,
   ...condicionesEndocrinas,
+  ...condicionesORLVisual,
 ];
 
 export function orientarPorSintomas(sintomasUsuario: string[]): ResultadoOrientacion[] {
