@@ -12,6 +12,7 @@ const etiquetasEvidencia = {
   moderada: "Evidencia moderada",
   limitada: "Evidencia limitada",
   tradicional: "Uso / marco tradicional",
+  "no-establecida": "Beneficio no establecido",
 };
 
 function TarjetaApoyo({ titulo, descripcion, elementos, bloqueado = false, aviso }: { titulo: string; descripcion: string; elementos: string[]; bloqueado?: boolean; aviso?: string }) {
@@ -68,7 +69,7 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
       </div>
       <div style={estilos.introduccionSecundaria}>
         <h3 style={{ marginTop: 0 }}>Comparación de enfoques</h3>
-        <p style={{ marginBottom: 0 }}>El nivel de evidencia indica el respaldo disponible y ayuda a distinguir la orientación clínica, nutricional, complementaria y de estilo de vida.</p>
+        <p style={{ marginBottom: 0 }}>El nivel de evidencia indica el respaldo disponible y diferencia entre evidencia clínica, evidencia limitada, uso tradicional y beneficios todavía no establecidos.</p>
       </div>
       <div style={estilos.rejilla}>
         <TarjetaEnfoque enfoque={enfoques.convencional} />
