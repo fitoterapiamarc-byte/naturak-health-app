@@ -36,7 +36,7 @@ function hayCoincidencia(textoUsuario: string, textoBase: string): boolean {
   return normalizarTexto(textoUsuario) === normalizarTexto(textoBase);
 }
 
-const todasLasCondiciones: Condicion[] = [
+export const todasLasCondiciones: Condicion[] = [
   ...condiciones,
   ...condicionesDigestivasExtra,
   ...condicionesNeuroMusculo,
@@ -57,6 +57,9 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesAlergiaInmunidad,
   ...condicionesInfecciosas,
 ];
+
+export const totalCondiciones = todasLasCondiciones.length;
+export const cifraPortadaCondiciones = Math.max(10, Math.floor((totalCondiciones - 1) / 10) * 10);
 
 export function orientarPorSintomas(sintomasUsuario: string[]): ResultadoOrientacion[] {
   const datosIntroducidos = sintomasUsuario.map((dato) => dato.trim()).filter(Boolean);
