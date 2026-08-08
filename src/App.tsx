@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import EvaluacionIntegral from "./pages/EvaluacionIntegral";
 import ModuloTensionArterial from "./components/ModuloTensionArterial";
@@ -6,8 +6,15 @@ import { cifraPortadaCondiciones, totalCondiciones } from "./datos/motorOrientac
 
 function App() {
   const [sesionEvaluacion, setSesionEvaluacion] = useState(0);
-  const estuvoOculta = useRef(false);
-  useEffect(() => { const gestionarVisibilidad=()=>{ if(document.visibilityState==="hidden"){estuvoOculta.current=true;return;} if(document.visibilityState==="visible"&&estuvoOculta.current){setSesionEvaluacion(a=>a+1);estuvoOculta.current=false;window.scrollTo({top:0,behavior:"auto"});}}; document.addEventListener("visibilitychange",gestionarVisibilidad); return()=>document.removeEventListener("visibilitychange",gestionarVisibilidad);},[]);
+  useEffect(() => {
+    const reiniciar = () => { setSesionEvaluacion(a => a + 1); window.scrollTo({ top: 0, behavior: "auto" }); };
+    // En móvil, pageshow cubre reapertura desde caché y focus cubre regreso a la app.
+    const alMostrar = (e: PageTransitionEvent) => { if (e.persisted) reiniciar(); };
+    const alFoco = () => reiniciar();
+    window.addEventListener("pageshow", alMostrar);
+    window.addEventListener("focus", alFoco);
+    return () => { window.removeEventListener("pageshow", alMostrar); window.removeEventListener("focus", alFoco); };
+  }, []);
   return <>
     <Header />
     <div role="status" style={{maxWidth:"1100px",margin:"18px auto 0",padding:"12px 18px",background:"#fff8e6",border:"1px solid #e0a000",borderRadius:"10px",color:"#704b00",fontFamily:"Arial, sans-serif",textAlign:"center",fontWeight:700}}>🧪 Versión en desarrollo · Uso exclusivo para pruebas · No destinada todavía a uso público</div>
