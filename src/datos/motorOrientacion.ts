@@ -15,6 +15,7 @@ import { condicionesSangreDeficits } from "./condicionesSangreDeficits";
 import { condicionesRenalesElectrolitos } from "./condicionesRenalesElectrolitos";
 import { condicionesBucodentales } from "./condicionesBucodentales";
 import { condicionesSueno } from "./condicionesSueno";
+import { condicionesAlergiaInmunidad } from "./condicionesAlergiaInmunidad";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -52,6 +53,7 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesRenalesElectrolitos,
   ...condicionesBucodentales,
   ...condicionesSueno,
+  ...condicionesAlergiaInmunidad,
 ];
 
 export function orientarPorSintomas(sintomasUsuario: string[]): ResultadoOrientacion[] {
