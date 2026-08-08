@@ -2,6 +2,8 @@ import type { Condicion, EnfoqueComparado } from "../datos/condiciones";
 import { apoyoNutricionFitoterapia } from "../datos/apoyoNutricionFitoterapia";
 import { apoyoDermatologia } from "../datos/apoyoDermatologia";
 import { apoyoBucodental } from "../datos/apoyoBucodental";
+import { ejemplosConEvidencia } from "../datos/ejemplosConEvidencia";
+import EjemplosEvidencia from "./EjemplosEvidencia";
 
 interface EnfoquesComparadosProps {
   condicion: Condicion;
@@ -16,17 +18,18 @@ const etiquetasEvidencia = {
   "no-establecida": "Evidencia todavía insuficiente",
 };
 
-function TarjetaApoyo({ titulo, descripcion, elementos, bloqueado = false, aviso }: { titulo: string; descripcion: string; elementos: string[]; bloqueado?: boolean; aviso?: string }) {
+function TarjetaApoyo({ titulo, descripcion, elementos, ejemplos, bloqueado = false, aviso }: { titulo: string; descripcion: string; elementos: string[]; ejemplos?: Parameters<typeof EjemplosEvidencia>[0]["ejemplos"]; bloqueado?: boolean; aviso?: string }) {
   return (
     <article style={estilos.tarjetaApoyo}>
       <h3 style={estilos.tituloApoyo}>{titulo}</h3>
       <p style={estilos.marco}>{descripcion}</p>
       {bloqueado ? (
         <div style={estilos.bloqueo}>Estas medidas quedan en segundo plano porque se han detectado señales que requieren valoración médica previa.</div>
-      ) : elementos.length > 0 ? (
-        <ul style={estilos.listaPrincipal}>{elementos.map((elemento) => <li key={elemento}>{elemento}</li>)}</ul>
       ) : (
-        <p style={estilos.sinDatos}>No hay una recomendación específica para este cuadro.</p>
+        <>
+          <EjemplosEvidencia ejemplos={ejemplos} />
+          {elementos.length > 0 ? <ul style={estilos.listaPrincipal}>{elementos.map((elemento) => <li key={elemento}>{elemento}</li>)}</ul> : <p style={estilos.sinDatos}>No hay una recomendación específica para este cuadro.</p>}
+        </>
       )}
       {aviso && !bloqueado && <p style={estilos.nota}>{aviso}</p>}
     </article>
@@ -50,6 +53,7 @@ function TarjetaEnfoque({ enfoque }: { enfoque: EnfoqueComparado }) {
 function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false }: EnfoquesComparadosProps) {
   const { enfoques } = condicion;
   const apoyoDetallado = apoyoNutricionFitoterapia[condicion.id] ?? apoyoDermatologia[condicion.id] ?? apoyoBucodental[condicion.id];
+  const ejemplos = ejemplosConEvidencia[condicion.id];
   const nutricion = apoyoDetallado?.nutricion ?? condicion.nutricion;
   const fitoterapia = apoyoDetallado?.fitoterapia ?? condicion.fitoterapia;
   const precauciones = [...(apoyoDetallado?.precauciones ?? []), ...condicion.contraindicaciones, ...condicion.interacciones].filter(Boolean).slice(0, 5).join(" · ");
@@ -58,11 +62,11 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
     <section style={estilos.contenedor}>
       <div style={estilos.introduccion}>
         <h3 style={{ marginTop: 0 }}>Posibles medidas de apoyo</h3>
-        <p style={{ marginBottom: 0 }}>Cada apartado se muestra una sola vez para facilitar la lectura, especialmente desde el móvil.</p>
+        <p style={{ marginBottom: 0 }}>Los ejemplos concretos se muestran separados de la guía general e incluyen su nivel de evidencia.</p>
       </div>
       <div style={estilos.rejillaApoyo}>
-        <TarjetaApoyo titulo="🥗 Nutrición" descripcion="Alimentos, hidratación y hábitos nutricionales que pueden apoyar este cuadro cuando son apropiados." elementos={nutricion} bloqueado={bloquearIntervencionesNaturales} />
-        <TarjetaApoyo titulo="🌿 Fitoterapia y suplementación" descripcion="Plantas, fibras, extractos o suplementos que pueden considerarse como apoyo según la evidencia y el contexto personal." elementos={fitoterapia} bloqueado={bloquearIntervencionesNaturales} aviso={precauciones ? `Precauciones: ${precauciones}` : undefined} />
+        <TarjetaApoyo titulo="🥗 Nutrición" descripcion="Alimentos, hidratación y hábitos nutricionales que pueden apoyar este cuadro cuando son apropiados." elementos={nutricion} ejemplos={ejemplos?.nutricion} bloqueado={bloquearIntervencionesNaturales} />
+        <TarjetaApoyo titulo="🌿 Fitoterapia y suplementación" descripcion="Plantas, fibras, extractos o suplementos concretos según la evidencia disponible y el contexto personal." elementos={fitoterapia} ejemplos={ejemplos?.fitoterapia} bloqueado={bloquearIntervencionesNaturales} aviso={precauciones ? `Precauciones: ${precauciones}` : undefined} />
       </div>
       <div style={estilos.introduccionSecundaria}>
         <h3 style={{ marginTop: 0 }}>Otros enfoques</h3>
