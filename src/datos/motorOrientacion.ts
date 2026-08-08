@@ -6,6 +6,7 @@ import { condicionesUrinarias } from "./condicionesUrinarias";
 import { condicionesAbdominalesUrgentes } from "./condicionesAbdominalesUrgentes";
 import { condicionesGenerales } from "./condicionesGenerales";
 import { condicionesMusculoExtra } from "./condicionesMusculoExtra";
+import { condicionesDermatologicas } from "./condicionesDermatologicas";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -38,6 +39,7 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesAbdominalesUrgentes,
   ...condicionesGenerales,
   ...condicionesMusculoExtra,
+  ...condicionesDermatologicas,
 ];
 
 export function orientarPorSintomas(
