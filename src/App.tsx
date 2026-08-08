@@ -1,8 +1,30 @@
+import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import EvaluacionIntegral from "./pages/EvaluacionIntegral";
 import { cifraPortadaCondiciones, totalCondiciones } from "./datos/motorOrientacion";
 
 function App() {
+  const [sesionEvaluacion, setSesionEvaluacion] = useState(0);
+  const estuvoOculta = useRef(false);
+
+  useEffect(() => {
+    const gestionarVisibilidad = () => {
+      if (document.visibilityState === "hidden") {
+        estuvoOculta.current = true;
+        return;
+      }
+
+      if (document.visibilityState === "visible" && estuvoOculta.current) {
+        setSesionEvaluacion((actual) => actual + 1);
+        estuvoOculta.current = false;
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }
+    };
+
+    document.addEventListener("visibilitychange", gestionarVisibilidad);
+    return () => document.removeEventListener("visibilitychange", gestionarVisibilidad);
+  }, []);
+
   return (
     <>
       <Header />
@@ -54,7 +76,7 @@ function App() {
           minHeight: "100vh",
         }}
       >
-        <EvaluacionIntegral />
+        <EvaluacionIntegral key={sesionEvaluacion} />
       </main>
     </>
   );
