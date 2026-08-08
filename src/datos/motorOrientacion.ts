@@ -7,6 +7,7 @@ import { condicionesAbdominalesUrgentes } from "./condicionesAbdominalesUrgentes
 import { condicionesGenerales } from "./condicionesGenerales";
 import { condicionesMusculoExtra } from "./condicionesMusculoExtra";
 import { condicionesDermatologicas } from "./condicionesDermatologicas";
+import { condicionesEndocrinas } from "./condicionesEndocrinas";
 
 export interface ResultadoOrientacion {
   condicion: Condicion;
@@ -19,11 +20,7 @@ export interface ResultadoOrientacion {
 }
 
 function normalizarTexto(texto: string): string {
-  return texto
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
+  return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 }
 
 function hayCoincidencia(textoUsuario: string, textoBase: string): boolean {
@@ -40,57 +37,28 @@ const todasLasCondiciones: Condicion[] = [
   ...condicionesGenerales,
   ...condicionesMusculoExtra,
   ...condicionesDermatologicas,
+  ...condicionesEndocrinas,
 ];
 
-export function orientarPorSintomas(
-  sintomasUsuario: string[]
-): ResultadoOrientacion[] {
-  const datosIntroducidos = sintomasUsuario
-    .map((dato) => dato.trim())
-    .filter(Boolean);
+export function orientarPorSintomas(sintomasUsuario: string[]): ResultadoOrientacion[] {
+  const datosIntroducidos = sintomasUsuario.map((dato) => dato.trim()).filter(Boolean);
 
   return todasLasCondiciones
     .map((condicion) => {
       const sintomasCoincidentes = condicion.sintomas.filter((sintoma) =>
-        datosIntroducidos.some((datoUsuario) =>
-          hayCoincidencia(datoUsuario, sintoma.nombre)
-        )
+        datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, sintoma.nombre))
       );
-
-      const sintomasContradictorios =
-        condicion.sintomasQueContradicen.filter((sintoma) =>
-          datosIntroducidos.some((datoUsuario) =>
-            hayCoincidencia(datoUsuario, sintoma.nombre)
-          )
-        );
-
+      const sintomasContradictorios = condicion.sintomasQueContradicen.filter((sintoma) =>
+        datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, sintoma.nombre))
+      );
       const alarmasDetectadas = condicion.sintomasAlarma.filter((alarma) =>
-        datosIntroducidos.some((datoUsuario) =>
-          hayCoincidencia(datoUsuario, alarma.nombre)
-        )
+        datosIntroducidos.some((datoUsuario) => hayCoincidencia(datoUsuario, alarma.nombre))
       );
-
-      const puntosPositivos = sintomasCoincidentes.reduce(
-        (total, sintoma) => total + sintoma.peso,
-        0
-      );
-
-      const puntosNegativos = sintomasContradictorios.reduce(
-        (total, sintoma) => total + sintoma.peso,
-        0
-      );
-
+      const puntosPositivos = sintomasCoincidentes.reduce((total, sintoma) => total + sintoma.peso, 0);
+      const puntosNegativos = sintomasContradictorios.reduce((total, sintoma) => total + sintoma.peso, 0);
       const puntuacion = Math.max(0, puntosPositivos - puntosNegativos);
-
-      const puntuacionMaxima = condicion.sintomas.reduce(
-        (total, sintoma) => total + sintoma.peso,
-        0
-      );
-
-      const confianza =
-        puntuacionMaxima > 0
-          ? Math.round((puntuacion / puntuacionMaxima) * 100)
-          : 0;
+      const puntuacionMaxima = condicion.sintomas.reduce((total, sintoma) => total + sintoma.peso, 0);
+      const confianza = puntuacionMaxima > 0 ? Math.round((puntuacion / puntuacionMaxima) * 100) : 0;
 
       return {
         condicion,
@@ -99,23 +67,13 @@ export function orientarPorSintomas(
         senalesAlarmaDetectadas: alarmasDetectadas.map((alarma) => alarma.nombre),
         puntuacion,
         confianza,
-        requiereValoracionMedica:
-          sintomasCoincidentes.length > 0 && alarmasDetectadas.length > 0,
+        requiereValoracionMedica: sintomasCoincidentes.length > 0 && alarmasDetectadas.length > 0,
       };
     })
-    .filter(
-      (resultado) =>
-        resultado.coincidencias.length > 0 && resultado.puntuacion > 0
-    )
+    .filter((resultado) => resultado.coincidencias.length > 0 && resultado.puntuacion > 0)
     .sort((a, b) => {
-      if (a.requiereValoracionMedica && !b.requiereValoracionMedica) {
-        return -1;
-      }
-
-      if (!a.requiereValoracionMedica && b.requiereValoracionMedica) {
-        return 1;
-      }
-
+      if (a.requiereValoracionMedica && !b.requiereValoracionMedica) return -1;
+      if (!a.requiereValoracionMedica && b.requiereValoracionMedica) return 1;
       return b.puntuacion - a.puntuacion;
     });
 }
