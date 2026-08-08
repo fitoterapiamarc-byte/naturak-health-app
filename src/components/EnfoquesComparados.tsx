@@ -59,9 +59,9 @@ function EnfoquesComparados({
       <div style={estilos.introduccion}>
         <h3 style={{ marginTop: 0 }}>Comparación de enfoques</h3>
         <p style={{ marginBottom: 0 }}>
-          Cada sistema se presenta por separado. El nivel de evidencia indica
-          el respaldo disponible y evita equiparar enfoques que utilizan marcos
-          clínicos diferentes.
+          Cada enfoque se presenta por separado. El nivel de evidencia indica
+          el respaldo disponible y ayuda a distinguir la orientación clínica,
+          nutricional y complementaria.
         </p>
       </div>
 
@@ -70,10 +70,6 @@ function EnfoquesComparados({
         <TarjetaEnfoque enfoque={enfoques.nutricion} />
         <TarjetaEnfoque
           enfoque={enfoques.natural}
-          bloquearIntervenciones={bloquearIntervencionesNaturales}
-        />
-        <TarjetaEnfoque
-          enfoque={enfoques.medicinaChina}
           bloquearIntervenciones={bloquearIntervencionesNaturales}
         />
         <TarjetaEnfoque enfoque={enfoques.estiloVida} />
