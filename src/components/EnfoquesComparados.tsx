@@ -1,4 +1,5 @@
 import type { Condicion, EnfoqueComparado } from "../datos/condiciones";
+import { apoyoNutricionFitoterapia } from "../datos/apoyoNutricionFitoterapia";
 
 interface EnfoquesComparadosProps {
   condicion: Condicion;
@@ -12,131 +13,66 @@ const etiquetasEvidencia = {
   tradicional: "Uso / marco tradicional",
 };
 
-function TarjetaApoyo({
-  titulo,
-  descripcion,
-  elementos,
-  bloqueado = false,
-  aviso,
-}: {
-  titulo: string;
-  descripcion: string;
-  elementos: string[];
-  bloqueado?: boolean;
-  aviso?: string;
-}) {
+function TarjetaApoyo({ titulo, descripcion, elementos, bloqueado = false, aviso }: { titulo: string; descripcion: string; elementos: string[]; bloqueado?: boolean; aviso?: string }) {
   return (
     <article style={estilos.tarjetaApoyo}>
       <h3 style={estilos.tituloApoyo}>{titulo}</h3>
       <p style={estilos.marco}>{descripcion}</p>
-
       {bloqueado ? (
-        <div style={estilos.bloqueo}>
-          Estas medidas quedan en segundo plano porque se han detectado señales
-          que requieren valoración médica previa.
-        </div>
+        <div style={estilos.bloqueo}>Estas medidas quedan en segundo plano porque se han detectado señales que requieren valoración médica previa.</div>
       ) : elementos.length > 0 ? (
-        <ul style={estilos.listaPrincipal}>
-          {elementos.map((elemento) => (
-            <li key={elemento}>{elemento}</li>
-          ))}
-        </ul>
+        <ul style={estilos.listaPrincipal}>{elementos.map((elemento) => <li key={elemento}>{elemento}</li>)}</ul>
       ) : (
         <p style={estilos.sinDatos}>No hay una recomendación específica para este cuadro.</p>
       )}
-
       {aviso && !bloqueado && <p style={estilos.nota}>{aviso}</p>}
     </article>
   );
 }
 
-function TarjetaEnfoque({
-  enfoque,
-  bloquearIntervenciones = false,
-}: {
-  enfoque: EnfoqueComparado;
-  bloquearIntervenciones?: boolean;
-}) {
+function TarjetaEnfoque({ enfoque, bloquearIntervenciones = false }: { enfoque: EnfoqueComparado; bloquearIntervenciones?: boolean }) {
   return (
     <article style={estilos.tarjeta}>
       <div style={estilos.cabeceraTarjeta}>
         <h4 style={estilos.titulo}>{enfoque.titulo}</h4>
-        <span style={estilos.evidencia}>
-          {etiquetasEvidencia[enfoque.nivelEvidencia]}
-        </span>
+        <span style={estilos.evidencia}>{etiquetasEvidencia[enfoque.nivelEvidencia]}</span>
       </div>
-
       <p style={estilos.marco}>{enfoque.marco}</p>
-
-      {bloquearIntervenciones ? (
-        <div style={estilos.bloqueo}>
-          Las intervenciones de este enfoque quedan en segundo plano porque se
-          han detectado señales que requieren valoración médica previa.
-        </div>
-      ) : (
-        <ul style={estilos.lista}>
-          {enfoque.intervenciones.map((intervencion) => (
-            <li key={intervencion}>{intervencion}</li>
-          ))}
-        </ul>
-      )}
-
+      {bloquearIntervenciones ? <div style={estilos.bloqueo}>Las intervenciones de este enfoque quedan en segundo plano porque se han detectado señales que requieren valoración médica previa.</div> : <ul style={estilos.lista}>{enfoque.intervenciones.map((intervencion) => <li key={intervencion}>{intervencion}</li>)}</ul>}
       {enfoque.nota && <p style={estilos.nota}>{enfoque.nota}</p>}
     </article>
   );
 }
 
-function EnfoquesComparados({
-  condicion,
-  bloquearIntervencionesNaturales = false,
-}: EnfoquesComparadosProps) {
+function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false }: EnfoquesComparadosProps) {
   const { enfoques } = condicion;
-  const avisoFitoterapia = [...condicion.contraindicaciones, ...condicion.interacciones]
-    .filter(Boolean)
-    .slice(0, 4)
-    .join(" · ");
+  const apoyoDetallado = apoyoNutricionFitoterapia[condicion.id];
+  const nutricion = apoyoDetallado?.nutricion ?? condicion.nutricion;
+  const fitoterapia = apoyoDetallado?.fitoterapia ?? condicion.fitoterapia;
+  const precauciones = [
+    ...(apoyoDetallado?.precauciones ?? []),
+    ...condicion.contraindicaciones,
+    ...condicion.interacciones,
+  ].filter(Boolean).slice(0, 5).join(" · ");
 
   return (
     <section style={estilos.contenedor}>
       <div style={estilos.introduccion}>
         <h3 style={{ marginTop: 0 }}>Posibles medidas de apoyo</h3>
-        <p style={{ marginBottom: 0 }}>
-          Nutrición y fitoterapia se muestran como apoyo orientativo, no como
-          sustitutos del diagnóstico ni del tratamiento médico cuando sea necesario.
-        </p>
+        <p style={{ marginBottom: 0 }}>Nutrición y fitoterapia se muestran como apoyo orientativo, no como sustitutos del diagnóstico ni del tratamiento médico cuando sea necesario.</p>
       </div>
-
       <div style={estilos.rejillaApoyo}>
-        <TarjetaApoyo
-          titulo="🥗 Nutrición"
-          descripcion="Alimentos, hidratación y hábitos nutricionales que pueden apoyar este cuadro cuando son apropiados."
-          elementos={condicion.nutricion}
-          bloqueado={bloquearIntervencionesNaturales}
-        />
-        <TarjetaApoyo
-          titulo="🌿 Fitoterapia y suplementación"
-          descripcion="Plantas, fibras, extractos o suplementos que pueden considerarse como apoyo según la evidencia y el contexto personal."
-          elementos={condicion.fitoterapia}
-          bloqueado={bloquearIntervencionesNaturales}
-          aviso={avisoFitoterapia ? `Precauciones: ${avisoFitoterapia}` : undefined}
-        />
+        <TarjetaApoyo titulo="🥗 Nutrición" descripcion="Alimentos, hidratación y hábitos nutricionales que pueden apoyar este cuadro cuando son apropiados." elementos={nutricion} bloqueado={bloquearIntervencionesNaturales} />
+        <TarjetaApoyo titulo="🌿 Fitoterapia y suplementación" descripcion="Plantas, fibras, extractos o suplementos que pueden considerarse como apoyo según la evidencia y el contexto personal." elementos={fitoterapia} bloqueado={bloquearIntervencionesNaturales} aviso={precauciones ? `Precauciones: ${precauciones}` : undefined} />
       </div>
-
       <div style={estilos.introduccionSecundaria}>
         <h3 style={{ marginTop: 0 }}>Comparación de enfoques</h3>
-        <p style={{ marginBottom: 0 }}>
-          El nivel de evidencia indica el respaldo disponible y ayuda a distinguir
-          la orientación clínica, nutricional, complementaria y de estilo de vida.
-        </p>
+        <p style={{ marginBottom: 0 }}>El nivel de evidencia indica el respaldo disponible y ayuda a distinguir la orientación clínica, nutricional, complementaria y de estilo de vida.</p>
       </div>
-
       <div style={estilos.rejilla}>
         <TarjetaEnfoque enfoque={enfoques.convencional} />
         <TarjetaEnfoque enfoque={enfoques.nutricion} />
-        <TarjetaEnfoque
-          enfoque={enfoques.natural}
-          bloquearIntervenciones={bloquearIntervencionesNaturales}
-        />
+        <TarjetaEnfoque enfoque={enfoques.natural} bloquearIntervenciones={bloquearIntervencionesNaturales} />
         <TarjetaEnfoque enfoque={enfoques.estiloVida} />
       </div>
     </section>
@@ -144,101 +80,23 @@ function EnfoquesComparados({
 }
 
 const estilos = {
-  contenedor: {
-    marginTop: "26px",
-  },
-  introduccion: {
-    padding: "18px",
-    borderRadius: "12px",
-    background: "#f3f7f5",
-    border: "1px solid #d7e2dc",
-  },
-  introduccionSecundaria: {
-    marginTop: "24px",
-    padding: "18px",
-    borderRadius: "12px",
-    background: "#f7f8f7",
-    border: "1px solid #e0e4e2",
-  },
-  rejillaApoyo: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-    gap: "16px",
-    marginTop: "16px",
-  },
-  tarjetaApoyo: {
-    padding: "20px",
-    borderRadius: "14px",
-    border: "2px solid #d7e2dc",
-    background: "#ffffff",
-  },
-  tituloApoyo: {
-    marginTop: 0,
-    marginBottom: "10px",
-    fontSize: "20px",
-  },
-  rejilla: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: "16px",
-    marginTop: "16px",
-  },
-  tarjeta: {
-    padding: "18px",
-    borderRadius: "12px",
-    border: "1px solid #dce5df",
-    background: "#ffffff",
-  },
-  cabeceraTarjeta: {
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    gap: "12px",
-  },
-  titulo: {
-    margin: 0,
-    fontSize: "18px",
-  },
-  evidencia: {
-    flexShrink: 0,
-    padding: "5px 8px",
-    borderRadius: "999px",
-    background: "#eef4f1",
-    border: "1px solid #d7e2dc",
-    fontSize: "12px",
-    fontWeight: "bold",
-  },
-  marco: {
-    lineHeight: 1.55,
-  },
-  lista: {
-    paddingLeft: "20px",
-    lineHeight: 1.55,
-  },
-  listaPrincipal: {
-    paddingLeft: "22px",
-    lineHeight: 1.65,
-    fontSize: "16px",
-  },
-  sinDatos: {
-    fontSize: "14px",
-    opacity: 0.72,
-  },
-  nota: {
-    marginBottom: 0,
-    padding: "10px",
-    borderRadius: "8px",
-    background: "#fff8e6",
-    fontSize: "14px",
-    lineHeight: 1.45,
-  },
-  bloqueo: {
-    padding: "12px",
-    borderRadius: "8px",
-    background: "#fff0f0",
-    border: "1px solid #efb8b8",
-    lineHeight: 1.45,
-  },
+  contenedor: { marginTop: "26px" },
+  introduccion: { padding: "18px", borderRadius: "12px", background: "#f3f7f5", border: "1px solid #d7e2dc" },
+  introduccionSecundaria: { marginTop: "24px", padding: "18px", borderRadius: "12px", background: "#f7f8f7", border: "1px solid #e0e4e2" },
+  rejillaApoyo: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px", marginTop: "16px" },
+  tarjetaApoyo: { padding: "20px", borderRadius: "14px", border: "2px solid #d7e2dc", background: "#ffffff" },
+  tituloApoyo: { marginTop: 0, marginBottom: "10px", fontSize: "20px" },
+  rejilla: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginTop: "16px" },
+  tarjeta: { padding: "18px", borderRadius: "12px", border: "1px solid #dce5df", background: "#ffffff" },
+  cabeceraTarjeta: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px" },
+  titulo: { margin: 0, fontSize: "18px" },
+  evidencia: { flexShrink: 0, padding: "5px 8px", borderRadius: "999px", background: "#eef4f1", border: "1px solid #d7e2dc", fontSize: "12px", fontWeight: "bold" },
+  marco: { lineHeight: 1.55 },
+  lista: { paddingLeft: "20px", lineHeight: 1.55 },
+  listaPrincipal: { paddingLeft: "22px", lineHeight: 1.65, fontSize: "16px" },
+  sinDatos: { fontSize: "14px", opacity: 0.72 },
+  nota: { marginBottom: 0, padding: "10px", borderRadius: "8px", background: "#fff8e6", fontSize: "14px", lineHeight: 1.45 },
+  bloqueo: { padding: "12px", borderRadius: "8px", background: "#fff0f0", border: "1px solid #efb8b8", lineHeight: 1.45 },
 };
 
 export default EnfoquesComparados;
