@@ -11,8 +11,8 @@ const etiquetasEvidencia = {
   alta: "Evidencia alta",
   moderada: "Evidencia moderada",
   limitada: "Evidencia limitada",
-  tradicional: "Uso / marco tradicional",
-  "no-establecida": "Beneficio no establecido",
+  tradicional: "Uso tradicional",
+  "no-establecida": "Evidencia todavía insuficiente",
 };
 
 function TarjetaApoyo({ titulo, descripcion, elementos, bloqueado = false, aviso }: { titulo: string; descripcion: string; elementos: string[]; bloqueado?: boolean; aviso?: string }) {
@@ -51,11 +51,7 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
   const apoyoDetallado = apoyoNutricionFitoterapia[condicion.id] ?? apoyoDermatologia[condicion.id];
   const nutricion = apoyoDetallado?.nutricion ?? condicion.nutricion;
   const fitoterapia = apoyoDetallado?.fitoterapia ?? condicion.fitoterapia;
-  const precauciones = [
-    ...(apoyoDetallado?.precauciones ?? []),
-    ...condicion.contraindicaciones,
-    ...condicion.interacciones,
-  ].filter(Boolean).slice(0, 5).join(" · ");
+  const precauciones = [...(apoyoDetallado?.precauciones ?? []), ...condicion.contraindicaciones, ...condicion.interacciones].filter(Boolean).slice(0, 5).join(" · ");
 
   return (
     <section style={estilos.contenedor}>
@@ -69,7 +65,7 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
       </div>
       <div style={estilos.introduccionSecundaria}>
         <h3 style={{ marginTop: 0 }}>Comparación de enfoques</h3>
-        <p style={{ marginBottom: 0 }}>El nivel de evidencia indica el respaldo disponible y diferencia entre evidencia clínica, evidencia limitada, uso tradicional y beneficios todavía no establecidos.</p>
+        <p style={{ marginBottom: 0 }}>La app diferencia entre evidencia alta, moderada, limitada, evidencia todavía insuficiente y uso tradicional. Así se evita presentar como demostrado algo que todavía no lo está.</p>
       </div>
       <div style={estilos.rejilla}>
         <TarjetaEnfoque enfoque={enfoques.convencional} />
@@ -82,23 +78,7 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
 }
 
 const estilos = {
-  contenedor: { marginTop: "26px" },
-  introduccion: { padding: "18px", borderRadius: "12px", background: "#f3f7f5", border: "1px solid #d7e2dc" },
-  introduccionSecundaria: { marginTop: "24px", padding: "18px", borderRadius: "12px", background: "#f7f8f7", border: "1px solid #e0e4e2" },
-  rejillaApoyo: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px", marginTop: "16px" },
-  tarjetaApoyo: { padding: "20px", borderRadius: "14px", border: "2px solid #d7e2dc", background: "#ffffff" },
-  tituloApoyo: { marginTop: 0, marginBottom: "10px", fontSize: "20px" },
-  rejilla: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginTop: "16px" },
-  tarjeta: { padding: "18px", borderRadius: "12px", border: "1px solid #dce5df", background: "#ffffff" },
-  cabeceraTarjeta: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px" },
-  titulo: { margin: 0, fontSize: "18px" },
-  evidencia: { flexShrink: 0, padding: "5px 8px", borderRadius: "999px", background: "#eef4f1", border: "1px solid #d7e2dc", fontSize: "12px", fontWeight: "bold" },
-  marco: { lineHeight: 1.55 },
-  lista: { paddingLeft: "20px", lineHeight: 1.55 },
-  listaPrincipal: { paddingLeft: "22px", lineHeight: 1.65, fontSize: "16px" },
-  sinDatos: { fontSize: "14px", opacity: 0.72 },
-  nota: { marginBottom: 0, padding: "10px", borderRadius: "8px", background: "#fff8e6", fontSize: "14px", lineHeight: 1.45 },
-  bloqueo: { padding: "12px", borderRadius: "8px", background: "#fff0f0", border: "1px solid #efb8b8", lineHeight: 1.45 },
+  contenedor: { marginTop: "26px" }, introduccion: { padding: "18px", borderRadius: "12px", background: "#f3f7f5", border: "1px solid #d7e2dc" }, introduccionSecundaria: { marginTop: "24px", padding: "18px", borderRadius: "12px", background: "#f7f8f7", border: "1px solid #e0e4e2" }, rejillaApoyo: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px", marginTop: "16px" }, tarjetaApoyo: { padding: "20px", borderRadius: "14px", border: "2px solid #d7e2dc", background: "#ffffff" }, tituloApoyo: { marginTop: 0, marginBottom: "10px", fontSize: "20px" }, rejilla: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginTop: "16px" }, tarjeta: { padding: "18px", borderRadius: "12px", border: "1px solid #dce5df", background: "#ffffff" }, cabeceraTarjeta: { display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px" }, titulo: { margin: 0, fontSize: "18px" }, evidencia: { flexShrink: 0, padding: "5px 8px", borderRadius: "999px", background: "#eef4f1", border: "1px solid #d7e2dc", fontSize: "12px", fontWeight: "bold" }, marco: { lineHeight: 1.55 }, lista: { paddingLeft: "20px", lineHeight: 1.55 }, listaPrincipal: { paddingLeft: "22px", lineHeight: 1.65, fontSize: "16px" }, sinDatos: { fontSize: "14px", opacity: 0.72 }, nota: { marginBottom: 0, padding: "10px", borderRadius: "8px", background: "#fff8e6", fontSize: "14px", lineHeight: 1.45 }, bloqueo: { padding: "12px", borderRadius: "8px", background: "#fff0f0", border: "1px solid #efb8b8", lineHeight: 1.45 },
 };
 
 export default EnfoquesComparados;
