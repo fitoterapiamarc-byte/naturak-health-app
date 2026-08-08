@@ -33,7 +33,7 @@ function TarjetaApoyo({ titulo, descripcion, elementos, bloqueado = false, aviso
   );
 }
 
-function TarjetaEnfoque({ enfoque, bloquearIntervenciones = false }: { enfoque: EnfoqueComparado; bloquearIntervenciones?: boolean }) {
+function TarjetaEnfoque({ enfoque }: { enfoque: EnfoqueComparado }) {
   return (
     <article style={estilos.tarjeta}>
       <div style={estilos.cabeceraTarjeta}>
@@ -41,7 +41,7 @@ function TarjetaEnfoque({ enfoque, bloquearIntervenciones = false }: { enfoque: 
         <span style={estilos.evidencia}>{etiquetasEvidencia[enfoque.nivelEvidencia]}</span>
       </div>
       <p style={estilos.marco}>{enfoque.marco}</p>
-      {bloquearIntervenciones ? <div style={estilos.bloqueo}>Las intervenciones de este enfoque quedan en segundo plano porque se han detectado señales que requieren valoración médica previa.</div> : <ul style={estilos.lista}>{enfoque.intervenciones.map((intervencion) => <li key={intervencion}>{intervencion}</li>)}</ul>}
+      <ul style={estilos.lista}>{enfoque.intervenciones.map((intervencion) => <li key={intervencion}>{intervencion}</li>)}</ul>
       {enfoque.nota && <p style={estilos.nota}>{enfoque.nota}</p>}
     </article>
   );
@@ -58,20 +58,18 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
     <section style={estilos.contenedor}>
       <div style={estilos.introduccion}>
         <h3 style={{ marginTop: 0 }}>Posibles medidas de apoyo</h3>
-        <p style={{ marginBottom: 0 }}>Nutrición y fitoterapia se muestran como apoyo orientativo, no como sustitutos del diagnóstico ni del tratamiento médico cuando sea necesario.</p>
+        <p style={{ marginBottom: 0 }}>Cada apartado se muestra una sola vez para facilitar la lectura, especialmente desde el móvil.</p>
       </div>
       <div style={estilos.rejillaApoyo}>
         <TarjetaApoyo titulo="🥗 Nutrición" descripcion="Alimentos, hidratación y hábitos nutricionales que pueden apoyar este cuadro cuando son apropiados." elementos={nutricion} bloqueado={bloquearIntervencionesNaturales} />
         <TarjetaApoyo titulo="🌿 Fitoterapia y suplementación" descripcion="Plantas, fibras, extractos o suplementos que pueden considerarse como apoyo según la evidencia y el contexto personal." elementos={fitoterapia} bloqueado={bloquearIntervencionesNaturales} aviso={precauciones ? `Precauciones: ${precauciones}` : undefined} />
       </div>
       <div style={estilos.introduccionSecundaria}>
-        <h3 style={{ marginTop: 0 }}>Comparación de enfoques</h3>
-        <p style={{ marginBottom: 0 }}>La app diferencia entre evidencia alta, moderada, limitada, evidencia todavía insuficiente y uso tradicional. Así se evita presentar como demostrado algo que todavía no lo está.</p>
+        <h3 style={{ marginTop: 0 }}>Otros enfoques</h3>
+        <p style={{ marginBottom: 0 }}>Aquí se muestran únicamente los enfoques que aportan información diferente, evitando repetir nutrición y fitoterapia.</p>
       </div>
       <div style={estilos.rejilla}>
         <TarjetaEnfoque enfoque={enfoques.convencional} />
-        <TarjetaEnfoque enfoque={enfoques.nutricion} />
-        <TarjetaEnfoque enfoque={enfoques.natural} bloquearIntervenciones={bloquearIntervencionesNaturales} />
         <TarjetaEnfoque enfoque={enfoques.estiloVida} />
       </div>
     </section>
