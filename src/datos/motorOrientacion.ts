@@ -55,20 +55,74 @@ function normalizarTexto(texto: string) {
     .trim();
 }
 
+// Une formas habituales de expresar el mismo síntoma. Se mantiene deliberadamente
+// conservador para no convertir palabras genéricas como "dolor" o "mareo" en falsos positivos.
 const equivalencias: Record<string, string> = {
-  "falta de aire al hacer esfuerzo": "falta de aire al esfuerzo",
-  "falta de aire haciendo esfuerzo": "falta de aire al esfuerzo",
-  "piernas hinchadas": "hinchazon de piernas",
-  "hinchazon en las piernas": "hinchazon de piernas",
-  "sangre roja en las heces": "sangre roja al defecar",
-  "sangre en las heces": "sangre roja al defecar",
+  "dolor pulsatil": "dolor de cabeza pulsatil",
+  "dolor en un lado de la cabeza": "dolor de cabeza unilateral",
+  "dolor opresivo en la cabeza": "dolor de cabeza opresivo",
+  "dolor abdomen superior": "dolor en la parte alta del abdomen",
   "dolor en la boca del estomago": "dolor en la parte alta del abdomen",
   "ardor de estomago": "ardor en la parte alta del abdomen",
-  "pitidos en el oido": "pitidos en los oidos",
-  "zumbido en los oidos": "zumbidos en los oidos",
+  "ardor epigastrico": "ardor en la parte alta del abdomen",
+  "quemazon retroesternal": "ardor detras del esternon",
+  "acidez": "ardor detras del esternon",
+  "reflujo": "regurgitacion acida",
+  "regurgitacion": "regurgitacion acida",
+  "dolor hacia la ingle": "dolor que baja hacia la ingle",
+  "falta de aire al hacer esfuerzo": "falta de aire al esfuerzo",
+  "falta de aire haciendo esfuerzo": "falta de aire al esfuerzo",
+  "falta de aire con esfuerzo": "falta de aire al esfuerzo",
+  "tos con mucosidad": "tos con flemas",
+  "flemas frecuentes": "tos con flemas",
+  "mucosidad nasal espesa": "secrecion nasal",
+  "mucosidad": "secrecion nasal",
+  "piernas hinchadas": "hinchazon de piernas",
+  "hinchazon en las piernas": "hinchazon de piernas",
+  "hinchazon de una sola pierna": "una pierna hinchada",
+  "pierna roja y caliente": "pierna caliente",
+  "sangre roja en las heces": "sangre roja al defecar",
+  "sangre en las heces": "sangre roja al defecar",
+  "levantarse por la noche a orinar": "levantarse por la noche para orinar",
   "orinar muchas veces": "orinar con mucha frecuencia",
   "orinar frecuentemente": "orinar con mucha frecuencia",
+  "sensacion de vaciado incompleto": "sensacion de no vaciar la vejiga",
+  "no puedo orinar": "no poder orinar",
+  "vertigo al mover la cabeza": "mareo al mover la cabeza",
+  "todo gira": "sensacion de que todo gira",
+  "vertigo al darse la vuelta en la cama": "mareo al girarse en la cama",
+  "aura visual": "alteracion visual reversible",
+  "sensibilidad intensa a la luz": "sensibilidad a la luz",
+  "sensibilidad intensa al sonido": "sensibilidad al ruido",
+  "pitidos en el oido": "pitidos en los oidos",
+  "zumbido en los oidos": "zumbidos en los oidos",
+  "zumbidos en los oidos": "pitidos en los oidos",
   "vision borrosa": "vision borrosa progresiva",
+  "dolor ocular": "dolor ocular intenso",
+  "perdida brusca de vision": "perdida brusca de vision",
+  "regla dolorosa": "dolor menstrual intenso",
+  "dolor con las relaciones": "dolor con las relaciones sexuales",
+  "regla muy abundante": "sangrado menstrual abundante",
+  "sequedad de piel": "piel seca",
+  "ronchas": "ronchas en la piel",
+  "enrojecimiento": "enrojecimiento de la piel",
+  "granitos en la cara": "granitos en la cara",
+  "rigidez": "rigidez articular",
+  "inflamacion": "articulaciones hinchadas",
+  "articulacion roja y muy caliente": "articulacion roja y caliente",
+  "osteopenia u osteoporosis conocida": "osteoporosis diagnosticada",
+  "somnolencia diurna": "somnolencia durante el dia",
+  "pausas respiratorias al dormir": "pausas al respirar durante el sueno",
+  "despertar con sensacion de ahogo": "despertar con sensacion de ahogo",
+  "necesidad irresistible de mover las piernas": "necesidad de mover las piernas",
+  "empeora al estar en reposo": "molestias en piernas al descansar",
+  "mejora al mover las piernas": "alivio al caminar",
+  "empeora por la tarde o noche": "sintomas peores por la noche",
+  "colesterol elevado en analitica": "colesterol elevado en analitica",
+  "trigliceridos elevados en analitica": "trigliceridos elevados en analitica",
+  "higado graso conocido": "higado graso en ecografia",
+  "glucosa elevada en analitica": "glucosa elevada en analitica",
+  "obesidad abdominal": "exceso de peso abdominal",
 };
 
 function canonizar(texto: string) {
@@ -81,8 +135,6 @@ function hayCoincidencia(a: string, b: string) {
   const y = canonizar(b);
   if (x === y) return true;
 
-  // Permite frases descriptivas más largas, pero evita emparejar palabras genéricas
-  // como "dolor", "mareo" o "cansancio" con cualquier cuadro.
   const corta = x.length <= y.length ? x : y;
   const larga = x.length > y.length ? x : y;
   const palabras = corta.split(" ").filter(Boolean);
@@ -175,8 +227,6 @@ export function orientarPorSintomas(sintomasUsuario: string[]): ResultadoOrienta
         requiereValoracionMedica: coinc.length > 0 && alarmas.length > 0,
       };
     })
-    // Evita mostrar cuadros por una sola coincidencia débil. Una señal muy específica
-    // de peso alto sí puede justificar una orientación inicial.
     .filter(
       (r) =>
         r.puntuacion > 0 &&
