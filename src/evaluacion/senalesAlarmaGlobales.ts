@@ -9,165 +9,33 @@ export interface SenalAlarmaGlobal {
 }
 
 export const senalesAlarmaGlobales: SenalAlarmaGlobal[] = [
-  {
-    id: "riesgo-emocional",
-    activadores: ["Pensamientos de hacerse daño", "No quiero seguir viviendo", "Ideas de suicidio"],
-    nivel: "urgente",
-    titulo: "Riesgo emocional urgente",
-    mensaje: "Los pensamientos de hacerse daño o de no querer seguir viviendo requieren ayuda profesional inmediata y no deben manejarse únicamente con recomendaciones de autocuidado.",
-  },
-  {
-    id: "pecho-cardiovascular",
-    activadores: ["Dolor de pecho","Presión en el pecho","Dolor hacia brazo, espalda o mandíbula","Sudor frío","Desmayo"],
-    nivel: "urgente",
-    titulo: "Síntomas cardiovasculares de alarma",
-    mensaje: "El dolor o presión en el pecho, especialmente si se acompaña de falta de aire, sudor frío, desmayo o dolor irradiado, requiere valoración médica urgente.",
-  },
-  {
-    id: "respiratoria",
-    activadores: ["Falta de aire", "Dolor al respirar"],
-    nivel: "prioritaria",
-    titulo: "Síntomas respiratorios que necesitan valoración",
-    mensaje: "La falta de aire o el dolor al respirar deben valorarse clínicamente, sobre todo si son nuevos, empeoran o aparecen en reposo. Si la dificultad respiratoria es intensa, la prioridad pasa a ser urgente.",
-  },
-  {
-    id: "respiratoria-grave",
-    activadores: ["Falta de aire intensa","No puedo hablar frases completas","Labios azulados"],
-    nivel: "urgente",
-    titulo: "Dificultad respiratoria grave",
-    mensaje: "La falta de aire intensa, la dificultad para hablar frases completas o la coloración azulada requieren atención médica urgente.",
-  },
-  {
-    id: "anafilaxia",
-    activadores: ["Hinchazón de lengua o garganta","Dificultad para respirar","Falta de aire intensa","Desmayo"],
-    nivel: "urgente",
-    titulo: "Posible reacción alérgica grave",
-    mensaje: "La hinchazón de lengua o garganta, la dificultad respiratoria o el desmayo pueden indicar una reacción alérgica grave y requieren atención urgente.",
-  },
-  {
-    id: "neurologica",
-    activadores: ["Confusión","Pérdida de fuerza","Pérdida de fuerza en una pierna","Pérdida de fuerza en ambas piernas","Dificultad para hablar","Visión doble nueva","Desmayo"],
-    nivel: "urgente",
-    titulo: "Síntomas neurológicos de alarma",
-    mensaje: "La aparición reciente de confusión, pérdida de fuerza, alteración del habla, visión doble o pérdida de conciencia requiere valoración médica rápida.",
-  },
-  {
-    id: "cefalea-secundaria",
-    activadores: ["Dolor de cabeza súbito e intenso","Fiebre con rigidez de cuello"],
-    nivel: "urgente",
-    titulo: "Cefalea con señales de alarma",
-    mensaje: "Una cefalea que alcanza intensidad máxima de forma brusca o que se acompaña de fiebre y rigidez de cuello requiere valoración urgente.",
-  },
-  {
-    id: "vision-brusca",
-    activadores: ["Pérdida brusca de visión","Visión doble nueva"],
-    nivel: "urgente",
-    titulo: "Alteración visual de aparición brusca",
-    mensaje: "La pérdida brusca de visión o una visión doble nueva requieren valoración médica urgente para descartar causas oculares o neurológicas importantes.",
-  },
-  {
-    id: "ojo-doloroso",
-    activadores: ["Dolor ocular", "Dolor ocular intenso"],
-    nivel: "prioritaria",
-    titulo: "Dolor ocular",
-    mensaje: "El dolor ocular, especialmente si se acompaña de ojo rojo, sensibilidad a la luz o cambios de visión, necesita valoración médica prioritaria.",
-  },
-  {
-    id: "audicion-brusca",
-    activadores: ["Pérdida brusca de audición"],
-    nivel: "prioritaria",
-    titulo: "Pérdida brusca de audición",
-    mensaje: "La pérdida brusca de audición, especialmente junto con vértigo u otros síntomas neurológicos, necesita valoración médica rápida.",
-  },
-  {
-    id: "sangrado-digestivo",
-    activadores: ["Sangre roja en las heces","Sangre en las heces","Heces negras"],
-    nivel: "prioritaria",
-    titulo: "Posible sangrado digestivo",
-    mensaje: "La presencia de sangre visible o heces negras necesita valoración clínica para determinar su origen.",
-  },
-  {
-    id: "abdomen-agudo",
-    activadores: ["Dolor abdominal intenso","Muy intenso","No puedo expulsar gases"],
-    nivel: "urgente",
-    titulo: "Dolor abdominal de alarma",
-    mensaje: "El dolor abdominal intenso, especialmente con vómitos, distensión o imposibilidad para expulsar gases, puede requerir valoración urgente.",
-  },
-  {
-    id: "deshidratacion",
-    activadores: ["No puedo retener líquidos","Vómitos repetidos","Orinar muy poca cantidad","Confusión"],
-    nivel: "prioritaria",
-    titulo: "Riesgo de deshidratación",
-    mensaje: "La incapacidad para mantener líquidos, la reducción marcada de la orina o el deterioro general requieren valoración médica.",
-  },
-  {
-    id: "deglucion",
-    activadores: ["Dificultad para tragar", "Dolor al tragar"],
-    nivel: "prioritaria",
-    titulo: "Dificultad para tragar",
-    mensaje: "La dificultad o el dolor al tragar necesitan valoración médica, especialmente si se acompañan de pérdida de peso, sangrado o empeoramiento progresivo.",
-  },
-  {
-    id: "retencion-urinaria",
-    activadores: ["No puedo orinar", "No poder orinar"],
-    nivel: "urgente",
-    titulo: "Retención urinaria",
-    mensaje: "La imposibilidad completa para orinar requiere valoración médica urgente, especialmente si existe dolor o distensión en la parte baja del abdomen.",
-  },
-  {
-    id: "testiculo-agudo",
-    activadores: ["Dolor testicular súbito e intenso"],
-    nivel: "urgente",
-    titulo: "Dolor testicular súbito",
-    mensaje: "Un dolor testicular intenso de aparición brusca necesita valoración urgente para descartar torsión testicular u otras causas que no deben demorarse.",
-  },
-  {
-    id: "embarazo-sangrado",
-    activadores: ["Sangrado durante el embarazo","Dolor pélvico intenso de un lado"],
-    nivel: "urgente",
-    titulo: "Síntomas de alarma durante posible embarazo",
-    mensaje: "El sangrado durante el embarazo o el dolor pélvico intenso, especialmente de un solo lado, necesitan valoración médica urgente.",
-  },
-  {
-    id: "cola-caballo",
-    activadores: ["Pérdida de control de orina o heces","Adormecimiento en zona genital o perineal","Pérdida de fuerza en ambas piernas"],
-    nivel: "urgente",
-    titulo: "Posible compresión neurológica grave",
-    mensaje: "La alteración de esfínteres, el adormecimiento perineal o la debilidad bilateral de piernas con dolor lumbar requieren valoración urgente para descartar compresión de la cola de caballo.",
-  },
-  {
-    id: "debilidad-progresiva-pierna",
-    activadores: ["Debilidad progresiva de una pierna"],
-    nivel: "prioritaria",
-    titulo: "Déficit neurológico progresivo",
-    mensaje: "La debilidad que progresa en una pierna asociada a dolor lumbar o radicular necesita valoración médica prioritaria.",
-  },
-  {
-    id: "trombosis-pierna",
-    activadores: ["Hinchazón de una sola pierna", "Pierna roja y caliente"],
-    nivel: "prioritaria",
-    titulo: "Posible trombosis venosa profunda",
-    mensaje: "Dolor o hinchazón de una sola pierna, especialmente con calor o enrojecimiento, puede ser compatible con trombosis venosa profunda y requiere valoración médica. Si además aparece falta de aire o dolor torácico, la urgencia aumenta.",
-  },
-  {
-    id: "perdida-peso",
-    activadores: ["Pérdida de peso"],
-    nivel: "precaucion",
-    titulo: "Pérdida de peso no explicada",
-    mensaje: "Una pérdida de peso involuntaria junto con otros síntomas persistentes debe estudiarse y no atribuirse automáticamente a un problema funcional.",
-  },
+  {id:"riesgo-emocional",activadores:["Pensamientos de hacerse daño","No quiero seguir viviendo","Ideas de suicidio"],nivel:"urgente",titulo:"Riesgo emocional urgente",mensaje:"Los pensamientos de hacerse daño o de no querer seguir viviendo requieren ayuda profesional inmediata y no deben manejarse únicamente con recomendaciones de autocuidado."},
+  {id:"pecho-cardiovascular",activadores:["Dolor de pecho","Presión en el pecho","Dolor hacia brazo, espalda o mandíbula","Sudor frío","Desmayo"],nivel:"urgente",titulo:"Síntomas cardiovasculares de alarma",mensaje:"El dolor o presión en el pecho, especialmente si se acompaña de falta de aire, sudor frío, desmayo o dolor irradiado, requiere valoración médica urgente."},
+  {id:"respiratoria",activadores:["Falta de aire","Dolor al respirar"],nivel:"prioritaria",titulo:"Síntomas respiratorios que necesitan valoración",mensaje:"La falta de aire o el dolor al respirar deben valorarse clínicamente, sobre todo si son nuevos, empeoran o aparecen en reposo. Si la dificultad respiratoria es intensa, la prioridad pasa a ser urgente."},
+  {id:"respiratoria-grave",activadores:["Falta de aire intensa","No puedo hablar frases completas","Labios azulados"],nivel:"urgente",titulo:"Dificultad respiratoria grave",mensaje:"La falta de aire intensa, la dificultad para hablar frases completas o la coloración azulada requieren atención médica urgente."},
+  {id:"anafilaxia",activadores:["Hinchazón de lengua o garganta","Dificultad para respirar","Falta de aire intensa","Desmayo"],nivel:"urgente",titulo:"Posible reacción alérgica grave",mensaje:"La hinchazón de lengua o garganta, la dificultad respiratoria o el desmayo pueden indicar una reacción alérgica grave y requieren atención urgente."},
+  {id:"neurologica",activadores:["Confusión","Pérdida de fuerza","Pérdida de fuerza en una pierna","Pérdida de fuerza en ambas piernas","Dificultad para hablar","Visión doble nueva","Desmayo"],nivel:"urgente",titulo:"Síntomas neurológicos de alarma",mensaje:"La aparición reciente de confusión, pérdida de fuerza, alteración del habla, visión doble o pérdida de conciencia requiere valoración médica rápida."},
+  {id:"cefalea-secundaria",activadores:["Dolor de cabeza súbito e intenso","Fiebre con rigidez de cuello"],nivel:"urgente",titulo:"Cefalea con señales de alarma",mensaje:"Una cefalea que alcanza intensidad máxima de forma brusca o que se acompaña de fiebre y rigidez de cuello requiere valoración urgente."},
+  {id:"vision-brusca",activadores:["Pérdida brusca de visión","Visión doble nueva"],nivel:"urgente",titulo:"Alteración visual de aparición brusca",mensaje:"La pérdida brusca de visión o una visión doble nueva requieren valoración médica urgente para descartar causas oculares o neurológicas importantes."},
+  {id:"ojo-doloroso",activadores:["Dolor ocular","Dolor ocular intenso"],nivel:"prioritaria",titulo:"Dolor ocular",mensaje:"El dolor ocular, especialmente si se acompaña de ojo rojo, sensibilidad a la luz o cambios de visión, necesita valoración médica prioritaria."},
+  {id:"audicion-brusca",activadores:["Pérdida brusca de audición"],nivel:"prioritaria",titulo:"Pérdida brusca de audición",mensaje:"La pérdida brusca de audición, especialmente junto con vértigo u otros síntomas neurológicos, necesita valoración médica rápida."},
+  {id:"sangrado-digestivo",activadores:["Sangre roja en las heces","Sangre en las heces","Heces negras"],nivel:"prioritaria",titulo:"Posible sangrado digestivo",mensaje:"La presencia de sangre visible o heces negras necesita valoración clínica para determinar su origen."},
+  {id:"abdomen-agudo",activadores:["Dolor abdominal intenso","Muy intenso","No puedo expulsar gases"],nivel:"urgente",titulo:"Dolor abdominal de alarma",mensaje:"El dolor abdominal intenso, especialmente con vómitos, distensión o imposibilidad para expulsar gases, puede requerir valoración urgente."},
+  {id:"deshidratacion",activadores:["No puedo retener líquidos","Vómitos repetidos","Orinar muy poca cantidad","Confusión"],nivel:"prioritaria",titulo:"Riesgo de deshidratación",mensaje:"La incapacidad para mantener líquidos, la reducción marcada de la orina o el deterioro general requieren valoración médica."},
+  {id:"deglucion",activadores:["Dificultad para tragar","Dolor al tragar"],nivel:"prioritaria",titulo:"Dificultad para tragar",mensaje:"La dificultad o el dolor al tragar necesitan valoración médica, especialmente si se acompañan de pérdida de peso, sangrado o empeoramiento progresivo."},
+  {id:"retencion-urinaria",activadores:["No puedo orinar","No poder orinar"],nivel:"urgente",titulo:"Retención urinaria",mensaje:"La imposibilidad completa para orinar requiere valoración médica urgente, especialmente si existe dolor o distensión en la parte baja del abdomen."},
+  {id:"infeccion-urinaria-alta",activadores:["Fiebre con dolor lumbar","Fiebre con dolor en el costado","Vómitos repetidos con dolor al orinar"],nivel:"prioritaria",titulo:"Posible infección urinaria alta",mensaje:"La combinación de fiebre con dolor lumbar o en el costado, o vómitos junto con síntomas urinarios, puede indicar una infección renal y necesita valoración médica rápida."},
+  {id:"hematuria-visible",activadores:["Sangre en la orina","Sangre visible en la orina"],nivel:"prioritaria",titulo:"Sangre visible en la orina",mensaje:"La sangre visible en la orina necesita valoración clínica para identificar su origen, incluso cuando exista sospecha de infección urinaria."},
+  {id:"testiculo-agudo",activadores:["Dolor testicular súbito e intenso"],nivel:"urgente",titulo:"Dolor testicular súbito",mensaje:"Un dolor testicular intenso de aparición brusca necesita valoración urgente para descartar torsión testicular u otras causas que no deben demorarse."},
+  {id:"embarazo-sangrado",activadores:["Sangrado durante el embarazo","Dolor pélvico intenso de un lado"],nivel:"urgente",titulo:"Síntomas de alarma durante posible embarazo",mensaje:"El sangrado durante el embarazo o el dolor pélvico intenso, especialmente de un solo lado, necesitan valoración médica urgente."},
+  {id:"cola-caballo",activadores:["Pérdida de control de orina o heces","Adormecimiento en zona genital o perineal","Pérdida de fuerza en ambas piernas"],nivel:"urgente",titulo:"Posible compresión neurológica grave",mensaje:"La alteración de esfínteres, el adormecimiento perineal o la debilidad bilateral de piernas con dolor lumbar requieren valoración urgente para descartar compresión de la cola de caballo."},
+  {id:"debilidad-progresiva-pierna",activadores:["Debilidad progresiva de una pierna"],nivel:"prioritaria",titulo:"Déficit neurológico progresivo",mensaje:"La debilidad que progresa en una pierna asociada a dolor lumbar o radicular necesita valoración médica prioritaria."},
+  {id:"trombosis-pierna",activadores:["Hinchazón de una sola pierna","Pierna roja y caliente"],nivel:"prioritaria",titulo:"Posible trombosis venosa profunda",mensaje:"Dolor o hinchazón de una sola pierna, especialmente con calor o enrojecimiento, puede ser compatible con trombosis venosa profunda y requiere valoración médica. Si además aparece falta de aire o dolor torácico, la urgencia aumenta."},
+  {id:"perdida-peso",activadores:["Pérdida de peso"],nivel:"precaucion",titulo:"Pérdida de peso no explicada",mensaje:"Una pérdida de peso involuntaria junto con otros síntomas persistentes debe estudiarse y no atribuirse automáticamente a un problema funcional."}
 ];
 
-function normalizar(texto: string): string {
-  return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-}
-
-export function detectarAlarmasGlobales(datos: string[]): SenalAlarmaGlobal[] {
-  const normalizados = datos.map(normalizar);
-  return senalesAlarmaGlobales.filter((senal) =>
-    senal.activadores.some((activador) => {
-      const base = normalizar(activador);
-      return normalizados.some((dato) => dato === base || dato.includes(base));
-    })
-  );
-}
+function normalizar(texto:string):string{return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();}
+export function detectarAlarmasGlobales(datos:string[]):SenalAlarmaGlobal[]{const normalizados=datos.map(normalizar);const contiene=(a:string)=>{const base=normalizar(a);return normalizados.some(d=>d===base||d.includes(base));};const directas=senalesAlarmaGlobales.filter(s=>s.activadores.some(contiene));const ids=new Set(directas.map(s=>s.id));
+// Reglas combinadas: evitan declarar urgente un síntoma aislado que solo es preocupante cuando aparece junto a otro.
+if(!ids.has("infeccion-urinaria-alta")){const fiebre=contiene("Fiebre");const renal=contiene("Dolor lumbar")||contiene("Dolor en el costado");const urinario=contiene("Dolor al orinar")||contiene("Urgencia para orinar")||contiene("Orinar con mucha frecuencia");const vomitos=contiene("Vómitos")||contiene("Vómitos repetidos");if((fiebre&&renal)||(fiebre&&urinario)||(vomitos&&renal&&urinario)){const s=senalesAlarmaGlobales.find(x=>x.id==="infeccion-urinaria-alta");if(s)directas.push(s);}}
+return directas;}
