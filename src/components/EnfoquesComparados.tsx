@@ -13,6 +13,7 @@ import { ejemplosTradicionalesAmpliados2 } from "../datos/ejemplosTradicionalesA
 import { ejemplosTradicionalesAmpliados3 } from "../datos/ejemplosTradicionalesAmpliados3";
 import { ejemplosEmocionales } from "../datos/ejemplosEmocionales";
 import EjemplosEvidencia from "./EjemplosEvidencia";
+import FichaVademecumInline from "./FichaVademecumInline";
 import type { EjemploConEvidencia, EjemplosCondicion } from "../datos/ejemplosConEvidencia";
 import {
   leerPerfilSeguridad,
@@ -115,6 +116,8 @@ function TarjetaApoyo({
   bloqueado = false,
   aviso,
   mensajeBloqueo,
+  mensajeRevision,
+  tipo = "general",
 }: {
   titulo: string;
   descripcion: string;
@@ -123,6 +126,8 @@ function TarjetaApoyo({
   bloqueado?: boolean;
   aviso?: string;
   mensajeBloqueo?: string;
+  mensajeRevision?: string;
+  tipo?: "general" | "fitoterapia";
 }) {
   const ejemplosLimpios = (ejemplos ?? []) as EjemploConEvidencia[];
   const elementosLimpios = limpiarElementos(elementos, ejemplosLimpios);
@@ -136,11 +141,15 @@ function TarjetaApoyo({
         </div>
       ) : (
         <>
-          <EjemplosEvidencia ejemplos={ejemplosLimpios} />
+          {mensajeRevision && <div style={estilos.revision}>{mensajeRevision}</div>}
+          <EjemplosEvidencia ejemplos={ejemplosLimpios} tipo={tipo} />
           {elementosLimpios.length > 0 ? (
             <ul style={estilos.listaPrincipal}>
               {elementosLimpios.map((e) => (
-                <li key={e}>{e}</li>
+                <li key={e} style={tipo === "fitoterapia" ? estilos.itemFitoterapia : undefined}>
+                  <div>{e}</div>
+                  {tipo === "fitoterapia" && <FichaVademecumInline texto={e} />}
+                </li>
               ))}
             </ul>
           ) : null}
@@ -197,17 +206,16 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
   ]).slice(0, 5).join(" · ");
 
   const motivosPerfil = motivosRevisionFitoterapia(perfil);
-  const bloquearFitoterapia = bloquearIntervencionesNaturales || motivosPerfil.length > 0;
-  const mensajeBloqueoFitoterapia = bloquearIntervencionesNaturales
-    ? "La fitoterapia queda en segundo plano porque se han detectado señales que requieren valoración médica previa."
-    : `Antes de aplicar fitoterapia hay que revisar compatibilidad por: ${motivosPerfil.join(", ")}. La aplicación no asume que una planta sea compatible con la medicación o los antecedentes.`;
+  const mensajeRevisionFitoterapia = motivosPerfil.length > 0
+    ? `Información para revisar, no recomendación automática: el perfil contiene ${motivosPerfil.join(", ")}. Comprueba cada planta y preparado frente a la medicación y antecedentes antes de usarlo.`
+    : "Las fichas de Vademécum sirven para comprobar especie, parte usada, preparación e interacciones. Aun sin factores de riesgo declarados, no sustituyen la revisión individual.";
 
   return (
     <section style={estilos.contenedor}>
       <div style={estilos.introduccion}>
         <h3 style={{ marginTop: 0 }}>Posibles medidas de apoyo</h3>
         <p style={{ marginBottom: 0 }}>
-          Cada ejemplo indica qué respaldo tiene. <b>Uso tradicional</b> describe utilización histórica o naturopática y no significa eficacia clínica demostrada. En fitoterapia, la compatibilidad debe contrastarse con fuentes como Vademécum de Fitoterapia, EMA/ESCOP y la medicación real de la persona.
+          Cada ejemplo indica qué respaldo tiene. <b>Uso tradicional</b> describe utilización histórica o naturopática y no significa eficacia clínica demostrada. En fitoterapia, CuerpoClaro contrasta las plantas incorporadas con el Vademécum de Fitoterapia y la tabla EMA/ESCOP; si una ficha aún no está validada, la aplicación lo indica y no inventa dosis ni interacciones.
         </p>
       </div>
 
@@ -221,12 +229,14 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
         />
         <TarjetaApoyo
           titulo="🌿 Fitoterapia y suplementación"
-          descripcion="Plantas y suplementos concretos, incluyendo usos tradicionales cuando son relevantes, siempre identificados como tales."
+          descripcion="Plantas y preparados concretos. La especie, parte utilizada y forma farmacéutica importan: una infusión, un extracto y un aceite esencial no se consideran automáticamente equivalentes."
           elementos={fitoterapia}
           ejemplos={ejemplos.fitoterapia}
-          bloqueado={bloquearFitoterapia}
-          mensajeBloqueo={mensajeBloqueoFitoterapia}
-          aviso={precauciones ? `Precauciones: ${precauciones}` : undefined}
+          tipo="fitoterapia"
+          bloqueado={bloquearIntervencionesNaturales}
+          mensajeBloqueo="La fitoterapia queda en segundo plano porque se han detectado señales que requieren valoración médica previa."
+          mensajeRevision={mensajeRevisionFitoterapia}
+          aviso={precauciones ? `Precauciones de la ficha del cuadro: ${precauciones}` : undefined}
         />
       </div>
 
@@ -260,7 +270,9 @@ const estilos = {
   marco: { lineHeight: 1.55 },
   lista: { paddingLeft: "20px", lineHeight: 1.55 },
   listaPrincipal: { paddingLeft: "22px", lineHeight: 1.65, fontSize: "16px" },
+  itemFitoterapia: { marginBottom: 14 },
   nota: { marginBottom: 0, padding: "10px", borderRadius: "8px", background: "#fff8e6", fontSize: "14px", lineHeight: 1.45 },
+  revision: { margin: "12px 0", padding: "12px", borderRadius: "9px", background: "#eef7ff", border: "1px solid #b7d2e8", color: "#214f70", fontSize: "14px", lineHeight: 1.5 },
   bloqueo: { padding: "12px", borderRadius: "8px", background: "#fff0f0", border: "1px solid #efb8b8", lineHeight: 1.45 },
 };
 
