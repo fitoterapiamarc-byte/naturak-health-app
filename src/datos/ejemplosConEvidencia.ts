@@ -4,7 +4,6 @@ export interface EjemploConEvidencia {
   nombre: string;
   utilidad: string;
   evidencia: NivelEjemplo;
-  /** Campo opcional legado usado por el deduplicador. Los datos actuales usan `utilidad`. */
   detalle?: string;
 }
 
@@ -120,11 +119,92 @@ export const ejemplosConEvidencia: Record<string, EjemplosCondicion> = {
   },
   "hinchazon-gases": {
     nutricion: [
-      { nombre: "Reducir bebidas con gas", utilidad: "Puede disminuir la distensión por aire ingerido en personas sensibles.", evidencia: "moderada" },
-      { nombre: "Comer más despacio", utilidad: "Puede reducir aerofagia y distensión relacionada con la ingesta.", evidencia: "limitada" }
+      { nombre: "Kiwi", utilidad: "Puede favorecer el tránsito y reducir distensión relacionada con estreñimiento en algunas personas.", evidencia: "moderada" },
+      { nombre: "Avena", utilidad: "Su fibra soluble puede ser mejor tolerada que aumentos bruscos de salvado en algunas personas.", evidencia: "limitada" }
     ],
     fitoterapia: [
-      { nombre: "Menta piperita", utilidad: "Algunos preparados pueden aliviar espasmo y dolor abdominal, especialmente en síndrome de intestino irritable.", evidencia: "moderada" }
+      { nombre: "Aceite de menta entérico", utilidad: "Puede reducir dolor y distensión en algunos pacientes con síndrome de intestino irritable.", evidencia: "moderada" },
+      { nombre: "Hinojo", utilidad: "Se usa como carminativo, pero la evidencia clínica para hinchazón aislada es limitada.", evidencia: "limitada" }
+    ]
+  },
+  "hiperglucemia-diabetes-compatible": {
+    nutricion: [
+      { nombre: "Legumbres", utilidad: "Su fibra y proteína ayudan a moderar la respuesta glucémica cuando sustituyen alimentos refinados.", evidencia: "alta" },
+      { nombre: "Avena", utilidad: "Los beta-glucanos contribuyen a mejorar la respuesta glucémica y el perfil lipídico dentro de una dieta adecuada.", evidencia: "alta" },
+      { nombre: "Frutos secos", utilidad: "Pueden mejorar calidad de la dieta y algunos factores cardiometabólicos cuando sustituyen ultraprocesados.", evidencia: "moderada" }
+    ],
+    fitoterapia: [
+      { nombre: "Berberina", utilidad: "Puede reducir glucosa y HbA1c en algunos estudios, pero presenta interacciones y no debe sustituir tratamiento médico.", evidencia: "moderada" },
+      { nombre: "Canela", utilidad: "Puede producir pequeñas mejoras de glucosa en algunos estudios, con resultados inconsistentes.", evidencia: "limitada" }
+    ]
+  },
+  "hipotiroidismo-compatible": {
+    nutricion: [
+      { nombre: "Pescado, huevos y lácteos", utilidad: "Aportan yodo y otros nutrientes relevantes dentro de una dieta equilibrada.", evidencia: "alta" },
+      { nombre: "Nueces de Brasil", utilidad: "Aportan selenio, pero su contenido es muy variable y no deben usarse como una dosis terapéutica precisa.", evidencia: "limitada" }
+    ],
+    fitoterapia: [
+      { nombre: "Algas ricas en yodo", utilidad: "No se recomiendan como tratamiento rutinario porque el exceso de yodo puede empeorar alteraciones tiroideas.", evidencia: "alta" }
+    ]
+  },
+  "insomnio-compatible": {
+    nutricion: [
+      { nombre: "Reducir cafeína", utilidad: "Disminuir café, té, cola y energéticas varias horas antes de dormir puede mejorar el sueño en personas sensibles.", evidencia: "alta" }
+    ],
+    fitoterapia: [
+      { nombre: "Valeriana (Valeriana officinalis)", utilidad: "Puede mejorar modestamente la calidad subjetiva del sueño en algunas personas, pero los resultados son variables.", evidencia: "limitada" },
+      { nombre: "Melatonina", utilidad: "Es útil sobre todo en problemas de ritmo circadiano y jet lag; su efecto en insomnio crónico general es más modesto.", evidencia: "moderada" }
+    ]
+  },
+  "psoriasis-compatible": {
+    nutricion: [
+      { nombre: "Patrón mediterráneo", utilidad: "Puede ayudar al control del peso y del riesgo cardiometabólico asociado a psoriasis.", evidencia: "moderada" },
+      { nombre: "Pescado azul", utilidad: "Aporta omega-3; el posible efecto directo sobre la psoriasis es variable.", evidencia: "limitada" }
+    ],
+    fitoterapia: [
+      { nombre: "Aloe vera tópico", utilidad: "Algunas formulaciones han mostrado mejoría de placas leves, pero la evidencia es limitada y depende del producto.", evidencia: "limitada" },
+      { nombre: "Cúrcuma/curcumina", utilidad: "Se estudia como complemento, pero la evidencia clínica todavía es insuficiente para recomendarla como tratamiento estándar.", evidencia: "insuficiente" }
+    ]
+  },
+  "dermatitis-eczema": {
+    nutricion: [
+      { nombre: "Dieta variada sin exclusiones innecesarias", utilidad: "Evitar restricciones sin alergia demostrada reduce el riesgo de déficits nutricionales.", evidencia: "alta" }
+    ],
+    fitoterapia: [
+      { nombre: "Avena coloidal tópica", utilidad: "Puede ayudar a aliviar picor y sequedad como complemento del cuidado de la barrera cutánea.", evidencia: "moderada" }
+    ]
+  },
+  "gingivitis-periodontal-compatible": {
+    nutricion: [
+      { nombre: "Reducir azúcares libres frecuentes", utilidad: "Disminuye uno de los principales factores dietéticos relacionados con caries y favorece salud oral global.", evidencia: "alta" },
+      { nombre: "Frutas y verduras ricas en vitamina C", utilidad: "Ayudan a cubrir necesidades de vitamina C; una deficiencia puede empeorar la salud gingival.", evidencia: "alta" }
+    ],
+    fitoterapia: [
+      { nombre: "Té verde", utilidad: "Algunos colutorios o extractos se han estudiado como complemento para placa y gingivitis, pero no sustituyen higiene profesional.", evidencia: "limitada" }
+    ]
+  },
+  "aftas-orales-compatible": {
+    nutricion: [
+      { nombre: "Hierro, B12 y folato", utilidad: "Corregir déficits confirmados puede ayudar cuando las aftas recurrentes están asociadas a dichas carencias.", evidencia: "alta" }
+    ],
+    fitoterapia: [
+      { nombre: "Aloe vera tópico oral", utilidad: "Algunos preparados pueden reducir dolor o tiempo de curación, aunque la evidencia es limitada.", evidencia: "limitada" }
+    ]
+  },
+  "candidiasis-oral-compatible": {
+    nutricion: [
+      { nombre: "Control glucémico si existe diabetes", utilidad: "Un buen control de glucosa puede reducir factores que favorecen candidiasis recurrente.", evidencia: "alta" }
+    ],
+    fitoterapia: [
+      { nombre: "Remedios herbales", utilidad: "No hay una planta con evidencia suficiente para sustituir los antifúngicos indicados en candidiasis oral.", evidencia: "insuficiente" }
+    ]
+  },
+  "absceso-dental-compatible": {
+    nutricion: [
+      { nombre: "Alimentos blandos", utilidad: "Pueden facilitar la ingesta mientras se recibe tratamiento odontológico, pero no tratan la infección.", evidencia: "moderada" }
+    ],
+    fitoterapia: [
+      { nombre: "Clavo / aceite de clavo", utilidad: "Puede producir alivio local transitorio del dolor, pero no cura el absceso y puede irritar la mucosa si se usa mal.", evidencia: "limitada" }
     ]
   }
 };
