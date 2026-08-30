@@ -7,6 +7,7 @@ let motor;
 let alarmas;
 let opciones;
 let seguimiento;
+let consejos;
 
 before(async () => {
   vite = await createServer({ server: { middlewareMode: true }, appType: "custom" });
@@ -14,6 +15,7 @@ before(async () => {
   alarmas = await vite.ssrLoadModule("/src/evaluacion/senalesAlarmaGlobales.ts");
   opciones = await vite.ssrLoadModule("/src/evaluacion/opcionesEvaluacion.ts");
   seguimiento = await vite.ssrLoadModule("/src/evaluacion/preguntasSeguimiento.ts");
+  consejos = await vite.ssrLoadModule("/src/evaluacion/consejosSintoma.ts");
 });
 
 after(async () => {
@@ -114,4 +116,19 @@ test("Ninguno es excluyente y queda separado entre preguntas", () => {
   respuestas = seguimiento.alternarRespuestaSeguimiento(respuestas, preguntaCefalea, "Desmayo");
   assert.deepEqual(respuestas[preguntaCefalea.id], ["Desmayo"]);
   assert.deepEqual(respuestas[preguntaVertigo.id], ["Ninguno"]);
+});
+
+test("el dolor de espalda aislado recibe autocuidado sin inventar una enfermedad", () => {
+  const resultados = motor.orientarPorSintomas(["Dolor de espalda"]);
+  const orientaciones = consejos.obtenerConsejosSintoma(["Dolor de espalda", "Ninguno"]);
+  assert.deepEqual(resultados, []);
+  assert.equal(orientaciones.length, 1);
+  assert.equal(orientaciones[0].id, "dolor-espalda-simple");
+  assert.equal(orientaciones[0].autocuidado.length > 0, true);
+  assert.equal(orientaciones[0].urgente.length > 0, true);
+});
+
+test("la orientación general de espalda no se duplica", () => {
+  const orientaciones = consejos.obtenerConsejosSintoma(["Dolor de espalda", "Dolor lumbar"]);
+  assert.equal(orientaciones.length, 1);
 });
