@@ -70,11 +70,12 @@ function App() {
       </section>
 
       <PerfilSalud />
-      <ModuloTensionArterial />
 
       <main style={{ padding: "30px", fontFamily: "Arial, sans-serif", background: "#f4f8f7", minHeight: "100vh" }}>
         <EvaluacionIntegral key={sesionEvaluacion} />
       </main>
+
+      <ModuloTensionArterial />
     </>
   );
 }
