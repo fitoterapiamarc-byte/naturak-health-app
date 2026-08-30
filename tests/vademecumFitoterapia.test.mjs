@@ -49,6 +49,13 @@ test("todos los alias recuperan su propia ficha", () => {
   }
 });
 
+test("los alias cortos solo coinciden como palabras completas", () => {
+  const { buscarFichaVademecum } = moduloVademecum;
+  assert.equal(buscarFichaVademecum("aceites esenciales"), undefined);
+  assert.equal(buscarFichaVademecum("calcio suplementario"), undefined);
+  assert.equal(buscarFichaVademecum("No usar sen durante periodos prolongados")?.id, "sen-hoja-fruto");
+});
+
 test("toda recomendación botánica concreta tiene ficha", async () => {
   const { buscarFichaVademecum, tipoConsultaSinFicha } = moduloVademecum;
   const archivos = [
@@ -109,5 +116,62 @@ test("las respuestas combinadas no repiten la misma planta", async () => {
       .map((ejemplo) => buscarFichaVademecum(ejemplo.nombre)?.id)
       .filter(Boolean);
     assert.equal(fichas.length, new Set(fichas).size, `Planta repetida en ${id}`);
+  }
+});
+
+test("la respuesta visible no repite una planta entre el destacado y la lista", async () => {
+  const { buscarFichaVademecum } = moduloVademecum;
+  const { obtenerEjemplos } = await vite.ssrLoadModule("/src/datos/obtenerEjemplos.ts");
+  const { limpiarElementos } = await vite.ssrLoadModule("/src/datos/depurarRecomendaciones.ts");
+  const { todasLasCondiciones } = await vite.ssrLoadModule("/src/datos/motorOrientacion.ts");
+  const { apoyoNutricionFitoterapia } = await vite.ssrLoadModule("/src/datos/apoyoNutricionFitoterapia.ts");
+  const { apoyoDermatologia } = await vite.ssrLoadModule("/src/datos/apoyoDermatologia.ts");
+  const { apoyoBucodental } = await vite.ssrLoadModule("/src/datos/apoyoBucodental.ts");
+
+  for (const condicion of todasLasCondiciones) {
+    const apoyo = apoyoNutricionFitoterapia[condicion.id]
+      ?? apoyoDermatologia[condicion.id]
+      ?? apoyoBucodental[condicion.id];
+    const ejemplos = obtenerEjemplos(condicion.id).fitoterapia ?? [];
+    const listaVisible = limpiarElementos(apoyo?.fitoterapia ?? condicion.fitoterapia, ejemplos);
+    const fichas = [
+      ...ejemplos.map((ejemplo) => buscarFichaVademecum(ejemplo.nombre)?.id),
+      ...listaVisible.map((texto) => buscarFichaVademecum(texto)?.id),
+    ].filter(Boolean);
+    assert.equal(fichas.length, new Set(fichas).size, `Planta visible repetida en ${condicion.id}`);
+  }
+});
+
+test("los cuadros equivalentes no aparecen dos veces en un mismo análisis", async () => {
+  const { depurarResultados, todasLasCondiciones } = await vite.ssrLoadModule("/src/datos/motorOrientacion.ts");
+  const familias = [
+    ["reflujo-erge", "reflujo-gastroesofagico-compatible"],
+    ["migrana", "migrena-aura-compatible"],
+    ["vertigo-posicional", "vertigo-posicional-compatible"],
+    ["ciatica", "ciatica-compatible"],
+    ["resfriado-viral", "infeccion-respiratoria-alta-compatible"],
+    ["bronquitis-aguda", "bronquitis-aguda-compatible"],
+    ["vesicula-biliar-compatible", "colecistitis-compatible"],
+    ["insuficiencia-venosa", "insuficiencia-venosa-compatible"],
+    ["sinusitis-compatible", "rinosinusitis-aguda-compatible"],
+    ["hiperplasia-benigna-prostata-compatible", "hiperplasia-prostatica-compatible"],
+    ["anemia-compatible", "anemia-perniciosa-compatible"],
+    ["tendinitis-compatible", "tendinopatia-aquiles-compatible"],
+  ];
+
+  for (const ids of familias) {
+    const cuadros = todasLasCondiciones.filter((condicion) => ids.includes(condicion.id));
+    assert.equal(cuadros.length, ids.length, `Falta una ficha de la familia ${ids.join(" / ")}`);
+    const resultados = cuadros.map((condicion) => ({
+      condicion,
+      coincidencias: [],
+      contradicciones: [],
+      senalesAlarmaDetectadas: [],
+      puntuacion: 1,
+      confianza: 1,
+      requiereValoracionMedica: false,
+    }));
+    const visibles = depurarResultados(resultados).filter((resultado) => ids.includes(resultado.condicion.id));
+    assert.equal(visibles.length, 1, `La familia se repite: ${ids.join(" / ")}`);
   }
 });

@@ -314,7 +314,7 @@ export function buscarFichaVademecum(texto: string): FichaVademecumFitoterapia |
   const limpio = normalizar(texto);
   if (!limpio) return undefined;
   return aliasIndex.find(({ alias }) => alias === limpio)?.ficha
-    ?? aliasIndex.find(({ alias }) => limpio.includes(alias))?.ficha;
+    ?? aliasIndex.find(({ alias }) => ` ${limpio} `.includes(` ${alias} `))?.ficha;
 }
 
 const TERMINOS_NO_BOTANICOS = [
@@ -333,6 +333,7 @@ const TERMINOS_NO_BOTANICOS = [
 ];
 
 const CATEGORIAS_GENERALES = [
+  "aceites esenciales",
   "fitoterapia",
   "infusiones en el ojo",
   "plantas diuréticas",

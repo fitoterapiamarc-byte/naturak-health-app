@@ -5,9 +5,8 @@ import { apoyoDermatologia } from "../datos/apoyoDermatologia";
 import { apoyoBucodental } from "../datos/apoyoBucodental";
 import EjemplosEvidencia from "./EjemplosEvidencia";
 import FichaVademecumInline from "./FichaVademecumInline";
-import { buscarFichaVademecum } from "../datos/vademecumFitoterapia";
 import { obtenerEjemplos } from "../datos/obtenerEjemplos";
-import type { EjemploConEvidencia } from "../datos/ejemplosConEvidencia";
+import { limpiarElementos } from "../datos/depurarRecomendaciones";
 import {
   leerPerfilSeguridad,
   motivosRevisionFitoterapia,
@@ -26,52 +25,6 @@ const etiquetasEvidencia = {
   tradicional: "Uso tradicional",
   "no-establecida": "Evidencia todavía insuficiente",
 };
-
-function normalizar(t: string) {
-  return t
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-const stop = new Set(["de", "del", "la", "las", "el", "los", "y", "o", "en", "con", "sin", "para", "por", "un", "una", "que", "se", "puede", "pueden", "como", "al", "a"]);
-
-function tokens(t: string) {
-  return normalizar(t)
-    .split(" ")
-    .filter((x) => x.length > 2 && !stop.has(x));
-}
-
-function parecido(a: string, b: string) {
-  const A = new Set(tokens(a));
-  const B = new Set(tokens(b));
-  if (!A.size || !B.size) return false;
-  let comunes = 0;
-  A.forEach((x) => {
-    if (B.has(x)) comunes++;
-  });
-  const menor = Math.min(A.size, B.size);
-  return comunes >= 2 && comunes / menor >= 0.6;
-}
-
-function limpiarElementos(elementos: string[], ejemplos: EjemploConEvidencia[] = []) {
-  const salida: string[] = [];
-  for (const e of elementos) {
-    const fichaElemento = buscarFichaVademecum(e)?.id;
-    const repetidoEjemplo = ejemplos.some(
-      (x) => parecido(e, `${x.nombre} ${x.detalle ?? ""}`)
-        || normalizar(e).includes(normalizar(x.nombre))
-        || normalizar(x.nombre).includes(normalizar(e))
-        || Boolean(fichaElemento && buscarFichaVademecum(x.nombre)?.id === fichaElemento),
-    );
-    const repetidoLista = salida.some((x) => parecido(e, x) || normalizar(e) === normalizar(x));
-    if (!repetidoEjemplo && !repetidoLista) salida.push(e);
-  }
-  return salida;
-}
 
 function TarjetaApoyo({
   titulo,
@@ -94,7 +47,7 @@ function TarjetaApoyo({
   mensajeRevision?: string;
   tipo?: "general" | "fitoterapia";
 }) {
-  const ejemplosLimpios = (ejemplos ?? []) as EjemploConEvidencia[];
+  const ejemplosLimpios = ejemplos ?? [];
   const elementosLimpios = limpiarElementos(elementos, ejemplosLimpios);
   return (
     <article style={estilos.tarjetaApoyo}>
