@@ -69,15 +69,43 @@ function App() {
         </div>
       </section>
 
+      <nav
+        aria-label="Accesos principales"
+        style={{
+          maxWidth: "1100px",
+          margin: "14px auto 0",
+          padding: "0 18px",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "10px",
+          fontFamily: "Arial, sans-serif",
+        }}
+      >
+        <a href="#tension-arterial" style={estiloAcceso}>❤️ Registrar tensión arterial</a>
+        <a href="#evaluacion-sintomas" style={estiloAcceso}>🔎 Introducir síntomas</a>
+      </nav>
+
       <PerfilSalud />
 
-      <main style={{ padding: "30px", fontFamily: "Arial, sans-serif", background: "#f4f8f7", minHeight: "100vh" }}>
+      <div id="tension-arterial" style={{ scrollMarginTop: "16px" }}>
+        <ModuloTensionArterial />
+      </div>
+
+      <main id="evaluacion-sintomas" style={{ padding: "30px", fontFamily: "Arial, sans-serif", background: "#f4f8f7", minHeight: "100vh", scrollMarginTop: "16px" }}>
         <EvaluacionIntegral key={sesionEvaluacion} />
       </main>
-
-      <ModuloTensionArterial />
     </>
   );
 }
+
+const estiloAcceso: React.CSSProperties = {
+  padding: "14px 18px",
+  borderRadius: "12px",
+  background: "#216b4d",
+  color: "#ffffff",
+  textAlign: "center",
+  textDecoration: "none",
+  fontWeight: 800,
+};
 
 export default App;
