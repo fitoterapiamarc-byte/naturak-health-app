@@ -30,6 +30,32 @@ function App() {
     <>
       <Header />
       <section
+        aria-labelledby="titulo-seguridad"
+        style={{
+          maxWidth: "1100px",
+          boxSizing: "border-box",
+          margin: "16px auto 0",
+          padding: "clamp(16px, 4vw, 22px)",
+          borderRadius: "14px",
+          background: "#fff8e6",
+          border: "2px solid #d39a12",
+          color: "#5f4300",
+          fontFamily: "Arial, sans-serif",
+          lineHeight: 1.5,
+        }}
+      >
+        <h2 id="titulo-seguridad" style={{ margin: "0 0 10px", fontSize: "clamp(19px, 4vw, 23px)" }}>
+          ⚠️ Información de seguridad
+        </h2>
+        <ul style={{ margin: 0, paddingLeft: "22px", display: "grid", gap: "7px" }}>
+          <li><strong>Herramienta educativa y orientativa:</strong> no confirma diagnósticos ni prescribe tratamientos individualizados.</li>
+          <li><strong>No sustituye al profesional sanitario:</strong> ante síntomas persistentes, nuevos o preocupantes, consulta con un médico, farmacéutico u otro profesional cualificado.</li>
+          <li><strong>Fitoterapia y suplementos:</strong> pueden tener contraindicaciones e interacciones; revisa siempre tu medicación, enfermedades, embarazo o lactancia antes de utilizarlos.</li>
+          <li><strong>Emergencias:</strong> si existe dificultad respiratoria intensa, dolor fuerte en el pecho, pérdida de fuerza, confusión, desmayo u otra situación grave, llama al <strong>112 en España</strong>.</li>
+          <li><strong>Privacidad:</strong> la información se guarda localmente en este dispositivo. No introduzcas nombres, documentos, teléfonos, direcciones ni otros datos personales sensibles.</li>
+        </ul>
+      </section>
+      <section
         aria-label="Cobertura de la aplicación"
         style={{
           maxWidth: "1100px",
