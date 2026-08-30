@@ -7,8 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "test": "npm run test:tension && npm run test:vademecum",
+    "test": "npm run test:tension && npm run test:motor && npm run test:vademecum",
     "test:tension": "node --test --experimental-strip-types tests/tensionArterial.test.ts",
+    "test:motor": "node --test tests/motorOrientacion.test.mjs",
     "test:vademecum": "node --test tests/vademecumFitoterapia.test.mjs",
     "preview": "vite preview"
   },
