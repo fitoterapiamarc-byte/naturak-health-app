@@ -123,6 +123,27 @@ export const consejosSintoma: ConsejoSintoma[] = [
     fuentes: [{ nombre: "NHS · Feeling sick", url: "https://www.nhs.uk/symptoms/feeling-sick-nausea/" }],
   },
   {
+    id: "vomitos-leves",
+    titulo: "Consejos generales para vómitos leves y aislados",
+    activadores: ["Vómitos"],
+    descripcion: "Un episodio aislado de vómitos no permite conocer la causa. Estas medidas solo son orientativas si puedes mantener pequeños sorbos y no hay señales de alarma.",
+    autocuidado: [
+      "Toma pequeños sorbos de agua o solución de rehidratación oral con frecuencia; no fuerces grandes cantidades de una vez.",
+      "Cuando toleres líquidos, vuelve poco a poco a alimentos sencillos y evita temporalmente alcohol y comidas muy grasas.",
+      "Descansa y lávate las manos; no prepares comida para otras personas si sospechas una infección digestiva.",
+      "No uses plantas ni medicamentos contra el vómito por tu cuenta: pueden ser inadecuados según la causa, el embarazo, la medicación o la función renal.",
+    ],
+    consultar: [
+      "Si dura más de 24 horas, se repite, impide comer o beber o aparece pérdida de peso.",
+      "Si tienes diabetes, enfermedad renal o cardíaca, estás embarazada o tomas medicación importante.",
+    ],
+    urgente: [
+      "No puedes retener líquidos, orinas muy poco, tienes la boca muy seca, confusión o desmayo.",
+      "Vómito con sangre o aspecto de posos de café, heces negras, dolor abdominal intenso, dolor de pecho o rigidez de cuello.",
+    ],
+    fuentes: [{ nombre: "NHS · Diarrhoea and vomiting", url: "https://www.nhs.uk/symptoms/diarrhoea-and-vomiting/" }],
+  },
+  {
     id: "reflujo-simple",
     titulo: "Consejos generales para acidez o reflujo ocasional",
     activadores: ["Acidez", "Reflujo", "Regurgitación", "Quemazón retroesternal", "Ardor epigástrico", "Ardor después de comer"],

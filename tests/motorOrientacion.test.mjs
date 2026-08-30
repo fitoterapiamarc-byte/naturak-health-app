@@ -40,6 +40,7 @@ test("las características expresas sí permiten orientar una migraña", () => {
     "Dolor en un lado de la cabeza",
     "Sensibilidad intensa a la luz",
     "Náuseas",
+    "Vómitos",
   ]);
   assert.equal(resultados.some((resultado) => resultado.condicion.id.includes("migr")), true);
 });
@@ -175,6 +176,7 @@ test("las señales de alarma no reciben una ficha de autocuidado simple", () => 
     "Desmayo",
     "Sangre roja en las heces",
     "Sangre en la orina",
+    "Vómito con sangre",
   ];
   for (const dato of alarmasSinAutocuidado) {
     assert.deepEqual(
