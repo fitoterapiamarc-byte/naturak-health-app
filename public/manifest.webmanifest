@@ -1,0 +1,26 @@
+{
+  "name": "CuerpoClaro · Orientación de salud",
+  "short_name": "CuerpoClaro",
+  "description": "Orientación educativa de salud, nutrición y fitoterapia con seguimiento de tensión arterial.",
+  "lang": "es",
+  "start_url": "/naturak-health-app/",
+  "scope": "/naturak-health-app/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0b8f52",
+  "background_color": "#f4f8f7",
+  "icons": [
+    {
+      "src": "/naturak-health-app/mbm-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/naturak-health-app/mbm-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
