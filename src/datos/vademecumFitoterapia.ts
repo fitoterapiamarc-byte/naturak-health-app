@@ -1,3 +1,5 @@
+import { vademecumFitoterapiaAmpliacion } from "./vademecumFitoterapiaAmpliacion";
+
 export type NivelInteraccionVademecum = "seguir" | "valorar" | "monitorizar" | "evitar";
 
 export interface FichaVademecumFitoterapia {
@@ -13,7 +15,9 @@ export interface FichaVademecumFitoterapia {
     nivel: NivelInteraccionVademecum;
     resumen: string;
   };
-  fuenteVademecum: string;
+  fuenteVademecum?: string;
+  fuenteOficial?: string;
+  fuenteOficialEtiqueta?: string;
   fuenteInteracciones: string;
 }
 
@@ -289,6 +293,7 @@ export const vademecumFitoterapia: FichaVademecumFitoterapia[] = [
     fuenteVademecum: "https://www.fitoterapia.net/vademecum/plantas/hinojo.html",
     fuenteInteracciones: FUENTE_INTERACCIONES_2026,
   },
+  ...vademecumFitoterapiaAmpliacion,
 ];
 
 function normalizar(texto: string) {
@@ -308,5 +313,36 @@ const aliasIndex = vademecumFitoterapia
 export function buscarFichaVademecum(texto: string): FichaVademecumFitoterapia | undefined {
   const limpio = normalizar(texto);
   if (!limpio) return undefined;
-  return aliasIndex.find(({ alias }) => limpio.includes(alias) || alias.includes(limpio))?.ficha;
+  return aliasIndex.find(({ alias }) => alias === limpio)?.ficha
+    ?? aliasIndex.find(({ alias }) => limpio.includes(alias))?.ficha;
+}
+
+const TERMINOS_NO_BOTANICOS = [
+  "bicarbonato",
+  "calcio suplementario",
+  "compresas tibias",
+  "esteroles vegetales",
+  "hierro suplementario",
+  "magnesio",
+  "melatonina",
+  "probióticos",
+  "riboflavina",
+  "solución salina",
+  "vitamina b6",
+  "vitamina d",
+];
+
+const CATEGORIAS_GENERALES = [
+  "fitoterapia",
+  "infusiones en el ojo",
+  "plantas diuréticas",
+  "preparados herbales",
+  "remedios herbales",
+];
+
+export function tipoConsultaSinFicha(texto: string): "no-botanico" | "categoria-general" | "planta-sin-validar" {
+  const limpio = normalizar(texto);
+  if (TERMINOS_NO_BOTANICOS.some((termino) => limpio.includes(normalizar(termino)))) return "no-botanico";
+  if (CATEGORIAS_GENERALES.some((termino) => limpio.includes(normalizar(termino)))) return "categoria-general";
+  return "planta-sin-validar";
 }

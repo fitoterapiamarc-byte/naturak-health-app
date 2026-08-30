@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   calcularResumenTension,
+  eliminarLecturasDuplicadas,
   interpretarTension,
   type LecturaTension,
 } from "../src/datos/tensionArterial.ts";
@@ -42,3 +43,27 @@ test("calcula el promedio de los últimos siete días", () => {
   });
 });
 
+test("no muestra ni guarda dos veces la misma medición", () => {
+  const base: LecturaTension = {
+    id: "lectura-1",
+    fecha: "2026-08-30T08:00:00.000Z",
+    sistolica: 128,
+    diastolica: 79,
+    pulso: 66,
+    brazo: "izquierdo",
+    notas: "antes del desayuno",
+    nivel: "favorable",
+  };
+
+  const repetidaConOtroId = { ...base, id: "lectura-2" };
+  const segundaReal = {
+    ...base,
+    id: "lectura-3",
+    fecha: "2026-08-30T08:01:00.000Z",
+  };
+
+  assert.deepEqual(
+    eliminarLecturasDuplicadas([base, base, repetidaConOtroId, segundaReal]).map((lectura) => lectura.id),
+    ["lectura-1", "lectura-3"],
+  );
+});

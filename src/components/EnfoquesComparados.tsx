@@ -3,18 +3,11 @@ import type { Condicion, EnfoqueComparado } from "../datos/condiciones";
 import { apoyoNutricionFitoterapia } from "../datos/apoyoNutricionFitoterapia";
 import { apoyoDermatologia } from "../datos/apoyoDermatologia";
 import { apoyoBucodental } from "../datos/apoyoBucodental";
-import { ejemplosConEvidencia } from "../datos/ejemplosConEvidencia";
-import { ejemplosConEvidenciaExtra } from "../datos/ejemplosConEvidenciaExtra";
-import { ejemplosConEvidenciaComplementarios } from "../datos/ejemplosConEvidenciaComplementarios";
-import { ejemplosConEvidenciaComunes } from "../datos/ejemplosConEvidenciaComunes";
-import { ejemplosAmpliacion } from "../datos/ejemplosAmpliacion";
-import { ejemplosTradicionalesAmpliados } from "../datos/ejemplosTradicionalesAmpliados";
-import { ejemplosTradicionalesAmpliados2 } from "../datos/ejemplosTradicionalesAmpliados2";
-import { ejemplosTradicionalesAmpliados3 } from "../datos/ejemplosTradicionalesAmpliados3";
-import { ejemplosEmocionales } from "../datos/ejemplosEmocionales";
 import EjemplosEvidencia from "./EjemplosEvidencia";
 import FichaVademecumInline from "./FichaVademecumInline";
-import type { EjemploConEvidencia, EjemplosCondicion } from "../datos/ejemplosConEvidencia";
+import { buscarFichaVademecum } from "../datos/vademecumFitoterapia";
+import { obtenerEjemplos } from "../datos/obtenerEjemplos";
+import type { EjemploConEvidencia } from "../datos/ejemplosConEvidencia";
 import {
   leerPerfilSeguridad,
   motivosRevisionFitoterapia,
@@ -64,48 +57,20 @@ function parecido(a: string, b: string) {
   return comunes >= 2 && comunes / menor >= 0.6;
 }
 
-function unir(lista: (EjemploConEvidencia[] | undefined)[]) {
-  const salida: EjemploConEvidencia[] = [];
-  lista
-    .flatMap((x) => x ?? [])
-    .forEach((e) => {
-      const texto = `${e.nombre} ${e.detalle ?? ""}`;
-      if (!salida.some((x) => parecido(texto, `${x.nombre} ${x.detalle ?? ""}`) || normalizar(x.nombre) === normalizar(e.nombre))) {
-        salida.push(e);
-      }
-    });
-  return salida;
-}
-
 function limpiarElementos(elementos: string[], ejemplos: EjemploConEvidencia[] = []) {
   const salida: string[] = [];
   for (const e of elementos) {
+    const fichaElemento = buscarFichaVademecum(e)?.id;
     const repetidoEjemplo = ejemplos.some(
-      (x) => parecido(e, `${x.nombre} ${x.detalle ?? ""}`) || normalizar(e).includes(normalizar(x.nombre)) || normalizar(x.nombre).includes(normalizar(e)),
+      (x) => parecido(e, `${x.nombre} ${x.detalle ?? ""}`)
+        || normalizar(e).includes(normalizar(x.nombre))
+        || normalizar(x.nombre).includes(normalizar(e))
+        || Boolean(fichaElemento && buscarFichaVademecum(x.nombre)?.id === fichaElemento),
     );
     const repetidoLista = salida.some((x) => parecido(e, x) || normalizar(e) === normalizar(x));
     if (!repetidoEjemplo && !repetidoLista) salida.push(e);
   }
   return salida;
-}
-
-function obtenerEjemplos(id: string): EjemplosCondicion {
-  const fuentes = [
-    ejemplosConEvidencia[id],
-    ejemplosConEvidenciaExtra[id],
-    ejemplosConEvidenciaComplementarios[id],
-    ejemplosConEvidenciaComunes[id],
-    ejemplosAmpliacion[id],
-    ejemplosTradicionalesAmpliados[id],
-    ejemplosTradicionalesAmpliados2[id],
-    ejemplosTradicionalesAmpliados3[id],
-    ejemplosEmocionales[id],
-  ].filter(Boolean) as EjemplosCondicion[];
-
-  return {
-    nutricion: unir(fuentes.map((f) => f.nutricion)),
-    fitoterapia: unir(fuentes.map((f) => f.fitoterapia)),
-  };
 }
 
 function TarjetaApoyo({

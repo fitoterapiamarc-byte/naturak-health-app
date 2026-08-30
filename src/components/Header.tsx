@@ -12,9 +12,7 @@ function Header() {
     >
       <div>
         <h1 style={{ margin: 0 }}>🌿 CuerpoClaro</h1>
-        <p style={{ margin: 0 }}>
-          Escucha las señales de tu cuerpo
-        </p>
+        <p style={{ margin: 0 }}>Escucha las señales de tu cuerpo</p>
       </div>
 
       <div

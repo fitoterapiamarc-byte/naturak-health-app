@@ -38,6 +38,27 @@ export type ResumenTension = {
 
 export const CLAVE_LECTURAS_TENSION = "cuerpoclaro-tension-lecturas-v1";
 
+export function eliminarLecturasDuplicadas(lecturas: LecturaTension[]): LecturaTension[] {
+  const ids = new Set<string>();
+  const contenidos = new Set<string>();
+
+  return lecturas.filter((lectura) => {
+    const contenido = [
+      lectura.fecha,
+      lectura.sistolica,
+      lectura.diastolica,
+      lectura.pulso ?? "",
+      lectura.brazo ?? "",
+      lectura.notas?.trim() ?? "",
+    ].join("|");
+
+    if (ids.has(lectura.id) || contenidos.has(contenido)) return false;
+    ids.add(lectura.id);
+    contenidos.add(contenido);
+    return true;
+  });
+}
+
 const sinDatos: ResultadoTension = {
   nivel: "sin-datos",
   titulo: "Introduce las dos cifras",
@@ -178,4 +199,3 @@ export function calcularResumenTension(
     desde: limite.toISOString(),
   };
 }
-

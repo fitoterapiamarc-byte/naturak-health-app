@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import {
   calcularResumenTension,
   CLAVE_LECTURAS_TENSION,
+  eliminarLecturasDuplicadas,
   interpretarTension,
   type LecturaTension,
   type NivelTension,
@@ -54,7 +55,7 @@ function leerLecturas(): LecturaTension[] {
   try {
     const guardadas = JSON.parse(localStorage.getItem(CLAVE_LECTURAS_TENSION) ?? "[]");
     if (!Array.isArray(guardadas)) return [];
-    return guardadas
+    return eliminarLecturasDuplicadas(guardadas
       .filter(
         (lectura): lectura is LecturaTension =>
           lectura &&
@@ -62,7 +63,7 @@ function leerLecturas(): LecturaTension[] {
           typeof lectura.fecha === "string" &&
           typeof lectura.sistolica === "number" &&
           typeof lectura.diastolica === "number",
-      )
+      ))
       .sort((a, b) => b.fecha.localeCompare(a.fecha));
   } catch {
     return [];
@@ -167,7 +168,8 @@ export default function ModuloTensionArterial() {
       notas: notas.trim(),
       nivel: resultado.nivel,
     };
-    const siguientes = [lectura, ...lecturas].sort((a, b) => b.fecha.localeCompare(a.fecha));
+    const siguientes = eliminarLecturasDuplicadas([lectura, ...lecturas])
+      .sort((a, b) => b.fecha.localeCompare(a.fecha));
     setLecturas(siguientes);
     guardarLecturas(siguientes);
     setGuardada(true);

@@ -1,4 +1,9 @@
-import { buscarFichaVademecum, type NivelInteraccionVademecum } from "../datos/vademecumFitoterapia";
+import {
+  buscarFichaVademecum,
+  FUENTE_INTERACCIONES_2026,
+  tipoConsultaSinFicha,
+  type NivelInteraccionVademecum,
+} from "../datos/vademecumFitoterapia";
 
 const etiquetaNivel: Record<NivelInteraccionVademecum, string> = {
   seguir: "Sin interacción descrita en la fuente",
@@ -18,10 +23,15 @@ export default function FichaVademecumInline({ texto }: { texto: string }) {
   const ficha = buscarFichaVademecum(texto);
 
   if (!ficha) {
+    const tipo = tipoConsultaSinFicha(texto);
     return (
       <div style={s.pendiente}>
-        <b>Vademécum: pendiente de validación específica.</b>
-        <div>No se muestra una dosis ni una interacción automática para este preparado hasta contrastar especie, parte usada y preparación concreta.</div>
+        <b>{tipo === "no-botanico" ? "Vademécum botánico: no aplicable." : "Vademécum: falta identificar o validar la planta concreta."}</b>
+        <div>
+          {tipo === "no-botanico"
+            ? "Este elemento es un nutriente, microorganismo, medida física o categoría general; necesita su propia ficha de seguridad, no una monografía de planta."
+            : "No se muestra una dosis ni una interacción automática hasta contrastar especie, parte usada y preparación concreta."}
+        </div>
       </div>
     );
   }
@@ -50,9 +60,15 @@ export default function FichaVademecumInline({ texto }: { texto: string }) {
           <div>{ficha.interaccion.resumen}</div>
         </div>
         <div style={s.fuentes}>
-          <a href={ficha.fuenteVademecum} target="_blank" rel="noreferrer">Vademécum de Fitoterapia</a>
-          <span> · </span>
-          <a href={ficha.fuenteInteracciones} target="_blank" rel="noreferrer">Tabla de interacciones EMA/ESCOP (30/06/2026)</a>
+          {ficha.fuenteVademecum && (
+            <><a href={ficha.fuenteVademecum} target="_blank" rel="noreferrer">Vademécum de Fitoterapia</a><span> · </span></>
+          )}
+          {ficha.fuenteOficial && (
+            <><a href={ficha.fuenteOficial} target="_blank" rel="noreferrer">{ficha.fuenteOficialEtiqueta ?? (ficha.fuenteOficial.includes("ema.europa.eu") ? "Monografía EMA/HMPC" : "Ficha oficial NCCIH/NIH")}</a><span> · </span></>
+          )}
+          <a href={ficha.fuenteInteracciones} target="_blank" rel="noreferrer">
+            {ficha.fuenteInteracciones === FUENTE_INTERACCIONES_2026 ? "Interacciones EMA/ESCOP" : "Seguridad e interacciones"}
+          </a>
         </div>
       </div>
     </details>
