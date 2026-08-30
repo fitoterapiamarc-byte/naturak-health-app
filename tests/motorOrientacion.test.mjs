@@ -132,3 +132,66 @@ test("la orientación general de espalda no se duplica", () => {
   const orientaciones = consejos.obtenerConsejosSintoma(["Dolor de espalda", "Dolor lumbar"]);
   assert.equal(orientaciones.length, 1);
 });
+
+test("los síntomas comunes aislados tienen autocuidado educativo", () => {
+  const casos = [
+    "Dolor de cabeza",
+    "Dolor de cuello",
+    "Dolor de garganta",
+    "Tos seca",
+    "Congestión nasal",
+    "Náuseas",
+    "Acidez",
+    "Gases",
+    "Estreñimiento",
+    "Heces líquidas",
+    "Mareo",
+    "Cansancio",
+    "Insomnio",
+    "Picor",
+    "Dolor muscular",
+    "Dolor articular",
+    "Regla dolorosa",
+    "Orina oscura",
+    "Boca seca",
+    "Ansiedad",
+  ];
+  for (const dato of casos) {
+    assert.equal(
+      consejos.obtenerConsejosSintoma([dato]).length > 0,
+      true,
+      `Falta orientación general para: ${dato}`,
+    );
+  }
+});
+
+test("las señales de alarma no reciben una ficha de autocuidado simple", () => {
+  const alarmasSinAutocuidado = [
+    "Dolor de cabeza súbito e intenso",
+    "Dolor lumbar intenso",
+    "Dolor de pecho",
+    "Falta de aire",
+    "Pérdida de fuerza",
+    "Desmayo",
+    "Sangre roja en las heces",
+    "Sangre en la orina",
+  ];
+  for (const dato of alarmasSinAutocuidado) {
+    assert.deepEqual(
+      consejos.obtenerConsejosSintoma([dato]),
+      [],
+      `Una señal de alarma recibió autocuidado simple: ${dato}`,
+    );
+  }
+});
+
+test("todas las fichas de autocuidado tienen seguridad y fuentes", () => {
+  assert.equal(consejos.consejosSintoma.length >= 20, true);
+  for (const consejo of consejos.consejosSintoma) {
+    assert.equal(consejo.autocuidado.length > 0, true, consejo.id);
+    assert.equal(consejo.consultar.length > 0, true, consejo.id);
+    assert.equal(consejo.urgente.length > 0, true, consejo.id);
+    assert.equal(consejo.fuentes.length > 0, true, consejo.id);
+    for (const fuente of consejo.fuentes) assert.match(fuente.url, /^https:\/\//);
+  }
+});
