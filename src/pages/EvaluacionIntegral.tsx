@@ -1,8 +1,8 @@
 import { useMemo, useState } from "react";
 import EnfoquesComparados from "../components/EnfoquesComparados";
 import { orientarPorSintomas, type ResultadoOrientacion } from "../datos/motorOrientacion";
-import { categoriasEvaluacion } from "../evaluacion/opcionesEvaluacion";
-import { preguntasSeguimiento } from "../evaluacion/preguntasSeguimiento";
+import { categoriasEvaluacion, opcionesNormales } from "../evaluacion/opcionesEvaluacion";
+import { alternarRespuestaSeguimiento, preguntasSeguimiento, type RespuestasSeguimiento } from "../evaluacion/preguntasSeguimiento";
 import { detectarAlarmasGlobales, type SenalAlarmaGlobal } from "../evaluacion/senalesAlarmaGlobales";
 
 function normalizar(texto:string){return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
@@ -10,15 +10,24 @@ function normalizar(texto:string){return texto.toLowerCase().normalize("NFD").re
 function EvaluacionIntegral() {
   const [categoriaAbierta,setCategoriaAbierta]=useState<string|null>(null);
   const [seleccionados,setSeleccionados]=useState<string[]>([]);
-  const [respuestasSeguimiento,setRespuestasSeguimiento]=useState<string[]>([]);
+  const [respuestasSeguimiento,setRespuestasSeguimiento]=useState<RespuestasSeguimiento>({});
   const [detalles,setDetalles]=useState("");
   const [resultados,setResultados]=useState<ResultadoOrientacion[]>([]);
   const [alarmasGlobales,setAlarmasGlobales]=useState<SenalAlarmaGlobal[]>([]);
   const [analizado,setAnalizado]=useState(false);
   const [busqueda,setBusqueda]=useState("");
 
-  const alternar=(opcion:string,setter:React.Dispatch<React.SetStateAction<string[]>>)=>{setter(actuales=>actuales.includes(opcion)?actuales.filter(e=>e!==opcion):[...actuales,opcion]);setAnalizado(false)};
-  const limpiarSeleccion=()=>{setSeleccionados([]);setRespuestasSeguimiento([]);setDetalles("");setResultados([]);setAlarmasGlobales([]);setAnalizado(false);setBusqueda("");setCategoriaAbierta(null);window.scrollTo({top:0,behavior:"smooth"})};
+  const alternarOpcionCategoria=(opcion:string,categoria:(typeof categoriasEvaluacion)[number])=>{
+    const opcionesCategoria=categoriasEvaluacion.find(elemento=>elemento.id===categoria.id)?.opciones??categoria.opciones;
+    setSeleccionados(actuales=>{
+      if(actuales.includes(opcion))return actuales.filter(elemento=>elemento!==opcion);
+      const normal=opcionesCategoria.find(elemento=>opcionesNormales.has(elemento));
+      if(opcionesNormales.has(opcion))return [...actuales.filter(elemento=>!opcionesCategoria.includes(elemento)),opcion];
+      return [...actuales.filter(elemento=>elemento!==normal),opcion];
+    });
+    setAnalizado(false);
+  };
+  const limpiarSeleccion=()=>{setSeleccionados([]);setRespuestasSeguimiento({});setDetalles("");setResultados([]);setAlarmasGlobales([]);setAnalizado(false);setBusqueda("");setCategoriaAbierta(null);window.scrollTo({top:0,behavior:"smooth"})};
 
   const categoriasFiltradas=useMemo(()=>{
     const q=normalizar(busqueda.trim());
@@ -27,11 +36,12 @@ function EvaluacionIntegral() {
   },[busqueda]);
   const coincidenciasBusqueda=busqueda.trim()?categoriasFiltradas.reduce((t,c)=>t+c.opciones.length,0):0;
   const preguntasActivas=preguntasSeguimiento.filter(p=>p.activadores.some(a=>seleccionados.includes(a)));
+  const respuestasActivas=preguntasActivas.flatMap(p=>respuestasSeguimiento[p.id]??[]);
 
-  const analizarEvaluacion=()=>{const datosAdicionales=detalles.split(/,|\n/).map(d=>d.trim()).filter(Boolean);const todos=[...seleccionados,...respuestasSeguimiento,...datosAdicionales];setAlarmasGlobales(detectarAlarmasGlobales(todos));setResultados(orientarPorSintomas(todos));setAnalizado(true);setTimeout(()=>document.getElementById("resultados-evaluacion")?.scrollIntoView({behavior:"smooth",block:"start"}),50)};
-  const sinDatos=seleccionados.length===0&&respuestasSeguimiento.length===0&&detalles.trim()==="";
+  const analizarEvaluacion=()=>{const datosAdicionales=detalles.split(/,|\n/).map(d=>d.trim()).filter(Boolean);const todos=[...seleccionados,...respuestasActivas,...datosAdicionales].filter(dato=>!opcionesNormales.has(dato)&&dato!=="Ninguno");setAlarmasGlobales(detectarAlarmasGlobales(todos));setResultados(orientarPorSintomas(todos));setAnalizado(true);setTimeout(()=>document.getElementById("resultados-evaluacion")?.scrollIntoView({behavior:"smooth",block:"start"}),50)};
+  const sinDatos=seleccionados.length===0&&respuestasActivas.length===0&&detalles.trim()==="";
   const existeAlarmaPrioritaria=alarmasGlobales.some(a=>a.nivel==="urgente"||a.nivel==="prioritaria");
-  const totalMarcados=seleccionados.length+respuestasSeguimiento.length;
+  const totalMarcados=seleccionados.length+respuestasActivas.length;
 
   return <section style={estilos.contenedor}>
     <div style={estilos.cabecera}><div><h2 style={estilos.titulo}>Evaluación integral</h2><p style={estilos.intro}>Busca un síntoma o abre una categoría. Marca todo lo que coincida contigo y después pulsa analizar.</p></div><div style={estilos.contador}>{totalMarcados}<small> marcados</small></div></div>
@@ -39,11 +49,11 @@ function EvaluacionIntegral() {
     <div style={estilos.buscadorCaja}><span style={estilos.lupa}>🔎</span><input value={busqueda} onChange={e=>setBusqueda(e.target.value)} placeholder="Buscar síntoma: mareo, dolor, picor..." style={estilos.buscador} aria-label="Buscar síntomas"/>{busqueda&&<button onClick={()=>setBusqueda("")} style={estilos.borrarBusqueda} aria-label="Borrar búsqueda">✕</button>}</div>
     {busqueda&&<div style={estilos.resultadoBusqueda}>{coincidenciasBusqueda>0?`${coincidenciasBusqueda} opciones encontradas`:`No encuentro ese síntoma en las opciones. Puedes escribirlo más abajo en “Añadir detalle”.`}</div>}
 
-    {totalMarcados>0&&<div style={estilos.seleccionBarra}><div style={estilos.chips}>{[...seleccionados,...respuestasSeguimiento].slice(0,8).map(x=><span key={x} style={estilos.chip}>✓ {x}</span>)}{totalMarcados>8&&<span style={estilos.chip}>+{totalMarcados-8} más</span>}</div><button onClick={limpiarSeleccion} style={estilos.limpiar}>Limpiar todo</button></div>}
+    {totalMarcados>0&&<div style={estilos.seleccionBarra}><div style={estilos.chips}>{[...seleccionados,...respuestasActivas].slice(0,8).map((x,i)=><span key={`${x}-${i}`} style={estilos.chip}>✓ {x}</span>)}{totalMarcados>8&&<span style={estilos.chip}>+{totalMarcados-8} más</span>}</div><button onClick={limpiarSeleccion} style={estilos.limpiar}>Limpiar todo</button></div>}
 
-    <div style={estilos.categorias}>{categoriasFiltradas.map(c=>{const abierta=busqueda.trim()?true:categoriaAbierta===c.id;return <div key={c.id} style={estilos.categoriaBloque}><button type="button" onClick={()=>!busqueda.trim()&&setCategoriaAbierta(abierta?null:c.id)} style={{...estilos.botonCategoria,background:abierta?"#0b8f52":"#fff",color:abierta?"#fff":"#183128"}}><span style={estilos.icono}>{c.icono}</span><span>{c.titulo}</span><span>{abierta?"▲":"▼"}</span></button>{abierta&&<div style={estilos.cuadriculaOpciones}>{c.opciones.map(o=><BotonOpcion key={o} texto={o} seleccionado={seleccionados.includes(o)} alPulsar={()=>alternar(o,setSeleccionados)}/>)}</div>}</div>})}</div>
+    <div style={estilos.categorias}>{categoriasFiltradas.map(c=>{const abierta=busqueda.trim()?true:categoriaAbierta===c.id;return <div key={c.id} style={estilos.categoriaBloque}><button type="button" onClick={()=>!busqueda.trim()&&setCategoriaAbierta(abierta?null:c.id)} style={{...estilos.botonCategoria,background:abierta?"#0b8f52":"#fff",color:abierta?"#fff":"#183128"}}><span style={estilos.icono}>{c.icono}</span><span>{c.titulo}</span><span>{abierta?"▲":"▼"}</span></button>{abierta&&<div style={estilos.cuadriculaOpciones}>{c.opciones.map(o=><BotonOpcion key={o} texto={o} seleccionado={seleccionados.includes(o)} alPulsar={()=>alternarOpcionCategoria(o,c)}/>)}</div>}</div>})}</div>
 
-    {preguntasActivas.length>0&&<section style={estilos.seguimiento}><h2>Preguntas para afinar</h2><p>Marca solo las respuestas que coincidan contigo.</p>{preguntasActivas.map(p=><div key={p.id} style={{...estilos.pregunta,borderColor:p.esAlarma?"#e0a000":"#cfe5d8"}}><h3>{p.texto}</h3>{p.esAlarma&&<p style={estilos.textoAlarma}>⚠️ Esta pregunta ayuda a detectar señales que pueden requerir valoración médica.</p>}<div style={estilos.cuadriculaOpciones}>{p.opciones.map(o=><BotonOpcion key={`${p.id}-${o}`} texto={o} seleccionado={respuestasSeguimiento.includes(o)} alPulsar={()=>alternar(o,setRespuestasSeguimiento)}/>)}</div></div>)}</section>}
+    {preguntasActivas.length>0&&<section style={estilos.seguimiento}><h2>Preguntas para afinar</h2><p>Marca solo las respuestas que coincidan contigo.</p>{preguntasActivas.map(p=><div key={p.id} style={{...estilos.pregunta,borderColor:p.esAlarma?"#e0a000":"#cfe5d8"}}><h3>{p.texto}</h3>{p.esAlarma&&<p style={estilos.textoAlarma}>⚠️ Esta pregunta ayuda a detectar señales que pueden requerir valoración médica.</p>}<div style={estilos.cuadriculaOpciones}>{p.opciones.map(o=><BotonOpcion key={`${p.id}-${o}`} texto={o} seleccionado={(respuestasSeguimiento[p.id]??[]).includes(o)} alPulsar={()=>{setRespuestasSeguimiento(actuales=>alternarRespuestaSeguimiento(actuales,p,o));setAnalizado(false)}}/>)}</div></div>)}</section>}
 
     <div style={estilos.detalleCaja}><label><strong>¿No encuentras algo? Añade un detalle</strong></label><textarea value={detalles} onChange={e=>{setDetalles(e.target.value);setAnalizado(false)}} placeholder="Por ejemplo: empezó ayer, empeora al comer..." rows={3} style={estilos.textarea}/></div>
 

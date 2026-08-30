@@ -6,6 +6,26 @@ export interface PreguntaSeguimiento {
   esAlarma?: boolean;
 }
 
+export type RespuestasSeguimiento = Record<string, string[]>;
+
+export function alternarRespuestaSeguimiento(
+  actuales: RespuestasSeguimiento,
+  pregunta: PreguntaSeguimiento,
+  opcion: string,
+): RespuestasSeguimiento {
+  const seleccionadas = actuales[pregunta.id] ?? [];
+  const nuevas = seleccionadas.includes(opcion)
+    ? seleccionadas.filter((elemento) => elemento !== opcion)
+    : opcion === "Ninguno"
+      ? [opcion]
+      : [...seleccionadas.filter((elemento) => elemento !== "Ninguno"), opcion];
+
+  const resultado = { ...actuales };
+  if (nuevas.length === 0) delete resultado[pregunta.id];
+  else resultado[pregunta.id] = nuevas;
+  return resultado;
+}
+
 export const preguntasSeguimiento: PreguntaSeguimiento[] = [
   {
     id: "dolor-pecho-tipo",

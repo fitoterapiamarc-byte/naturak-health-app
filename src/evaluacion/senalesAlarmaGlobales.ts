@@ -30,8 +30,16 @@ export const senalesAlarmaGlobales:SenalAlarmaGlobal[]=[
 {id:"embolia-pulmonar",activadores:[],nivel:"urgente",titulo:"Posible embolia pulmonar",mensaje:"La combinación de signos de posible trombosis en una pierna con falta de aire, dolor de pecho, desmayo o dolor al respirar requiere atención médica urgente."},
 {id:"perdida-peso",activadores:["Pérdida de peso"],nivel:"precaucion",titulo:"Pérdida de peso no explicada",mensaje:"Una pérdida de peso involuntaria junto con otros síntomas persistentes debe estudiarse."}
 ];
-function normalizar(texto:string):string{return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();}
-export function detectarAlarmasGlobales(datos:string[]):SenalAlarmaGlobal[]{const n=datos.map(normalizar);const contiene=(a:string)=>{const b=normalizar(a);return n.some(d=>d===b||d.includes(b));};const directas=senalesAlarmaGlobales.filter(s=>s.activadores.length>0&&s.activadores.some(contiene));const ids=new Set(directas.map(s=>s.id));const agregar=(id:string)=>{if(ids.has(id))return;const s=senalesAlarmaGlobales.find(x=>x.id===id);if(s){directas.push(s);ids.add(id);}};
+function normalizar(texto:string):string{return texto.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim();}
+function coincidenciaAlarma(dato:string,activador:string){
+  if(dato===activador)return true;
+  if(activador==="desmayo"&&dato.includes("sensacion de desmayo"))return false;
+  const posicion=` ${dato} `.indexOf(` ${activador} `);
+  if(posicion<0)return false;
+  const prefijo=dato.slice(0,Math.max(0,posicion)).split(" ").slice(-3);
+  return !prefijo.some(palabra=>["no","sin","ningun","ninguna","niego"].includes(palabra));
+}
+export function detectarAlarmasGlobales(datos:string[]):SenalAlarmaGlobal[]{const n=datos.map(normalizar);const contiene=(a:string)=>{const b=normalizar(a);return n.some(d=>coincidenciaAlarma(d,b));};const directas=senalesAlarmaGlobales.filter(s=>s.activadores.length>0&&s.activadores.some(contiene));const ids=new Set(directas.map(s=>s.id));const agregar=(id:string)=>{if(ids.has(id))return;const s=senalesAlarmaGlobales.find(x=>x.id===id);if(s){directas.push(s);ids.add(id);}};
 const dolorPecho=contiene("Dolor de pecho")||contiene("Presión en el pecho");const card=contiene("Falta de aire")||contiene("Sudor frío")||contiene("Desmayo")||contiene("Dolor hacia brazo, espalda o mandíbula");if(dolorPecho&&card)agregar("pecho-cardiovascular");
 const fiebre=contiene("Fiebre"),renal=contiene("Dolor lumbar")||contiene("Dolor en el costado"),urinario=contiene("Dolor al orinar")||contiene("Urgencia para orinar")||contiene("Orinar con mucha frecuencia"),vomitos=contiene("Vómitos")||contiene("Vómitos repetidos");if((fiebre&&renal)||(fiebre&&urinario)||(vomitos&&renal&&urinario))agregar("infeccion-urinaria-alta");
 const pierna=contiene("Hinchazón de una sola pierna")||contiene("Pierna roja y caliente")||contiene("Dolor en una pantorrilla");const pulmonar=contiene("Falta de aire")||contiene("Falta de aire intensa")||contiene("Dolor de pecho")||contiene("Dolor al respirar")||contiene("Desmayo");if(pierna&&pulmonar)agregar("embolia-pulmonar");

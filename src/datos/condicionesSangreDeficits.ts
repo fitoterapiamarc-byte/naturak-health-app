@@ -35,7 +35,7 @@ export const condicionesSangreDeficits: Condicion[] = [
     id: "deficit-hierro-compatible",
     nombre: "Déficit de hierro compatible",
     descripcion: "Cansancio, palidez, uñas frágiles y caída de cabello pueden aparecer cuando las reservas de hierro son bajas, incluso antes de una anemia marcada.",
-    sintomas: [{ nombre: "Cansancio", peso: 2 },{ nombre: "Palidez", peso: 2 },{ nombre: "Uñas frágiles", peso: 2 },{ nombre: "Caída de cabello", peso: 1 },{ nombre: "Dolor de cabeza", peso: 1 },{ nombre: "Regla muy abundante", peso: 2 }],
+    sintomas: [{ nombre: "Ferritina baja en analítica", peso: 5 },{ nombre: "Cansancio", peso: 2 },{ nombre: "Palidez", peso: 2 },{ nombre: "Uñas frágiles", peso: 2 },{ nombre: "Caída de cabello", peso: 1 },{ nombre: "Dolor de cabeza", peso: 1 },{ nombre: "Regla muy abundante", peso: 2 }],
     sintomasAlarma: [{ nombre: "Heces negras", gravedad: "alta" },{ nombre: "Sangre roja en las heces", gravedad: "alta" },{ nombre: "Desmayo", gravedad: "urgente" }],
     sintomasQueContradicen: [],
     preguntas: [{ texto: "¿Hay menstruaciones abundantes, donaciones frecuentes o pérdidas de sangre?", importancia: 3 },{ texto: "¿Sigues una dieta muy baja en alimentos ricos en hierro?", importancia: 2 }],
