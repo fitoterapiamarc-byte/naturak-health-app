@@ -12,19 +12,32 @@ function Header() {
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "clamp(10px, 3vw, 16px)", minWidth: 0 }}>
-        <img
-          src={`${import.meta.env.BASE_URL}mbm-logo.png`}
-          alt="Logotipo MBM"
+        <div
+          aria-label="Logotipo MBM"
           style={{
+            position: "relative",
+            display: "grid",
+            placeItems: "center",
             width: "clamp(62px, 13vw, 88px)",
             height: "clamp(62px, 13vw, 88px)",
-            objectFit: "contain",
             flexShrink: 0,
+            overflow: "hidden",
             background: "white",
             borderRadius: "14px",
             boxShadow: "0 2px 8px rgba(0,0,0,.16)",
           }}
-        />
+        >
+          <div style={{ color: "#194f32", textAlign: "center", lineHeight: 1 }} aria-hidden="true">
+            <span style={{ display: "block", fontSize: "clamp(20px, 5vw, 30px)" }}>🌿</span>
+            <strong style={{ display: "block", marginTop: "4px", fontFamily: "Georgia, serif", fontSize: "clamp(19px, 5vw, 28px)", letterSpacing: "0.06em" }}>MBM</strong>
+          </div>
+          <img
+            src={`${import.meta.env.BASE_URL}mbm-logo.png?v=2`}
+            alt="Logotipo MBM"
+            onError={(event) => { event.currentTarget.style.display = "none"; }}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", background: "white" }}
+          />
+        </div>
         <div style={{ minWidth: 0 }}>
           <h1 style={{ margin: 0, fontSize: "clamp(26px, 6vw, 38px)", lineHeight: 1.05 }}>CuerpoClaro</h1>
           <p style={{ margin: "5px 0 0", fontSize: "clamp(13px, 3vw, 16px)" }}>Escucha las señales de tu cuerpo</p>
