@@ -3,7 +3,6 @@ import Header from "./components/Header";
 import EvaluacionIntegral from "./pages/EvaluacionIntegral";
 import ModuloTensionArterial from "./components/ModuloTensionArterial";
 import PerfilSalud from "./components/PerfilSalud";
-import VademecumPlantas from "./components/VademecumPlantas";
 import { cifraPortadaCondiciones, totalCondiciones } from "./datos/motorOrientacion";
 
 function App() {
@@ -72,7 +71,6 @@ function App() {
 
       <PerfilSalud />
       <ModuloTensionArterial />
-      <VademecumPlantas />
 
       <main style={{ padding: "30px", fontFamily: "Arial, sans-serif", background: "#f4f8f7", minHeight: "100vh" }}>
         <EvaluacionIntegral key={sesionEvaluacion} />
