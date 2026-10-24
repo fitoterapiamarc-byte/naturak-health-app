@@ -109,3 +109,29 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+/* Diseño móvil: evita el desbordamiento horizontal de formularios y tarjetas. */
+*, *::before, *::after { box-sizing: border-box; }
+html, body, #root { width: 100%; max-width: 100%; min-width: 0; }
+#root { width: 100%; }
+img, svg, video, canvas { max-width: 100%; }
+input, textarea, select, button { max-width: 100%; }
+main, section, article, nav { min-width: 0; }
+p, li, h1, h2, h3, h4 { overflow-wrap: break-word; }
+@media (max-width: 600px) {
+  #evaluacion-sintomas { padding: 12px !important; }
+  .evaluacion-integral { margin: 10px auto !important; padding: 14px !important; width: 100%; min-width: 0; }
+  .evaluacion-integral .cabecera-evaluacion { flex-direction: column; align-items: stretch; }
+  .evaluacion-integral .cabecera-evaluacion > * { min-width: 0; }
+  .evaluacion-integral .cuadricula-opciones { grid-template-columns: minmax(0, 1fr) !important; }
+  .evaluacion-integral .cuadricula-opciones > * { min-width: 0; overflow-wrap: anywhere; }
+  .evaluacion-integral .barra-seleccion { flex-wrap: wrap; }
+  .evaluacion-integral .barra-seleccion > * { min-width: 0; }
+  .evaluacion-integral .categoria-boton { grid-template-columns: 30px minmax(0, 1fr) 20px !important; gap: 8px; }
+  .evaluacion-integral .categoria-boton > * { min-width: 0; overflow-wrap: anywhere; }
+  .evaluacion-integral .boton-analizar { font-size: 16px !important; padding: 13px 10px !important; }
+  #root input, #root select, #root textarea { font-size: 16px; }
+  #root [style*="minmax(220px"] , #root [style*="minmax(210px"] { grid-template-columns: minmax(0, 1fr) !important; }
+  #root [style*="display: grid"] > * { min-width: 0; }
+}
