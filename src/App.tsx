@@ -99,7 +99,7 @@ function App() {
         <ModuloTensionArterial />
       </div>
 
-      <main id="evaluacion-sintomas" style={{ padding: "30px", fontFamily: "Arial, sans-serif", background: "#f4f8f7", minHeight: "100vh", scrollMarginTop: "16px" }}>
+      <main id="evaluacion-sintomas" style={{ padding: "clamp(12px, 3vw, 30px)", fontFamily: "Arial, sans-serif", background: "#f4f8f7", minHeight: "100vh", scrollMarginTop: "16px" }}>
         <EvaluacionIntegral key={sesionEvaluacion} />
       </main>
     </>
