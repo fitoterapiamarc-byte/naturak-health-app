@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import EvaluacionIntegral from "./pages/EvaluacionIntegral";
 import ModuloTensionArterial from "./components/ModuloTensionArterial";
 import PerfilSalud from "./components/PerfilSalud";
+import PrivacidadDatos from "./components/PrivacidadDatos";
 import { cifraPortadaCondiciones, totalCondiciones } from "./datos/motorOrientacion";
 
 function App() {
@@ -91,6 +92,7 @@ function App() {
       >
         <a href="#tension-arterial" style={estiloAcceso}>❤️ Registrar tensión arterial</a>
         <a href="#evaluacion-sintomas" style={estiloAcceso}>🔎 Introducir síntomas</a>
+        <a href="#privacidad-datos" style={estiloAcceso}>🔒 Privacidad y mis datos</a>
       </nav>
 
       <PerfilSalud />
@@ -102,6 +104,7 @@ function App() {
       <main id="evaluacion-sintomas" style={{ padding: "clamp(12px, 3vw, 30px)", fontFamily: "Arial, sans-serif", background: "#f4f8f7", minHeight: "100vh", scrollMarginTop: "16px" }}>
         <EvaluacionIntegral key={sesionEvaluacion} />
       </main>
+      <PrivacidadDatos />
     </>
   );
 }
