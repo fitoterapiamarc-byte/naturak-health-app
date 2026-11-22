@@ -40,7 +40,7 @@ jobs:
         env:
           ANDROID_APP_ID: ${{ inputs.app_id }}
         run: |
-          if [[ ! "$ANDROID_APP_ID" =~ ^[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*){2,}$ ]]; then
+          if [[ ! "$ANDROID_APP_ID" =~ ^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*){2,}$ ]]; then
             echo "El ID del paquete no es valido"
             exit 1
           fi
