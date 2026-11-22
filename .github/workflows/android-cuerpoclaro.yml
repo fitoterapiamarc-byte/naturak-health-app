@@ -1,12 +1,16 @@
 name: Preparar Android CuerpoClaro
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/android-cuerpoclaro.yml'
   workflow_dispatch:
     inputs:
       app_id:
         description: 'ID del paquete de Google Play (verificar antes de subirlo)'
         required: true
-        default: 'com.mbmcomplementos.cuerpoclaro'
+        default: 'com.mbm.lightbodycomplements'
         type: string
 
 jobs:
@@ -38,7 +42,7 @@ jobs:
       - name: Configurar aplicacion Android
         shell: bash
         env:
-          ANDROID_APP_ID: ${{ inputs.app_id }}
+          ANDROID_APP_ID: ${{ inputs.app_id || 'com.mbm.lightbodycomplements' }}
         run: |
           if [[ ! "$ANDROID_APP_ID" =~ ^[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*){2,}$ ]]; then
             echo "El ID del paquete no es valido"
