@@ -1,0 +1,72 @@
+name: Preparar Android CuerpoClaro
+
+on:
+  workflow_dispatch:
+    inputs:
+      app_id:
+        description: 'ID del paquete de Google Play (verificar antes de subirlo)'
+        required: true
+        default: 'com.mbmcomplementos.cuerpoclaro'
+        type: string
+
+jobs:
+  preparar-android:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Preparar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - name: Instalar dependencias de CuerpoClaro
+        run: npm ci
+      - name: Instalar Capacitor 8 temporalmente
+        run: npm install --no-save --package-lock=false @capacitor/core@^8 @capacitor/android@^8 @capacitor/cli@^8
+      - name: Compilar web para Android
+        env:
+          ANDROID_BUILD: '1'
+        run: npm run build
+      - name: Configurar aplicacion Android
+        shell: bash
+        env:
+          ANDROID_APP_ID: ${{ inputs.app_id }}
+        run: |
+          if [[ ! "$ANDROID_APP_ID" =~ ^[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*){2,}$ ]]; then
+            echo "El ID del paquete no es valido"
+            exit 1
+          fi
+          cat > capacitor.config.json <<EOF
+          {
+            "appId": "$ANDROID_APP_ID",
+            "appName": "CuerpoClaro",
+            "webDir": "dist"
+          }
+          EOF
+          npx cap add android
+          npx cap sync android
+      - name: Crear APK de prueba y AAB sin firmar
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug bundleRelease
+      - name: Descargar APK de prueba
+        uses: actions/upload-artifact@v4
+        with:
+          name: CuerpoClaro-Android-APK-prueba
+          path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+      - name: Guardar AAB de desarrollo (sin firma de publicacion)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CuerpoClaro-AAB-sin-firmar-NO-publicar
+          path: android/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
