@@ -59,3 +59,18 @@
 - NICE NG228, cefalea en trueno: https://www.nice.org.uk/guidance/ng228/chapter/Recommendations
 - NICE NG127, síntomas neurológicos: https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16
 - NICE CG95, dolor torácico: https://www.nice.org.uk/guidance/cg95/chapter/recommendations
+
+### Ajustes adicionales del motor en la segunda pasada
+
+- El resultado de evaluación ya no muestra porcentajes de «confianza», que podían interpretarse erróneamente como probabilidades de diagnóstico. Muestra el número de síntomas relacionados con cada ficha y recuerda los límites de la comparación.
+- El motor elimina repeticiones del mismo síntoma antes de calcular coincidencias, evitando que marcarlo en categorías y preguntas de seguimiento aumente artificialmente el resultado.
+- Ante una alerta catalogada como urgente, la interfaz muestra una instrucción explícita de buscar atención urgente y llamar al 112 en España cuando exista riesgo inmediato.
+- Las fichas de sepsis y anafilaxia ahora incluyen enlaces bibliográficos identificables; **poner un enlace no valida automáticamente todas las afirmaciones de la ficha**.
+- Se añadieron pruebas automatizadas positivas y negativas para patrones de sepsis, anafilaxia y repetición de síntomas.
+
+### Limitaciones clínicas todavía relevantes
+
+- NICE NG253 requiere evaluación presencial y signos vitales para estratificar riesgo de sepsis. Una herramienta con casillas sin constantes vitales no puede excluirla.
+- La anafilaxia puede presentarse sin manifestaciones cutáneas: la regla conservadora que evita atribuirla a signos inespecíficos no puede descartar el diagnóstico.
+- El ranking de fichas compara coincidencias, no estima probabilidad diagnóstica ni confirma el origen de los síntomas.
+- Los resultados del workflow y las referencias de todas las fichas aún deben verificarse antes de cualquier declaración de conformidad.
