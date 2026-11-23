@@ -334,6 +334,8 @@ export const condicionesNeuroMusculo: Condicion[] = [
       { nombre: "Dolor lumbar", peso: 1 },
       { nombre: "Hormigueo en una pierna", peso: 2 },
       { nombre: "Dolor en glúteo", peso: 1 },
+      { nombre: "Dolor que llega hasta el pie", peso: 2 },
+      { nombre: "Dolor que empeora al toser o estornudar", peso: 1 },
       { nombre: "Pérdida de fuerza en una pierna", peso: 2 },
     ],
     sintomasAlarma: [
