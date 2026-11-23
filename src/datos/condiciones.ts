@@ -188,7 +188,7 @@ export const condiciones: Condicion[] = [
   },
   {
     id: "diarrea",
-    nombre: "Diarrea aguda no complicada",
+    nombre: "Diarrea aguda compatible",
     descripcion:
       "Aumento de la frecuencia de las deposiciones con heces blandas o líquidas, habitualmente de inicio reciente, sin señales iniciales de gravedad.",
     sintomas: [
