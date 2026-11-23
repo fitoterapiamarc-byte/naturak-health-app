@@ -197,3 +197,19 @@ test("todas las fichas de autocuidado tienen seguridad y fuentes", () => {
     for (const fuente of consejo.fuentes) assert.match(fuente.url, /^https:\/\//);
   }
 });
+
+test("dolor lumbar irradiado con hormigueo orienta ciatica sin diagnosticar", () => {
+  const datos = ["Dolor lumbar", "Dolor que baja por la pierna", "Hormigueo en una pierna", "Dolor que llega hasta el pie"];
+  const resultados = motor.orientarPorSintomas(datos);
+  assert.equal(resultados.some((resultado) => resultado.condicion.id === "ciatica"), true);
+  assert.equal(alarmas.detectarAlarmasGlobales(datos).some(a => a.id === "cola-caballo"), false);
+});
+
+test("dolor lumbar aislado no se etiqueta automaticamente como ciatica", () => {
+  assert.equal(motor.orientarPorSintomas(["Dolor lumbar"]).some(r => r.condicion.id === "ciatica"), false);
+});
+
+test("alteraciones de esfinteres con dolor lumbar se marcan urgentes", () => {
+  const detectadas = alarmas.detectarAlarmasGlobales(["Dolor lumbar", "Pérdida de control de orina o heces"]);
+  assert.equal(detectadas.some(a => a.id === "cola-caballo" && a.nivel === "urgente"), true);
+});
