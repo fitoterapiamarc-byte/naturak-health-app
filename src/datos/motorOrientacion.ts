@@ -44,7 +44,10 @@ function hayCoincidencia(datoUsuario:string,sintomaFicha:string){
   return canonizar(datoUsuario)===canonizar(sintomaFicha);
 }
 const baseCondiciones:Condicion[]=[...condiciones,...condicionesDigestivasExtra,...condicionesNeuroMusculo,...condicionesCardioResp,...condicionesUrinarias,...condicionesAbdominalesUrgentes,...condicionesGenerales,...condicionesMusculoExtra,...condicionesDermatologicas,...condicionesEndocrinas,...condicionesORLVisual,...condicionesSaludFemenina,...condicionesSaludMasculina,...condicionesSangreDeficits,...condicionesRenalesElectrolitos,...condicionesBucodentales,...condicionesSueno,...condicionesAlergiaInmunidad,...condicionesInfecciosas,...condicionesEmocionales,...condicionesCardiometabolicas,...condicionesComunesExtra,...condicionesAmpliacion,...condicionesAmpliacion2,...condicionesAmpliacion3,...condicionesAmpliacion4,...condicionesAmpliacion5,...condicionesAmpliacion6,...condicionesAmpliacion7,...condicionesAmpliacion8,...condicionesAmpliacion9,...condicionesAmpliacion10,...condicionesAmpliacion11,...condicionesAmpliacion12,...condicionesAmpliacion13,...condicionesAmpliacion14];
-const idsVistos=new Set<string>(),nombresVistos=new Set<string>();export const todasLasCondiciones:Condicion[]=baseCondiciones.filter(c=>{const id=normalizarTexto(c.id),nombre=normalizarTexto(c.nombre);if(idsVistos.has(id)||nombresVistos.has(nombre))return false;idsVistos.add(id);nombresVistos.add(nombre);return true;});
+const idsVistos=new Set<string>(),nombresVistos=new Set<string>();
+export const fichasOmitidasPorDuplicado:{id:string;nombre:string;razon:string}[]=[];
+export const totalFichasDefinidas=baseCondiciones.length;
+export const todasLasCondiciones:Condicion[]=baseCondiciones.filter(c=>{const id=normalizarTexto(c.id),nombre=normalizarTexto(c.nombre);if(idsVistos.has(id)||nombresVistos.has(nombre)){fichasOmitidasPorDuplicado.push({id:c.id,nombre:c.nombre,razon:idsVistos.has(id)?"ID repetido":"Nombre repetido"});return false;}idsVistos.add(id);nombresVistos.add(nombre);return true;});
 export const totalCondiciones=todasLasCondiciones.length;export const cifraPortadaCondiciones=Math.max(10,Math.floor((totalCondiciones-1)/10)*10);
 const indicadoresIndividuales=new Set([
   "presion arterial elevada medida",
