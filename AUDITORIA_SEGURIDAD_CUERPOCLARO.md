@@ -74,3 +74,13 @@
 - La anafilaxia puede presentarse sin manifestaciones cutáneas: la regla conservadora que evita atribuirla a signos inespecíficos no puede descartar el diagnóstico.
 - El ranking de fichas compara coincidencias, no estima probabilidad diagnóstica ni confirma el origen de los síntomas.
 - Los resultados del workflow y las referencias de todas las fichas aún deben verificarse antes de cualquier declaración de conformidad.
+
+## Hallazgo regulatorio adicional: posible calificación como software de producto sanitario
+
+Se ha identificado un riesgo regulatorio material: una aplicación que compara síntomas, propone posibles enfermedades y presenta orientaciones individualizadas puede entrar en el ámbito de software con finalidad médica del Reglamento (UE) 2017/745, en función de la **finalidad prevista**, no de que se distribuya gratis ni de que añada un descargo de responsabilidad. La clasificación concreta de CuerpoClaro **no está determinada**.
+
+Antes de publicar, analizar formalmente la finalidad prevista y los módulos de CuerpoClaro según **MDCG 2019-11 rev.1 (junio 2025)**. Si procede, solicitar orientación de calificación/clasificación a la **AEMPS** y evaluar requisitos de evaluación clínica, gestión de riesgos y marcado CE. El mero texto «uso educativo» no garantiza que la aplicación quede fuera de la regulación si su funcionalidad realiza una finalidad médica.
+
+- Comisión Europea, MDCG 2019-11 rev.1 (2025): https://health.ec.europa.eu/latest-updates/update-mdcg-2019-11-rev1-qualification-and-classification-software-regulation-eu-2017745-and-2025-06-17_en
+- AEMPS, productos sanitarios: https://www.aemps.gob.es/productos-sanitarios/productos-sanitarios/
+- AEMPS, requisitos de comercialización: https://www.aemps.gob.es/productos-sanitarios/productos-sanitarios/comercializacion-de-productos-sanitarios-en-espana/que-requisitos-deben-cumplir-los-productos-sanitarios/
