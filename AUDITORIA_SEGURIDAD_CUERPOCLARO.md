@@ -42,3 +42,20 @@
 - DGT, seguridad vial y somnolencia: https://www.dgt.es/
 
 **Aviso:** las referencias precedentes respaldan únicamente los asuntos indicados, no todas las patologías ni tratamientos del catálogo.
+## Segunda pasada de revisión clínica de seguridad — 23/11/2026
+
+- Se contrastó la ficha de sospecha de sepsis con **NICE NG253** (publicada el 19/11/2025; reemplaza la antigua NG51 para adultos). La ficha ahora señala una fuente específica. En la práctica, la sepsis requiere valoración presencial, constantes vitales y riesgo clínico; la app no puede confirmar ni excluirla.
+- Se añadió un filtro de contexto para no sugerir **sepsis** solo por desmayo y confusión sin datos de infección. Los síntomas graves continúan activando avisos urgentes.
+- Se contrastaron alertas de **anafilaxia** con las recomendaciones del Resuscitation Council UK y las guías ERC de 2025. Se evita nombrar anafilaxia basándose únicamente en dos signos inespecíficos, sin quitar las alertas de emergencia. La ausencia de manifestaciones cutáneas **no descarta** anafilaxia en atención médica; esta limitación debe tenerse presente.
+- Se reforzó la advertencia de atención de emergencia y el teléfono 112 para las señales urgentes, sin convertir el programa en una herramienta de diagnóstico.
+- Se añadieron pruebas de regresión para ambas situaciones y se incorporaron referencias de las guías en las fichas correspondientes.
+- **Pendiente**: ejecución verificable de tests/compilación y revisión individual documentada de las restantes fichas; la ampliación de reglas no es validación clínica.
+
+### Nuevas fuentes
+
+- NICE NG253: https://www.nice.org.uk/guidance/ng253
+- Resuscitation Council UK, anafilaxia: https://www.resus.org.uk/library/additional-guidance/guidance-anaphylaxis/emergency-treatment-anaphylactic-reactions
+- European Resuscitation Council 2025: https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/special-circumstances-guidelines
+- NICE NG228, cefalea en trueno: https://www.nice.org.uk/guidance/ng228/chapter/Recommendations
+- NICE NG127, síntomas neurológicos: https://www.nice.org.uk/guidance/ng127/chapter/Recommendations-for-adults-aged-over-16
+- NICE CG95, dolor torácico: https://www.nice.org.uk/guidance/cg95/chapter/recommendations
