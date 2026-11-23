@@ -360,3 +360,23 @@ test("duplicar un síntoma en categorías y seguimiento no aumenta la coincidenc
  assert.deepEqual(b.coincidencias,a.coincidencias);
  assert.equal(b.puntuacion,a.puntuacion);
 });
+
+
+test("una frase que contiene el nombre de otro síntoma no se interpreta como selección exacta", () => {
+ const datos=["Dolor lumbar sin falta de aire", "Sensación de hormigueo no constante"];
+ const resultados=motor.orientarPorSintomas(datos);
+ assert.equal(resultados.some(r=>r.condicion.id==="ciatica"),false);
+});
+
+test("nombres del catálogo se presentan como orientaciones sin afirmación definitiva",()=>{
+ for(const ficha of motor.todasLasCondiciones){
+   assert.ok(ficha.id && ficha.nombre && ficha.descripcion);
+   assert.ok(Array.isArray(ficha.sintomas) && ficha.sintomas.length>=1,ficha.id);
+   assert.ok(ficha.enfoques?.natural && ficha.enfoques?.nutricion,ficha.id);
+ }
+});
+
+test("las equivalencias explícitas mantienen la correspondencia de migraña",()=>{
+ const datos=["Dolor pulsátil","Dolor en un lado de la cabeza","Sensibilidad intensa a la luz","Náuseas"];
+ assert.equal(motor.orientarPorSintomas(datos).some(r=>r.condicion.id==="migrana"),true);
+});
