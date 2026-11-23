@@ -331,6 +331,19 @@ export const preguntasSeguimiento: PreguntaSeguimiento[] = [
     ],
   },
   {
+    id: "lumbalgia-patron-radicular",
+    activadores: ["Dolor lumbar", "Dolor de espalda", "Dolor que baja por la pierna", "Dolor en glúteo"],
+    texto: "Para orientar mejor el dolor de espalda, ¿qué características presenta?",
+    opciones: [
+      "Dolor que baja por la pierna",
+      "Dolor que llega hasta el pie",
+      "Dolor que empeora al toser o estornudar",
+      "Hormigueo en una pierna",
+      "Dolor en glúteo",
+      "Ninguno",
+    ],
+  },
+  {
     id: "lumbalgia-alarmas",
     activadores: ["Dolor lumbar", "Dolor de espalda", "Dolor que baja por la pierna"],
     texto: "¿Aparece alguna de estas señales con el dolor de espalda?",
