@@ -24,6 +24,14 @@ try {
   if(!c.cuandoAcudirMedico?.length)incidencias.push("Sin criterios para consultar");
   if(!c.especialistaRecomendado?.length)incidencias.push("Sin profesionales de referencia");
   const sintomas=c.sintomas?.map(s=>s.nombre)||[];
+  if(new Set(sintomas).size!==sintomas.length)incidencias.push("Síntomas duplicados en la misma ficha");
+  for(const item of c.sintomas||[]){
+    if(typeof item.peso!=="number"||!Number.isFinite(item.peso)||item.peso<=0)incidencias.push("Peso inválido de síntoma: "+item.nombre);
+  }
+  const tieneFitoterapia=Boolean(c.fitoterapia?.length||c.enfoques?.natural?.intervenciones?.length);
+  if(tieneFitoterapia&&!fuenteIdentificable)incidencias.push("Fitoterapia sin fuente específica verificable");
+  const fuentesLimpias=bibliografia.map(x=>x.trim()).filter(Boolean);
+  if(new Set(fuentesLimpias).size!==fuentesLimpias.length)incidencias.push("Referencias duplicadas");
   const resultado=orientarPorSintomas(sintomas);
   if(sintomas.length>=2&&!resultado.some(r=>r.condicion.id===c.id))
     incidencias.push("El conjunto completo de síntomas no devuelve esta ficha entre los resultados mostrados: investigar solapamientos, filtros o deduplicación");
