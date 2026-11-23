@@ -15,7 +15,7 @@
 1. Se identificaron fichas cuyos síntomas específicos no podían seleccionarse directamente; 28 casos de los módulos de ampliación no tenían coincidencia literal con las opciones generales. Se incorporó un buscador de síntomas específicos de las fichas, sin análisis de lenguaje libre.
 2. Múltiples fichas de los módulos de ampliación utilizan marcadores bibliográficos genéricos (`Guías clínicas y revisiones sistemáticas aplicables`), sin identificación de fuente concreta. No son prueba de validación clínica.
 3. Existían etiquetas de causa demasiado específicas para signos aislados (anafilaxia con desmayo solo, ictus con debilidad inespecífica, infección renal con fiebre y dolor lumbar no específico). Se modificaron estas reglas preservando alertas de seguridad.
-4. Se añadieron señales de alerta para hematemesis, sangrado abundante, imposibilidad de tragar saliva y ojo rojo doloroso con lentes de contacto.
+4. Se añadieron señales de alerta para hematemesis, sangrado abundante, imposibilidad de tragar saliva, ojo rojo doloroso con lentes de contacto, sospecha de rotura del tendón de Aquiles y somnolencia al conducir.
 5. La aplicación no debe presentar porcentajes de coincidencia como probabilidades diagnósticas. Tampoco debe sugerir que la fitoterapia está científicamente validada solo por figurar en la base.
 6. El motor sigue siendo un sistema de reglas y coincidencias; no puede descartar enfermedad cuando no reconoce un patrón. Se añadieron advertencias y pruebas automáticas.
 
@@ -38,5 +38,7 @@
 - NICE NG258, anafilaxia: https://www.nice.org.uk/guidance/ng258
 - NHS, vómitos con sangre: https://www.nhs.uk/symptoms/vomiting-blood/
 - NHS, ojo rojo: https://www.nhs.uk/symptoms/red-eye/
+- Cambridge University Hospitals, rotura de Aquiles: https://www.cuh.nhs.uk/patient-information/achilles-tendon-rupture-management-and-rehabilitation/
+- DGT, seguridad vial y somnolencia: https://www.dgt.es/
 
 **Aviso:** las referencias precedentes respaldan únicamente los asuntos indicados, no todas las patologías ni tratamientos del catálogo.
