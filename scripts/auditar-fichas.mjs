@@ -14,7 +14,13 @@ try {
   if(!c.sintomas?.length)incidencias.push("No hay síntomas");
   const especiales=(c.sintomas||[]).filter(s=>!entradasComunes.has(s.nombre)).map(s=>s.nombre);
   const bibliografia=c.bibliografia||[];
-  if(!bibliografia.length||bibliografia.some(x=>/guías clínicas y revisiones sistemáticas aplicables|guías clínicas y revisiones sistemáticas aplicables al cuadro/i.test(x)))incidencias.push("Referencia genérica sin trazabilidad: revisión bibliográfica pendiente");
+  const fuenteIdentificable = bibliografia.some(x=>/https?:\/\/|doi|pmid|NICE\s+(?:NG|CG|QS)\d+|WHO|ESC\s+\d{4}/i.test(x));
+  if(!fuenteIdentificable)incidencias.push("Bibliografía sin fuente verificable: falta una guía específica identificada, URL, DOI o PMID");
+  if(!bibliografia.length)incidencias.push("Sin bibliografía");
+  if(bibliografia.some(x=>/guías clínicas y revisiones sistemáticas aplicables/i.test(x)))incidencias.push("Referencia bibliográfica genérica");
+  if(!Array.isArray(c.interacciones)||!c.interacciones.length)incidencias.push("Falta información de interacciones");
+  if(!Array.isArray(c.contraindicaciones)||!c.contraindicaciones.length)incidencias.push("Faltan contraindicaciones");
+  if(!Array.isArray(c.pruebasMedicasHabituales)||!c.pruebasMedicasHabituales.length)incidencias.push("Falta evaluación médica habitual");
   if(!c.cuandoAcudirMedico?.length)incidencias.push("Sin criterios para consultar");
   if(!c.especialistaRecomendado?.length)incidencias.push("Sin profesionales de referencia");
   const sintomas=c.sintomas?.map(s=>s.nombre)||[];
@@ -31,7 +37,7 @@ try {
   }
   return {id:c.id,nombre:c.nombre,numeroSintomas:sintomas.length,sintomasFueraDeCategorias:especiales,bibliografia,senalesDeAlarma:(c.sintomasAlarma||[]).length,incidencias,estadoClinico:"NO VALIDADO: requiere cotejo con guías específicas y pruebas con casos clínicos"};
  });
- const resumen={fecha:"2026-11-23",numeroFichas:informes.length,erroresConReferenciasGenericas:informes.filter(f=>f.incidencias.some(s=>s.includes("Referencia genérica"))).length,fichasSinRespuestaSintetica:informes.filter(f=>f.incidencias.some(s=>s.includes("conjunto completo"))).length,numeroConIncidencias:informes.filter(f=>f.incidencias.length).length,numeroSinIncidenciasTecnicas:informes.filter(f=>!f.incidencias.length).length,estadoGlobal:"NO APTO PARA AFIRMAR VALIDACION CLINICA"};
+ const resumen={fecha:"2026-11-23",numeroFichas:informes.length,fichasSinFuenteVerificable:informes.filter(f=>f.incidencias.some(s=>s.includes("Bibliografía sin fuente verificable"))).length,fichasSinRespuestaSintetica:informes.filter(f=>f.incidencias.some(s=>s.includes("conjunto completo"))).length,numeroConIncidencias:informes.filter(f=>f.incidencias.length).length,numeroSinIncidenciasTecnicas:informes.filter(f=>!f.incidencias.length).length,estadoGlobal:"NO APTO PARA AFIRMAR VALIDACION CLINICA"};
  const resultado={resumen,fichas:informes};
  writeFileSync("auditoria-fichas.json",JSON.stringify(resultado,null,2));
  const filas=informes.map(f=>"| "+f.id+" | "+f.numeroSintomas+" | "+f.senalesDeAlarma+" | "+(f.incidencias.length?f.incidencias.join("; ").replaceAll("|","/"):"Sin incidencias en controles automáticos")+" |").join("\n");
