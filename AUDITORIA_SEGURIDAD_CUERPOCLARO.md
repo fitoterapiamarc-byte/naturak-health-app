@@ -84,3 +84,18 @@ Antes de publicar, analizar formalmente la finalidad prevista y los módulos de 
 - Comisión Europea, MDCG 2019-11 rev.1 (2025): https://health.ec.europa.eu/latest-updates/update-mdcg-2019-11-rev1-qualification-and-classification-software-regulation-eu-2017745-and-2025-06-17_en
 - AEMPS, productos sanitarios: https://www.aemps.gob.es/productos-sanitarios/productos-sanitarios/
 - AEMPS, requisitos de comercialización: https://www.aemps.gob.es/productos-sanitarios/productos-sanitarios/comercializacion-de-productos-sanitarios-en-espana/que-requisitos-deben-cumplir-los-productos-sanitarios/
+
+## Tercera pasada: terminología y consistencia del catálogo — 23/11/2026
+
+Se han revisado los módulos de definición del catálogo, incluyendo las ampliaciones, para comprobar la redacción de títulos y su presentación. Se mantiene el propósito de **orientación sobre posibles cuadros**, junto con contenido sobre nutrición y fitoterapia; no se modifica a un buscador de bienestar genérico.
+
+**Cambios aplicados:**
+
+- Función `tituloOrientativo()` aplicada a todos los resultados: si el título carece de expresiones como «compatible», «posible» o «alerta», se añade una indicación explícita de compatibilidad. Se conserva el nombre original en los datos.
+- La ficha «Diarrea aguda no complicada» se ha renombrado «Diarrea aguda compatible», porque una aplicación sin exploración no puede garantizar ausencia de complicaciones.
+- El motor compara ahora síntomas normalizados por igualdad o equivalencia explícita. Se retiró la coincidencia por inclusión parcial entre frases, que podía atribuir un síntoma que el usuario no había seleccionado.
+- Se mantiene el listado de fichas descartadas por **ID o nombre duplicado**, para que el informe de auditoría detecte entradas ocultas en el catálogo.
+- La auditoría exige exactamente **144 fichas únicas** para aprobar; si el catálogo devuelve otro número, falla la comprobación en lugar de asumir que está correcto.
+- Se añadieron tests para terminología orientativa, integridad de fichas, correspondencias explícitas y trazabilidad de duplicados.
+
+**Limitación:** haber revisado las expresiones y automatizado controles de integridad **no certifica** que todas las afirmaciones clínicas, los usos de plantas, las contraindicaciones ni las referencias científicas estén validados. El código quedó actualizado; el resultado de ejecución de GitHub Actions debe comprobarse antes de declarar que las pruebas pasan.
