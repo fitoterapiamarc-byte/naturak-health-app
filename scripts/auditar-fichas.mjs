@@ -37,6 +37,7 @@ try {
     incidencias.push("El conjunto completo de síntomas no devuelve esta ficha entre los resultados mostrados: investigar solapamientos, filtros o deduplicación");
   for(const a of c.sintomasAlarma||[]){
     if(!["urgente","alta","moderada"].includes(a.gravedad))incidencias.push("Gravedad no válida: "+a.nombre);
+    if(a.gravedad==="urgente"&&!detectarAlarmasGlobales([a.nombre]).some(s=>s.nivel==="urgente"))incidencias.push("Síntoma urgente sin alerta global aislada: "+a.nombre+" (determinar si requiere contexto)");
     if(sintomas.length>=2){
       const evaluacion=orientarPorSintomas([...sintomas,a.nombre]);
       const propia=evaluacion.find(x=>x.condicion.id===c.id);
