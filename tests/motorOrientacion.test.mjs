@@ -324,3 +324,28 @@ test("emergencias específicas y alerta oftalmológica se detectan",()=>{
  const ojo=alarmas.detectarAlarmasGlobales(["Ojo rojo doloroso con lentes de contacto"]);
  assert.equal(ojo.some(a=>a.id==="lentes-contacto-ojo-doloroso"&&a.nivel==="prioritaria"),true);
 });
+
+
+test("un cuadro inespecífico grave no se etiqueta como sepsis sin datos de infección",()=>{
+ const datos=["Confusión","Desmayo"];
+ assert.equal(motor.orientarPorSintomas(datos).some(r=>r.condicion.id==="sepsis-posible"),false);
+ assert.equal(alarmas.detectarAlarmasGlobales(datos).some(a=>a.nivel==="urgente"),true);
+});
+
+test("sepsis como hipótesis requiere al menos contexto infeccioso y deterioro",()=>{
+ const datos=["Fiebre","Escalofríos","Confusión"];
+ assert.equal(motor.orientarPorSintomas(datos).some(r=>r.condicion.id==="sepsis-posible"),true);
+ assert.equal(alarmas.detectarAlarmasGlobales(datos).some(a=>a.nivel==="urgente"),true);
+});
+
+test("desmayo y falta de aire sin alergia no se etiquetan automáticamente como anafilaxia",()=>{
+ const datos=["Desmayo","Falta de aire intensa"];
+ assert.equal(motor.orientarPorSintomas(datos).some(r=>r.condicion.id==="anafilaxia-posible"),false);
+ assert.equal(alarmas.detectarAlarmasGlobales(datos).some(a=>a.nivel==="urgente"),true);
+});
+
+test("hinchazón de garganta más dificultad respiratoria es urgencia y posible anafilaxia",()=>{
+ const datos=["Hinchazón de lengua o garganta","Falta de aire intensa"];
+ assert.equal(motor.orientarPorSintomas(datos).some(r=>r.condicion.id==="anafilaxia-posible"),true);
+ assert.equal(alarmas.detectarAlarmasGlobales(datos).some(a=>a.id==="anafilaxia"),true);
+});
