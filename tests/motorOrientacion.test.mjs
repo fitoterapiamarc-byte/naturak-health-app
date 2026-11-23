@@ -213,3 +213,17 @@ test("alteraciones de esfinteres con dolor lumbar se marcan urgentes", () => {
   const detectadas = alarmas.detectarAlarmasGlobales(["Dolor lumbar", "Pérdida de control de orina o heces"]);
   assert.equal(detectadas.some(a => a.id === "cola-caballo" && a.nivel === "urgente"), true);
 });
+
+test("caso de ciatica no activa alertas respiratorias ni de compresion grave", () => {
+  const sintomas = ["Dolor lumbar", "Dolor que baja por la pierna", "Hormigueo en una pierna", "Dolor que llega hasta el pie"];
+  const alertas = alarmas.detectarAlarmasGlobales(sintomas);
+  assert.deepEqual(alertas, []);
+  assert.equal(motor.orientarPorSintomas(sintomas).some(r => r.condicion.id === "ciatica"), true);
+});
+
+test("una alerta respiratoria exige haber seleccionado un síntoma respiratorio", () => {
+  const normales = alarmas.detectarAlarmasGlobales(["Dolor lumbar", "Dolor que baja por la pierna"]);
+  assert.equal(normales.some(a => a.id === "respiratoria"), false);
+  const respiratorios = alarmas.detectarAlarmasGlobales(["Dolor lumbar", "Falta de aire"]);
+  assert.equal(respiratorios.some(a => a.id === "respiratoria"), true);
+});
