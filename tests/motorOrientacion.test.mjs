@@ -227,3 +227,51 @@ test("una alerta respiratoria exige haber seleccionado un síntoma respiratorio"
   const respiratorios = alarmas.detectarAlarmasGlobales(["Dolor lumbar", "Falta de aire"]);
   assert.equal(respiratorios.some(a => a.id === "respiratoria"), true);
 });
+
+
+test("auditoria automatica del catalogo completo: estructura, acceso y seguridad", () => {
+  const fichas = motor.todasLasCondiciones;
+  const opcionesPublicas = new Set(opciones.categoriasEvaluacion.flatMap(c => c.opciones));
+  const opcionesSeguimiento = new Set(seguimiento.preguntasSeguimiento.flatMap(p => p.opciones));
+  const introducibles = new Set([...opcionesPublicas, ...opcionesSeguimiento]);
+  const identidades = new Set();
+  const errores = [];
+  const advertencias = [];
+  for (const ficha of fichas) {
+    if (identidades.has(ficha.id)) errores.push("ID duplicado: " + ficha.id);
+    identidades.add(ficha.id);
+    for (const campo of ["id", "nombre", "descripcion"]) {
+      if (!ficha[campo] || !String(ficha[campo]).trim()) errores.push(ficha.id + ": falta " + campo);
+    }
+    for (const campo of ["sintomas", "sintomasAlarma", "sintomasQueContradicen", "bibliografia", "cuandoAcudirMedico", "especialistaRecomendado", "contraindicaciones", "interacciones"]) {
+      if (!Array.isArray(ficha[campo])) errores.push(ficha.id + ": campo sin lista " + campo);
+    }
+    if (!Array.isArray(ficha.sintomas) || !ficha.sintomas.length) {
+      errores.push(ficha.id + ": sin síntomas");
+      continue;
+    }
+    const accesibles = ficha.sintomas.filter(s => introducibles.has(s.nombre));
+    if (!accesibles.length) advertencias.push(ficha.id + ": ningun sintoma coincide literalmente con las opciones disponibles");
+    if (!ficha.bibliografia?.length) advertencias.push(ficha.id + ": sin fuentes bibliograficas");
+    if (!ficha.cuandoAcudirMedico?.length) advertencias.push(ficha.id + ": sin criterios de derivacion");
+  }
+  console.log("AUDITORIA CATALOGO", JSON.stringify({
+    fichas: fichas.length, opcionesPublicas: opcionesPublicas.size,
+    opcionesSeguimiento: opcionesSeguimiento.size,
+    problemasEstructurales: errores, advertenciasTotal: advertencias.length,
+    primerosProblemasDeAcceso: advertencias.slice(0, 35)
+  }, null, 2));
+  assert.equal(errores.length, 0, "Se encontraron problemas estructurales en fichas clínicas");
+});
+
+test("alertas de emergencia no atribuyen anafilaxia o ictus con síntomas inespecíficos aislados", () => {
+  for (const dato of ["Desmayo", "Falta de aire intensa"]) {
+    const avisos = alarmas.detectarAlarmasGlobales([dato]);
+    assert.equal(avisos.some(a => a.id === "anafilaxia"), false, dato);
+    assert.equal(avisos.some(a => a.nivel === "urgente"), true, dato);
+  }
+  const perdidaFuerza = alarmas.detectarAlarmasGlobales(["Pérdida de fuerza"]);
+  assert.equal(perdidaFuerza.some(a => a.id === "ictus-compatible"), false);
+  assert.equal(perdidaFuerza.some(a => a.nivel === "urgente"), true);
+  assert.equal(alarmas.detectarAlarmasGlobales(["Hinchazón de lengua o garganta"]).some(a => a.id === "anafilaxia"), true);
+});
