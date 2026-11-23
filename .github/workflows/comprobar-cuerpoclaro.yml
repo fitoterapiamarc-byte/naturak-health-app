@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      - 'scripts/**'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/comprobar-cuerpoclaro.yml'
@@ -28,5 +29,16 @@ jobs:
         run: npm ci
       - name: Ejecutar pruebas
         run: npm test
+      - name: Auditar todas las fichas
+        run: node scripts/auditar-fichas.mjs
+      - name: Guardar informe de auditoria
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: auditoria-completa-cuerpoclaro
+          path: |
+            auditoria-fichas.json
+            auditoria-fichas.md
+          if-no-files-found: warn
       - name: Verificar compilacion web
         run: npm run build
