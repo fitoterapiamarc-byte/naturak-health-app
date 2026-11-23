@@ -314,3 +314,13 @@ test("síntomas aislados frecuentes no generan cuadros de alto riesgo ni alarmas
   assert.equal(resultado.some(r=>r.condicion.id==="sepsis-posible"||r.condicion.id==="anafilaxia-posible"),false,sintoma);
  }
 });
+
+
+test("emergencias específicas y alerta oftalmológica se detectan",()=>{
+ const graves=[["Vómito con sangre","hematemesis"],["Sangrado abundante","sangrado-abundante"],["No puedo tragar saliva","deglucion-grave"]];
+ for(const [sintoma,id] of graves){
+   assert.equal(alarmas.detectarAlarmasGlobales([sintoma]).some(a=>a.id===id&&a.nivel==="urgente"),true,sintoma);
+ }
+ const ojo=alarmas.detectarAlarmasGlobales(["Ojo rojo doloroso con lentes de contacto"]);
+ assert.equal(ojo.some(a=>a.id==="lentes-contacto-ojo-doloroso"&&a.nivel==="prioritaria"),true);
+});
