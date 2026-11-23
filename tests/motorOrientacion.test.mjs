@@ -349,3 +349,14 @@ test("hinchazón de garganta más dificultad respiratoria es urgencia y posible 
  assert.equal(motor.orientarPorSintomas(datos).some(r=>r.condicion.id==="anafilaxia-posible"),true);
  assert.equal(alarmas.detectarAlarmasGlobales(datos).some(a=>a.id==="anafilaxia"),true);
 });
+
+
+test("duplicar un síntoma en categorías y seguimiento no aumenta la coincidencia",()=>{
+ const una=["Dolor lumbar","Dolor que baja por la pierna","Hormigueo en una pierna"];
+ const repetidas=["Dolor lumbar","Dolor que baja por la pierna","Dolor que baja por la pierna","Hormigueo en una pierna","Dolor lumbar"];
+ const a=motor.orientarPorSintomas(una).find(r=>r.condicion.id==="ciatica");
+ const b=motor.orientarPorSintomas(repetidas).find(r=>r.condicion.id==="ciatica");
+ assert.ok(a&&b);
+ assert.deepEqual(b.coincidencias,a.coincidencias);
+ assert.equal(b.puntuacion,a.puntuacion);
+});
