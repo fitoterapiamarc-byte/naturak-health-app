@@ -8,6 +8,7 @@ let alarmas;
 let opciones;
 let seguimiento;
 let consejos;
+let lenguaje;
 
 before(async () => {
   vite = await createServer({ server: { middlewareMode: true }, appType: "custom" });
@@ -16,6 +17,7 @@ before(async () => {
   opciones = await vite.ssrLoadModule("/src/evaluacion/opcionesEvaluacion.ts");
   seguimiento = await vite.ssrLoadModule("/src/evaluacion/preguntasSeguimiento.ts");
   consejos = await vite.ssrLoadModule("/src/evaluacion/consejosSintoma.ts");
+  lenguaje = await vite.ssrLoadModule("/src/datos/lenguajeOrientativo.ts");
 });
 
 after(async () => {
@@ -379,4 +381,20 @@ test("nombres del catálogo se presentan como orientaciones sin afirmación defi
 test("las equivalencias explícitas mantienen la correspondencia de migraña",()=>{
  const datos=["Dolor pulsátil","Dolor en un lado de la cabeza","Sensibilidad intensa a la luz","Náuseas"];
  assert.equal(motor.orientarPorSintomas(datos).some(r=>r.condicion.id==="migrana"),true);
+});
+
+
+test("todas las fichas muestran un título prudente sin afirmación de diagnóstico",()=>{
+ const fichas=motor.todasLasCondiciones;
+ assert.ok(fichas.length>=140);
+ for(const ficha of fichas){
+  const titulo=lenguaje.tituloOrientativo(ficha.nombre);
+  assert.ok(titulo&&/compatible|posible|orientativ|alerta|sospecha/i.test(titulo),
+   "Título no orientativo: "+ficha.id+" / "+titulo);
+ }
+});
+
+test("la lista de duplicados queda visible para auditoría",()=>{
+ assert.equal(motor.totalFichasDefinidas,
+  motor.todasLasCondiciones.length+motor.fichasOmitidasPorDuplicado.length);
 });
