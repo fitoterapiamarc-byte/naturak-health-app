@@ -133,7 +133,7 @@ function EnfoquesComparados({ condicion, bloquearIntervencionesNaturales = false
       <div style={estilos.introduccion}>
         <h3 style={{ marginTop: 0 }}>Posibles medidas de apoyo</h3>
         <p style={{ marginBottom: 0 }}>
-          Cada ejemplo indica qué respaldo tiene. <b>Uso tradicional</b> describe utilización histórica o naturopática y no significa eficacia clínica demostrada. En fitoterapia, CuerpoClaro contrasta las plantas incorporadas con el Vademécum de Fitoterapia y la tabla EMA/ESCOP; si una ficha aún no está validada, la aplicación lo indica y no inventa dosis ni interacciones.
+          Los niveles de evidencia y los ejemplos mostrados son orientativos y siguen pendientes de revisión clínica independiente. <b>Uso tradicional</b> no significa eficacia clínica demostrada. La seguridad de una planta o suplemento requiere revisar fuentes originales, contraindicaciones e interacciones para cada persona.
         </p>
       </div>
 
