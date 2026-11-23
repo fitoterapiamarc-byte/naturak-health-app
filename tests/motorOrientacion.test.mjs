@@ -287,3 +287,30 @@ test("sudor frío aislado no atribuye un problema cardiovascular agudo", () => {
   assert.equal(alarmas.detectarAlarmasGlobales(["Sudor frío"]).some(a => a.id === "pecho-cardiovascular"), false);
   assert.equal(alarmas.detectarAlarmasGlobales(["Dolor de pecho", "Sudor frío"]).some(a => a.id === "pecho-cardiovascular"), true);
 });
+
+
+test("batería de alarmas vitales de distintas especialidades", () => {
+ const casos=[
+  ["Dolor de cabeza súbito e intenso","cefalea-secundaria"],
+  ["Falta de aire intensa","respiratoria-grave"],
+  ["Dolor testicular súbito e intenso","testiculo-agudo"],
+  ["Pérdida brusca de visión","vision-brusca"],
+  ["Hinchazón de lengua o garganta","anafilaxia"],
+  ["Sangrado durante el embarazo","embarazo-sangrado"],
+  ["Pérdida de control de orina o heces","cola-caballo"],
+  ["Dificultad para hablar","neurologica"],
+  ["No puedo orinar","retencion-urinaria"]
+ ];
+ for(const [sintoma,id] of casos){
+  const alarmasDetectadas=alarmas.detectarAlarmasGlobales([sintoma]);
+  assert.equal(alarmasDetectadas.some(a=>a.id===id && a.nivel==="urgente"),true,
+    "No se activó la alerta urgente "+id+" con "+sintoma);
+ }
+});
+test("síntomas aislados frecuentes no generan cuadros de alto riesgo ni alarmas erróneas",()=>{
+ const casos=["Dolor lumbar","Tos seca","Picor de ojos","Dolor muscular","Insomnio","Dolor articular"];
+ for(const sintoma of casos){
+  const resultado=motor.orientarPorSintomas([sintoma]);
+  assert.equal(resultado.some(r=>r.condicion.id==="sepsis-posible"||r.condicion.id==="anafilaxia-posible"),false,sintoma);
+ }
+});
