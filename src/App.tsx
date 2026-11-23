@@ -49,6 +49,7 @@ function App() {
           ⚠️ Información de seguridad
         </h2>
         <ul style={{ margin: 0, paddingLeft: "22px", display: "grid", gap: "7px" }}>
+          <li><strong>Aplicación en fase de pruebas:</strong> las fichas clínicas y el motor de síntomas todavía no disponen de validación clínica completa. No uses sus resultados para decidir si necesitas atención médica ni para elegir tratamientos.</li>
           <li><strong>Herramienta educativa y orientativa:</strong> no confirma diagnósticos ni prescribe tratamientos individualizados.</li>
           <li><strong>No sustituye al profesional sanitario:</strong> ante síntomas persistentes, nuevos o preocupantes, consulta con un médico, farmacéutico u otro profesional cualificado.</li>
           <li><strong>Fitoterapia y suplementos:</strong> pueden tener contraindicaciones e interacciones; revisa siempre tu medicación, enfermedades, embarazo o lactancia antes de utilizarlos.</li>
