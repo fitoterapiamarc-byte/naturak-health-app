@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import EnfoquesComparados from "../components/EnfoquesComparados";
-import { orientarPorSintomas, type ResultadoOrientacion } from "../datos/motorOrientacion";
+import { orientarPorSintomas, todasLasCondiciones, type ResultadoOrientacion } from "../datos/motorOrientacion";
 import { obtenerConsejosSintoma, type ConsejoSintoma } from "../evaluacion/consejosSintoma";
 import { categoriasEvaluacion, opcionesNormales } from "../evaluacion/opcionesEvaluacion";
 import { alternarRespuestaSeguimiento, preguntasSeguimiento, type RespuestasSeguimiento } from "../evaluacion/preguntasSeguimiento";
@@ -37,7 +37,25 @@ function EvaluacionIntegral() {
     if(!q)return categoriasEvaluacion;
     return categoriasEvaluacion.map(c=>({...c,opciones:c.opciones.filter(o=>normalizar(o).includes(q))})).filter(c=>normalizar(c.titulo).includes(q)||c.opciones.length>0);
   },[busqueda]);
-  const coincidenciasBusqueda=busqueda.trim()?categoriasFiltradas.reduce((t,c)=>t+c.opciones.length,0):0;
+  // El buscador tambien hace accesibles síntomas específicos que están en las fichas
+  // pero no en las categorías generales. No interpreta texto libre ni asigna diagnósticos.
+  const sintomasFichas=useMemo(()=>Array.from(new Set(
+    todasLasCondiciones.flatMap(c=>[
+      ...c.sintomas.map(s=>s.nombre),
+      ...c.sintomasAlarma.map(s=>s.nombre),
+    ]),
+  )).sort((a,b)=>a.localeCompare(b,"es")),[]);
+  const sintomasBuscados=useMemo(()=>{
+    const q=normalizar(busqueda.trim());
+    if(q.length<2)return [];
+    const enCategorias=new Set(categoriasEvaluacion.flatMap(c=>c.opciones));
+    return sintomasFichas.filter(s=>!enCategorias.has(s)&&normalizar(s).includes(q)).slice(0,40);
+  },[busqueda,sintomasFichas]);
+  const coincidenciasBusqueda=busqueda.trim()?categoriasFiltradas.reduce((t,c)=>t+c.opciones.length,0)+sintomasBuscados.length:0;
+  const alternarSintomaEspecifico=(opcion:string)=>{
+    setSeleccionados(prev=>prev.includes(opcion)?prev.filter(x=>x!==opcion):[...prev,opcion]);
+    setAnalizado(false);
+  };
   const preguntasActivas=preguntasSeguimiento.filter(p=>p.activadores.some(a=>seleccionados.includes(a)));
   const respuestasActivas=preguntasActivas.flatMap(p=>respuestasSeguimiento[p.id]??[]);
 
@@ -53,6 +71,7 @@ function EvaluacionIntegral() {
     <div style={estilos.buscadorCaja}><span style={estilos.lupa}>🔎</span><input value={busqueda} onChange={e=>setBusqueda(e.target.value)} placeholder="Buscar síntoma: mareo, dolor, picor..." style={estilos.buscador} aria-label="Buscar síntomas"/>{busqueda&&<button onClick={()=>setBusqueda("")} style={estilos.borrarBusqueda} aria-label="Borrar búsqueda">✕</button>}</div>
     {busqueda&&<div style={estilos.resultadoBusqueda}>{coincidenciasBusqueda>0?`${coincidenciasBusqueda} opciones encontradas`:`Ese síntoma no figura en la lista. Prueba con otra palabra o consulta con un profesional sanitario si te preocupa.`}</div>}
 
+    {sintomasBuscados.length>0&&<section style={estilos.seguimiento}><h3>Otros síntomas específicos de las fichas</h3><p>Selecciona únicamente los que realmente estén presentes. Estos términos forman parte de las fichas, pero no constituyen un diagnóstico.</p><div className="cuadricula-opciones" style={estilos.cuadriculaOpciones}>{sintomasBuscados.map(o=><BotonOpcion key={o} texto={o} seleccionado={seleccionados.includes(o)} alPulsar={()=>alternarSintomaEspecifico(o)}/>)}</div></section>}
     {totalMarcados>0&&<div className="barra-seleccion" style={estilos.seleccionBarra}><div style={estilos.chips}>{[...seleccionados,...respuestasActivas].map((x,i)=><span key={`${x}-${i}`} style={estilos.chip}>✓ {x}</span>)}</div><button onClick={limpiarSeleccion} style={estilos.limpiar}>Limpiar todo</button></div>}
 
     <div style={estilos.categorias}>{categoriasFiltradas.map(c=>{const abierta=busqueda.trim()?true:categoriaAbierta===c.id;return <div key={c.id} style={estilos.categoriaBloque}><button type="button" onClick={()=>!busqueda.trim()&&setCategoriaAbierta(abierta?null:c.id)} className="categoria-boton" style={{...estilos.botonCategoria,background:abierta?"#0b8f52":"#fff",color:abierta?"#fff":"#183128"}}><span style={estilos.icono}>{c.icono}</span><span>{c.titulo}</span><span>{abierta?"▲":"▼"}</span></button>{abierta&&<div className="cuadricula-opciones" style={estilos.cuadriculaOpciones}>{c.opciones.map(o=><BotonOpcion key={o} texto={o} seleccionado={seleccionados.includes(o)} alPulsar={()=>alternarOpcionCategoria(o,c)}/>)}</div>}</div>})}</div>
