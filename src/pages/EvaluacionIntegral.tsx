@@ -17,6 +17,7 @@ function EvaluacionIntegral() {
   const [alarmasGlobales,setAlarmasGlobales]=useState<SenalAlarmaGlobal[]>([]);
   const [consejosGenerales,setConsejosGenerales]=useState<ConsejoSintoma[]>([]);
   const [analizado,setAnalizado]=useState(false);
+  const [sintomasAnalizados,setSintomasAnalizados]=useState<string[]>([]);
   const [busqueda,setBusqueda]=useState("");
 
   const alternarOpcionCategoria=(opcion:string,categoria:(typeof categoriasEvaluacion)[number])=>{
@@ -29,7 +30,7 @@ function EvaluacionIntegral() {
     });
     setAnalizado(false);
   };
-  const limpiarSeleccion=()=>{setSeleccionados([]);setRespuestasSeguimiento({});setResultados([]);setAlarmasGlobales([]);setConsejosGenerales([]);setAnalizado(false);setBusqueda("");setCategoriaAbierta(null);window.scrollTo({top:0,behavior:"smooth"})};
+  const limpiarSeleccion=()=>{setSeleccionados([]);setRespuestasSeguimiento({});setResultados([]);setAlarmasGlobales([]);setConsejosGenerales([]);setAnalizado(false);setSintomasAnalizados([]);setBusqueda("");setCategoriaAbierta(null);window.scrollTo({top:0,behavior:"smooth"})};
 
   const categoriasFiltradas=useMemo(()=>{
     const q=normalizar(busqueda.trim());
@@ -40,19 +41,19 @@ function EvaluacionIntegral() {
   const preguntasActivas=preguntasSeguimiento.filter(p=>p.activadores.some(a=>seleccionados.includes(a)));
   const respuestasActivas=preguntasActivas.flatMap(p=>respuestasSeguimiento[p.id]??[]);
 
-  const analizarEvaluacion=()=>{const todos=[...seleccionados,...respuestasActivas].filter(dato=>!opcionesNormales.has(dato)&&dato!=="Ninguno");setAlarmasGlobales(detectarAlarmasGlobales(todos));setConsejosGenerales(obtenerConsejosSintoma(todos));setResultados(orientarPorSintomas(todos));setAnalizado(true);setTimeout(()=>document.getElementById("resultados-evaluacion")?.scrollIntoView({behavior:"smooth",block:"start"}),50)};
+  const analizarEvaluacion=()=>{const todos=[...seleccionados,...respuestasActivas].filter(dato=>!opcionesNormales.has(dato)&&dato!=="Ninguno");setAlarmasGlobales(detectarAlarmasGlobales(todos));setConsejosGenerales(obtenerConsejosSintoma(todos));setResultados(orientarPorSintomas(todos));setSintomasAnalizados(todos);setAnalizado(true);setTimeout(()=>document.getElementById("resultados-evaluacion")?.scrollIntoView({behavior:"smooth",block:"start"}),50)};
   const sinDatos=seleccionados.length===0&&respuestasActivas.length===0;
   const existeAlarmaPrioritaria=alarmasGlobales.some(a=>a.nivel==="urgente"||a.nivel==="prioritaria");
   const mostrarConsejosGenerales=alarmasGlobales.length===0&&resultados.length===0&&consejosGenerales.length>0;
   const totalMarcados=seleccionados.length+respuestasActivas.length;
 
   return <section className="evaluacion-integral" style={estilos.contenedor}>
-    <div className="cabecera-evaluacion" style={estilos.cabecera}><div><h2 style={estilos.titulo}>Evaluación integral</h2><p style={estilos.intro}>Busca un síntoma o abre una categoría. Marca todo lo que coincida contigo y después pulsa analizar.</p></div><div style={estilos.contador}>{totalMarcados}<small> marcados</small></div></div>
+    <div className="cabecera-evaluacion" style={estilos.cabecera}><div><h2 style={estilos.titulo}>Evaluación integral</h2><p style={estilos.intro}>Busca un síntoma o abre una categoría. Marca todo lo que coincida contigo y después pulsa analizar. Antes de cada caso de prueba, pulsa «Nueva evaluación» para eliminar los síntomas anteriores.</p><button type="button" onClick={limpiarSeleccion} style={estilos.limpiar}>↻ Nueva evaluación: borrar selección anterior</button></div><div style={estilos.contador}>{totalMarcados}<small> marcados</small></div></div>
 
     <div style={estilos.buscadorCaja}><span style={estilos.lupa}>🔎</span><input value={busqueda} onChange={e=>setBusqueda(e.target.value)} placeholder="Buscar síntoma: mareo, dolor, picor..." style={estilos.buscador} aria-label="Buscar síntomas"/>{busqueda&&<button onClick={()=>setBusqueda("")} style={estilos.borrarBusqueda} aria-label="Borrar búsqueda">✕</button>}</div>
     {busqueda&&<div style={estilos.resultadoBusqueda}>{coincidenciasBusqueda>0?`${coincidenciasBusqueda} opciones encontradas`:`Ese síntoma no figura en la lista. Prueba con otra palabra o consulta con un profesional sanitario si te preocupa.`}</div>}
 
-    {totalMarcados>0&&<div className="barra-seleccion" style={estilos.seleccionBarra}><div style={estilos.chips}>{[...seleccionados,...respuestasActivas].slice(0,8).map((x,i)=><span key={`${x}-${i}`} style={estilos.chip}>✓ {x}</span>)}{totalMarcados>8&&<span style={estilos.chip}>+{totalMarcados-8} más</span>}</div><button onClick={limpiarSeleccion} style={estilos.limpiar}>Limpiar todo</button></div>}
+    {totalMarcados>0&&<div className="barra-seleccion" style={estilos.seleccionBarra}><div style={estilos.chips}>{[...seleccionados,...respuestasActivas].map((x,i)=><span key={`${x}-${i}`} style={estilos.chip}>✓ {x}</span>)}</div><button onClick={limpiarSeleccion} style={estilos.limpiar}>Limpiar todo</button></div>}
 
     <div style={estilos.categorias}>{categoriasFiltradas.map(c=>{const abierta=busqueda.trim()?true:categoriaAbierta===c.id;return <div key={c.id} style={estilos.categoriaBloque}><button type="button" onClick={()=>!busqueda.trim()&&setCategoriaAbierta(abierta?null:c.id)} className="categoria-boton" style={{...estilos.botonCategoria,background:abierta?"#0b8f52":"#fff",color:abierta?"#fff":"#183128"}}><span style={estilos.icono}>{c.icono}</span><span>{c.titulo}</span><span>{abierta?"▲":"▼"}</span></button>{abierta&&<div className="cuadricula-opciones" style={estilos.cuadriculaOpciones}>{c.opciones.map(o=><BotonOpcion key={o} texto={o} seleccionado={seleccionados.includes(o)} alPulsar={()=>alternarOpcionCategoria(o,c)}/>)}</div>}</div>})}</div>
 
@@ -60,8 +61,8 @@ function EvaluacionIntegral() {
 
     <button type="button" onClick={analizarEvaluacion} disabled={sinDatos} className="boton-analizar" style={{...estilos.botonAnalizar,opacity:sinDatos?.5:1}}>🔍 Analizar cuadro completo {totalMarcados>0?`(${totalMarcados})`:""}</button>
 
-    {analizado&&<div id="resultados-evaluacion" style={{marginTop:30}}>
-      {alarmasGlobales.length>0&&<section style={estilos.alertaGlobal}><h3>⚠️ Prioridad de seguridad</h3>{alarmasGlobales.map(a=><div key={a.id} style={estilos.alertaGlobalItem}><strong>{a.titulo}</strong><p>{a.mensaje}</p></div>)}{existeAlarmaPrioritaria&&<strong>La orientación de autocuidado queda en segundo plano hasta valorar estas señales.</strong>}</section>}
+    {analizado&&<div id="resultados-evaluacion" style={{marginTop:30}}><section style={{padding:14,background:"#f3faf6",border:"1px solid #cfe5d8",borderRadius:10,marginBottom:16}}><h3 style={{marginTop:0}}>Síntomas utilizados en este análisis</h3><ul>{sintomasAnalizados.map((dato,i)=><li key={`${dato}-${i}`}>{dato}</li>)}</ul><p style={{marginBottom:0}}>Si aparece algún síntoma que no corresponde al caso, pulsa «Nueva evaluación» y comienza de nuevo.</p></section>
+      {alarmasGlobales.length>0&&<section style={estilos.alertaGlobal}><h3>⚠️ Prioridad de seguridad</h3>{alarmasGlobales.map(a=><div key={a.id} style={estilos.alertaGlobalItem}><strong>{a.titulo}</strong><p>{a.mensaje}</p><p><strong>Activada por:</strong> {a.activadores.filter(activador=>sintomasAnalizados.some(dato=>normalizar(dato)===normalizar(activador))).join(", ")||"Combinación de síntomas seleccionados; revisa la lista anterior."}</p></div>)}{existeAlarmaPrioritaria&&<strong>La orientación de autocuidado queda en segundo plano hasta valorar estas señales.</strong>}</section>}
       {mostrarConsejosGenerales&&consejosGenerales.map(consejo=><ConsejoGeneral key={consejo.id} consejo={consejo}/>)}
       {resultados.length===0?<div style={estilos.avisoAmarillo}>Con los datos seleccionados no hay suficientes coincidencias para orientar un cuadro concreto. Esto no descarta ninguna enfermedad. Revisa si has marcado la localización, irradiación, hormigueo y otros síntomas que realmente aparezcan; si se muestran preguntas para afinar, respóndelas. No marques síntomas que no tengas para obtener un resultado. {mostrarConsejosGenerales?"Los consejos anteriores son generales.":"Si existe una alerta de seguridad, esa alerta es prioritaria."}</div>:<><div style={estilos.avisoResultados}><strong>Resultados orientativos</strong><p>Se muestran como máximo los seis cuadros con mayor coincidencia. El porcentaje indica cuánto encajan los síntomas marcados con los síntomas incluidos en cada ficha; no es una probabilidad de diagnóstico.</p></div>{resultados.map(resultado=><article key={resultado.condicion.id} style={estilos.resultado}><h3>{resultado.condicion.nombre}</h3>{resultado.requiereValoracionMedica&&<div style={estilos.alarma}><h4>⚠️ Señales de alarma asociadas a este cuadro</h4><Lista elementos={resultado.senalesAlarmaDetectadas}/><strong>Se recomienda valoración médica antes de aplicar fitoterapia o suplementación.</strong></div>}<p>{resultado.condicion.descripcion}</p><p><strong>Datos coincidentes:</strong> {resultado.coincidencias.join(", ")}</p><div style={estilos.confianza}><strong>Coincidencia con la ficha: {resultado.confianza}%</strong><div style={estilos.barraFondo}><div style={{...estilos.barraProgreso,width:`${resultado.confianza}%`}}/></div><small>Este porcentaje no confirma ni calcula la probabilidad de una enfermedad.</small></div>{resultado.contradicciones.length>0&&<div style={estilos.avisoAmarillo}><strong>Datos que reducen la coincidencia:</strong><Lista elementos={resultado.contradicciones}/></div>}<h4>Posibles causas o factores relacionados</h4><Lista elementos={resultado.condicion.posiblesCausas}/><EnfoquesComparados condicion={resultado.condicion} bloquearIntervencionesNaturales={existeAlarmaPrioritaria||resultado.requiereValoracionMedica}/><div style={estilos.bloqueClinico}><h4>Pruebas médicas habituales</h4><Lista elementos={resultado.condicion.pruebasMedicasHabituales}/><h4>Profesionales de referencia</h4><Lista elementos={resultado.condicion.especialistaRecomendado}/><h4>Cuándo acudir al médico</h4><Lista elementos={resultado.condicion.cuandoAcudirMedico}/></div></article>)}</>}
     </div>}
