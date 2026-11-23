@@ -275,3 +275,15 @@ test("alertas de emergencia no atribuyen anafilaxia o ictus con síntomas inespe
   assert.equal(perdidaFuerza.some(a => a.nivel === "urgente"), true);
   assert.equal(alarmas.detectarAlarmasGlobales(["Hinchazón de lengua o garganta"]).some(a => a.id === "anafilaxia"), true);
 });
+
+
+test("fiebre y dolor lumbar sin síntomas urinarios no se atribuyen automáticamente a infección renal", () => {
+  const avisos = alarmas.detectarAlarmasGlobales(["Fiebre", "Dolor lumbar"]);
+  assert.equal(avisos.some(a => a.id === "infeccion-urinaria-alta"), false);
+  assert.equal(alarmas.detectarAlarmasGlobales(["Fiebre", "Dolor en el costado"]).some(a => a.id === "infeccion-urinaria-alta"), true);
+});
+
+test("sudor frío aislado no atribuye un problema cardiovascular agudo", () => {
+  assert.equal(alarmas.detectarAlarmasGlobales(["Sudor frío"]).some(a => a.id === "pecho-cardiovascular"), false);
+  assert.equal(alarmas.detectarAlarmasGlobales(["Dolor de pecho", "Sudor frío"]).some(a => a.id === "pecho-cardiovascular"), true);
+});
