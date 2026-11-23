@@ -54,5 +54,5 @@ try {
  const md="# Auditoría automática CuerpoClaro — 23/11/2026\n\n**Estado: NO VALIDADO CLÍNICAMENTE**. Un resultado sin incidencias técnicas no equivale a que la ficha sea médicamente correcta.\n\n## Resumen\n\n"+Object.entries(resumen).map(([k,v])=>"- **"+k+"**: "+v).join("\n")+"\n\n## Fichas duplicadas omitidas\n\n"+(descartadas||"Ninguna")+"\n\n## Revisión individual\n\n| Ficha | Síntomas | Alarmas | Incidencias detectadas |\n|---|---:|---:|---|\n"+filas+"\n\n## Criterios\n\nSe comprueban estructura, trazabilidad bibliográfica, accesibilidad mediante el buscador ampliado y coincidencia en conjuntos sintéticos. No se comprueba la precisión clínica real, la seguridad de todos los consejos ni la exactitud de tratamientos. Cualquier ficha requiere validación de contenido frente a fuentes clínicas específicas.\n";
  writeFileSync("auditoria-fichas.md",md);
  console.log("AUDITORIA_FICHAS",JSON.stringify(resumen));
- if(informes.length<140)process.exitCode=1;
+ if(informes.length!==144){console.error("El catálogo no contiene las 144 fichas esperadas: "+informes.length);process.exitCode=1;}
 }finally{await vite.close();}
